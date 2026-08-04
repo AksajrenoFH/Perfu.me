@@ -7,15 +7,17 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\RefillController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('splash');
 });
 
-Route::get('/home', function () {
-    return view('customer/home');
-});
+// HOME PAGE CUSTOMER
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/refill', [RefillController::class, 'index'])->name('refill');
 
 // ==========================================
 // PINDAHKAN DASHBOARD KE SINI (DI LUAR ADMIN)
