@@ -1,295 +1,444 @@
 <!doctype html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essence Noir · Apex Noir</title>
+    <title>Parfume.me · Sophisticated Productivity</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background:#0a0a0a; }
-        .icon-btn { transition: all .2s ease; }
-        .icon-btn:hover { background: rgba(255,255,255,.06); }
-        .nav-active::before {
-            content:'';
-            position:absolute; left:-16px; top:50%; transform:translateY(-50%);
-            width:3px; height:20px; background:#fff; border-radius:2px;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
         }
-        .card-hover { transition: transform .3s ease, border-color .3s ease; }
-        .card-hover:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.15); }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: scrollLeft 50s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollLeft {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .card-hover {
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-underline {
+            position: relative;
+        }
+
+        .nav-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -6px;
+            height: 2px;
+            background: #111;
+            border-radius: 2px;
+        }
+
+        /* --- STYLES FOR SCROLL ANIMATIONS --- */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        /* State saat scroll ke bawah: Muncul */
+        .reveal-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* State saat scroll ke atas: Keluar */
+        .reveal-element.is-exiting {
+            opacity: 0;
+            transform: translateY(40px);
+        }
     </style>
 </head>
-<body class="bg-[#0a0a0a] text-white antialiased">
 
-    <div class="flex min-h-screen">
+<body class="text-[#14161a] antialiased bg-white">
 
-        {{-- Sidebar --}}
-        <aside class="w-[100px] shrink-0 bg-[#0d0d0d] border-r border-white/5 flex flex-col items-center py-6 relative">
-            <div class="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center font-bold mb-10">
-                A
+    {{-- Scrolling Announcement Bar --}}
+    @php
+// Data Dummy untuk Pengumuman
+$announcements = [
+    'VS Scandalous',
+    'VS Romantic Wish',
+    'Dior Sauvage',
+    'Aigner Blue Emotion',
+    'Baccarrat Rouge 405',
+    'CH Good Girl',
+    'Channel Coco Mademoiselle',
+    'David of Man Cool Water',
+    'Dunhill Blue',
+    'Escada Cherry',
+    'Escada Sexy Grafity',
+    'Aigner Black',
+    'Aqua Kiss',
+];
+    @endphp
+    <div class="bg-white border-b border-gray-200 text-gray-800 text-xs tracking-wide overflow-hidden">
+        <div class="marquee-track py-2.5">
+            <div class="flex items-center shrink-0">
+                @foreach ($announcements as $item)
+                    <span class="px-8 flex items-center gap-2">✦ {{ $item }}</span>
+                @endforeach
             </div>
-
-            <nav class="flex flex-col gap-2 flex-1">
-                <a href="#" class="icon-btn relative w-11 h-11 rounded-xl flex items-center justify-center text-white/50 hover:text-white">
-                    {{-- Home --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5Z"/>
-                    </svg>
-                </a>
-                <a href="#" class="icon-btn relative w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center text-white nav-active">
-                    {{-- Compass / current page --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                        <circle cx="12" cy="12" r="9"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m15 9-2 6-6 2 2-6 6-2Z"/>
-                    </svg>
-                </a>
-                <a href="#" class="icon-btn relative w-11 h-11 rounded-xl flex items-center justify-center text-white/50 hover:text-white">
-                    {{-- Folder --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7a1 1 0 0 1 1-1h4l2 2h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7Z"/>
-                    </svg>
-                </a>
-                <a href="#" class="icon-btn relative w-11 h-11 rounded-xl flex items-center justify-center text-white/50 hover:text-white">
-                    {{-- Settings --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
-                    </svg>
-                </a>
-            </nav>
-
-            <img src="https://i.pravatar.cc/80?img=12" alt="User avatar" class="w-9 h-9 rounded-full object-cover mt-auto">
-        </aside>
-
-        {{-- Main --}}
-        <div class="flex-1 flex flex-col">
-
-            {{-- Top bar --}}
-            <header class="flex items-center justify-between px-10 h-[68px] border-b border-white/5">
-                <div class="flex items-center gap-8">
-                    <span class="text-lg font-bold tracking-tight">Apex</span>
-                    <div class="flex items-center gap-2 bg-white/5 rounded-full px-4 py-2 w-80 text-white/40">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="7"/>
-                            <path stroke-linecap="round" d="m21 21-4.3-4.3"/>
-                        </svg>
-                        <span class="text-sm">Search curated scents...</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4 text-white/50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/>
-                    </svg>
-                    <span class="w-6 h-6 rounded-full bg-white/90"></span>
-                </div>
-            </header>
-
-            <main class="px-10 py-10 max-w-[1400px] w-full mx-auto">
-
-                {{-- Hero: image + info --}}
-                <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6">
-                    {{-- Product image --}}
-                    <div class="rounded-2xl overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-[#0d0d0d] aspect-[4/3] flex items-end p-8 relative">
-                        <img src="{{ asset('images/essence-noir.jpg') }}"
-                             onerror="this.style.display='none'"
-                             alt="Essence Noir perfume bottle"
-                             class="absolute inset-0 w-full h-full object-cover opacity-80">
-                        <span class="relative text-xs tracking-widest text-white/40 uppercase">Essence Noir · Eau de Parfum</span>
-                    </div>
-
-                    {{-- Product info --}}
-                    <div class="bg-[#111111] border border-white/5 rounded-2xl p-8 flex flex-col">
-                        <p class="text-xs tracking-widest text-white/40 uppercase mb-4">
-                            Collection <span class="text-white/70">›</span>
-                            <span class="text-white font-semibold">Noir Series</span>
-                        </p>
-
-                        <h1 class="text-5xl font-extrabold leading-[1.05] mb-3">Essence<br>Noir</h1>
-                        <p class="text-white/50 mb-6">Eau de Parfum</p>
-
-                        <div class="flex items-end gap-3 mb-8">
-                            <span class="text-3xl font-bold">${{ number_format($product['price'] ?? 285, 2) }}</span>
-                            <span class="text-white/40 text-sm mb-1">{{ $product['size'] ?? '100ml / 3.4 fl. oz.' }}</span>
-                        </div>
-
-                        <button type="button" class="w-full bg-white text-black font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 hover:bg-white/90 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h15l-1.5 9h-12L6 6Zm0 0-1-3H2m6 18a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
-                            </svg>
-                            Add to Cart
-                        </button>
-
-                        <button type="button" class="w-full bg-white/5 border border-white/10 text-white font-medium rounded-xl py-3.5 flex items-center justify-center gap-2 mt-3 hover:bg-white/10 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c2 0 3.4 1.1 4 2.2C11.1 6.1 12.5 5 14.5 5 18 5 20.5 8.5 20.5 12.5 18 16.65 12 21 12 21Z"/>
-                            </svg>
-                            Save to Wishlist
-                        </button>
-
-                        <div class="border-t border-white/10 mt-8 pt-6 flex items-center gap-6 text-sm text-white/50">
-                            <span class="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="9"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.5 12 2.5 2.5 4.5-5"/>
-                                </svg>
-                                Authenticity Guaranteed
-                            </span>
-                            <span class="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h11v9H3V7Zm11 3h4l3 3v3h-7v-6Z"/>
-                                    <circle cx="7" cy="18" r="1.5"/>
-                                    <circle cx="17" cy="18" r="1.5"/>
-                                </svg>
-                                Express Shipping
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Narrative --}}
-                <section class="mt-8 bg-[#111111] border border-white/5 rounded-2xl px-10 py-16 text-center">
-                    <p class="text-xs tracking-[0.3em] text-white/40 uppercase mb-8">The Narrative</p>
-                    <blockquote class="text-2xl md:text-3xl font-semibold leading-relaxed max-w-3xl mx-auto">
-                        &ldquo;{{ $product['narrative'] ?? 'A phantom of the midnight garden, Essence Noir is an olfactory poem written in shadows. It captures the fleeting moment when the silver moon kisses the damp forest floor, awakening a symphony of cold earth and velvet petals.' }}&rdquo;
-                    </blockquote>
-                    <div class="w-8 h-px bg-white/20 mx-auto mt-10"></div>
-                </section>
-
-                {{-- Notes --}}
-                <section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    @php
-                        $notes = $product['notes'] ?? [
-                            [
-                                'label' => 'Top Notes',
-                                'title' => 'Bergamot & Pink Pepper',
-                                'desc'  => 'The immediate, vibrant spark that greets the senses upon first contact.',
-                                'icon'  => 'leaf',
-                            ],
-                            [
-                                'label' => 'Heart Notes',
-                                'title' => 'Midnight Rose & Jasmine',
-                                'desc'  => 'The core soul of the scent, lingering beautifully as the spirit unfolds.',
-                                'icon'  => 'flower',
-                            ],
-                            [
-                                'label' => 'Base Notes',
-                                'title' => 'Sandalwood & Vetiver',
-                                'desc'  => 'The deep, enduring foundation that anchors the fragrance to the skin.',
-                                'icon'  => 'tree',
-                            ],
-                        ];
-                    @endphp
-
-                    @foreach ($notes as $note)
-                        <div class="card-hover bg-[#111111] border border-white/5 rounded-2xl p-8 text-center">
-                            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-5">
-                                @if($note['icon'] === 'leaf')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 19c8 0 14-6 14-14-8 0-14 6-14 14Zm0 0c0-4 2-8 6-10"/>
-                                    </svg>
-                                @elseif($note['icon'] === 'flower')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                                        <circle cx="12" cy="12" r="2.5"/>
-                                        <path stroke-linecap="round" d="M12 4a3 3 0 0 1 0 6M12 20a3 3 0 0 1 0-6M4 12a3 3 0 0 1 6 0M20 12a3 3 0 0 1-6 0"/>
-                                    </svg>
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2 6 11h4l-4 6h5v5h2v-5h5l-4-6h4L12 2Z"/>
-                                    </svg>
-                                @endif
-                            </div>
-                            <p class="text-xs tracking-widest text-white/40 uppercase mb-3">{{ $note['label'] }}</p>
-                            <h3 class="text-lg font-semibold mb-2">{{ $note['title'] }}</h3>
-                            <p class="text-sm text-white/50 leading-relaxed">{{ $note['desc'] }}</p>
-                        </div>
-                    @endforeach
-                </section>
-
-                {{-- Related products --}}
-                <section class="mt-14">
-                    <div class="flex items-end justify-between mb-6">
-                        <div>
-                            <p class="text-xs tracking-widest text-white/40 uppercase mb-2">Explore Further</p>
-                            <h2 class="text-2xl font-bold">Other curations from Noir Series</h2>
-                        </div>
-                        <a href="#" class="text-sm text-white/60 hover:text-white flex items-center gap-1">
-                            View All
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0-6-6m6 6-6 6"/>
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @php
-                            $related = $relatedProducts ?? [
-                                ['name' => 'Luna Blanc', 'price' => 265, 'series' => 'Noir Series', 'bg' => 'from-gray-200 to-gray-400'],
-                                ['name' => 'Oud Metal', 'price' => 310, 'series' => 'Noir Series', 'bg' => 'from-[#1a1a1a] to-black'],
-                                ['name' => 'Chrome Petal', 'price' => 245, 'series' => 'Noir Series', 'bg' => 'from-[#0d1b2a] to-black'],
-                            ];
-                        @endphp
-
-                        @foreach ($related as $item)
-                            <a href="#" class="card-hover block rounded-2xl overflow-hidden border border-white/5">
-                                <div class="aspect-[4/5] bg-gradient-to-b {{ $item['bg'] }}"></div>
-                                <div class="bg-[#111111] p-5">
-                                    <p class="text-xs tracking-widest text-white/40 uppercase mb-1">{{ $item['series'] }}</p>
-                                    <h3 class="font-semibold mb-1">{{ $item['name'] }}</h3>
-                                    <p class="text-white/50 text-sm">${{ number_format($item['price'], 2) }}</p>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
-                </section>
-            </main>
-
-            {{-- Footer --}}
-            <footer class="border-t border-white/5 px-10 py-14 mt-16">
-                <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-                    <div class="md:col-span-1">
-                        <h3 class="text-lg font-bold mb-3">Apex Noir</h3>
-                        <p class="text-sm text-white/40 leading-relaxed">
-                            The world's most exclusive fragrance laboratory. Scientifically crafted, artistically inspired.
-                        </p>
-                    </div>
-                    <div>
-                        <p class="text-xs tracking-widest text-white/30 uppercase mb-4">Collections</p>
-                        <ul class="space-y-2 text-sm text-white/50">
-                            <li><a href="#" class="hover:text-white">The Noir Series</a></li>
-                            <li><a href="#" class="hover:text-white">Limited Archive</a></li>
-                            <li><a href="#" class="hover:text-white">Sample Kits</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="text-xs tracking-widest text-white/30 uppercase mb-4">Concierge</p>
-                        <ul class="space-y-2 text-sm text-white/50">
-                            <li><a href="#" class="hover:text-white">Scent Consulting</a></li>
-                            <li><a href="#" class="hover:text-white">Order Tracking</a></li>
-                            <li><a href="#" class="hover:text-white">Returns</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="text-xs tracking-widest text-white/30 uppercase mb-4">Social</p>
-                        <ul class="space-y-2 text-sm text-white/50">
-                            <li><a href="#" class="hover:text-white">Instagram</a></li>
-                            <li><a href="#" class="hover:text-white">Journal</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="max-w-[1400px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-white/5 mt-10 pt-6 text-xs text-white/30">
-                    <span>&copy; {{ date('Y') }} Apex Digital Luxury. All rights reserved.</span>
-                    <div class="flex gap-6">
-                        <a href="#" class="hover:text-white/60">Privacy Policy</a>
-                        <a href="#" class="hover:text-white/60">Terms of Service</a>
-                    </div>
-                </div>
-            </footer>
+            <div class="flex items-center shrink-0" aria-hidden="true">
+                @foreach ($announcements as $item)
+                    <span class="px-8 flex items-center gap-2">✦ {{ $item }}</span>
+                @endforeach
+            </div>
         </div>
     </div>
 
+    {{-- Navbar --}}
+    <header class="bg-white/80 backdrop-blur border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-[1400px] mx-auto flex items-center justify-between px-8 h-[76px]">
+            <div class="flex items-center gap-12">
+                <span class="text-xl font-extrabold tracking-tight">Parfume.me</span>
+                <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
+                    <a href="#" class="nav-underline text-black font-medium">Home</a>
+                    <a href="#product" class="hover:text-black">Product</a>
+                    <a href="#" class="hover:text-black">Resources</a>
+                    <a href="#" class="hover:text-black">Pricing</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <form action="#" method="GET"
+                    class="hidden sm:flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 w-52 text-black/40 border border-gray-200/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="7" />
+                        <path stroke-linecap="round" d="m21 21-4.3-4.3" />
+                    </svg>
+                    <input type="text" name="q" placeholder="Search ..."
+                        class="bg-transparent outline-none text-sm w-full placeholder:text-black/40">
+                </form>
+                <a href="#"
+                    class="bg-black text-white text-sm font-semibold rounded-full px-5 py-2.5 hover:bg-gray-800 transition">Get
+                    Started</a>
+            </div>
+        </div>
+    </header>
+    
+    {{-- Hero Section --}}
+    <section class="bg-gray-50 border-y border-gray-200/60 py-10 reveal-element">
+        <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+            <div
+                class="relative rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 aspect-[4/5] flex items-end p-6">
+                <img src="{{ $product['image'] }}"
+                    onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6'"
+                    alt="Essence Noir bottle" class="absolute inset-0 w-full h-full object-cover">
+                <span
+                    class="relative bg-white/90 border border-gray-200 text-black text-xs font-semibold rounded-full px-4 py-2 shadow-sm">{{ $product['tag'] }}</span>
+            </div>
+
+            <div>
+                <p class="text-xs tracking-[0.2em] text-gray-400 font-semibold mb-3">LIFESTYLE DIVISION</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5 text-gray-900">Apex Noir: The Scent of
+                    Focus.</h2>
+                <p class="text-gray-500 leading-relaxed max-w-md mb-8">Olfactory precision for deep work sessions. Our
+                    exclusive fragrance collection is hand-crafted to reduce cognitive load and ground your focus.</p>
+
+                <div class="grid grid-cols-3 gap-6 mb-10 max-w-md">
+                    @foreach ($product['notes'] as $note)
+                        <div>
+                            <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">{{ $note['label'] }}</p>
+                            <p class="font-semibold text-gray-900">{{ $note['title'] }}</p>
+                            <p class="text-xs text-gray-400">{{ $note['desc'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+
+                <a href="#"
+                    class="inline-block bg-black text-white text-sm font-semibold rounded-full px-6 py-3.5 hover:bg-gray-800 transition">Secure
+                    the Collection</a>
+            </div>
+        </div>
+    </section>
+    {{-- Product Catalog Section (Mykonos Style) --}}
+<section id="product" class="max-w-[1400px] mx-auto px-8 py-16 bg-white reveal-element">
+    {{-- Catalog Header --}}
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 border-b border-gray-100 pb-4 gap-4">
+        <div class="flex items-center gap-8">
+            <h2 href="#" class="text-3xl md:text-4xl font-extrabold text-black tracking-tight cursor-pointer">
+                Parfume
+            </h2>
+            <a href="{{ route('refill') }}">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-300 hover:text-gray-500 transition cursor-pointer">
+        Refill
+    </h2>
+</a>
+        </div>
+
+        <a href="#" class="text-sm font-semibold text-black underline underline-offset-8 hover:text-gray-600 transition tracking-wide">
+            Shop All Products
+        </a>
+    </div>
+
+    {{-- Catalog Grid --}}
+    <div class="flex flex-wrap justify-center gap-6">
+        @php
+$catalogProducts = [
+    [
+        'name' => 'Empire Extrait de Parfum 100ml',
+        'price' => 'Rp 499.000,00',
+        'image' => 'storage/image/DSC00068.JPG',
+        'image_hover' => 'storage/image/DSC00070 (1).JPG', // gambar kedua
+        'is_sold_out' => false,
+    ],
+    [
+        'name' => 'Conquer Extrait de Parfum 50ml',
+        'price' => 'Rp 449.000,00',
+        'image' => 'storage/image/DSC00047.JPG',
+        'image_hover' => 'storage/image/Dinamist-parfu.me.JPG', // gambar kedua
+        'is_sold_out' => true,
+    ],
+];
+        @endphp
+
+       @foreach ($catalogProducts as $item)
+    <div class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] group cursor-pointer flex flex-col justify-between rounded-2xl overflow-hidden bg-[#f8f8f8] border border-gray-100 card-hover reveal-element">
+        
+        {{-- Container Foto Produk --}}
+        <div class="relative aspect-[3/4] w-full overflow-hidden bg-[#f8f8f8]">
+            @if ($item['is_sold_out'])
+                <span class="absolute top-4 left-4 bg-[#8a8a8a] text-white text-[11px] font-semibold px-3 py-1 rounded-md shadow-sm z-10 tracking-wide">
+                    Sold out
+                </span>
+            @endif
+
+            {{-- Gambar utama --}}
+            <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}"
+                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out opacity-100 group-hover:opacity-0">
+
+            {{-- Gambar hover --}}
+            @if (!empty($item['image_hover']))
+                <img src="{{ $item['image_hover'] }}" alt="{{ $item['name'] }}"
+                    class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100">
+            @endif
+        </div>
+
+        {{-- Detail Produk --}}
+        <div class="p-6 bg-white flex-1 flex flex-col justify-between">
+            <h3 class="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 mb-3">
+                {{ $item['name'] }}
+            </h3>
+            <p class="text-sm font-bold text-gray-900">
+                From {{ $item['price'] }}
+            </p>
+        </div>
+    </div>
+@endforeach
+    </div>
+</section>
+
+    {{-- CTA --}}
+    <section class="max-w-[1400px] mx-auto px-8 py-20 bg-white reveal-element">
+        <div class="border border-gray-200 rounded-3xl text-center py-20 px-6 shadow-sm bg-white">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-5 text-gray-900">Ascend to the Apex.</h2>
+            <p class="text-gray-500 max-w-xl mx-auto mb-8">Limited intake for Q3 is now open. Join the elite network of
+                performers redefining the boundaries of digital efficiency.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="#"
+                    class="bg-black text-white text-sm font-semibold rounded-full px-6 py-3.5 hover:bg-gray-800 transition">Get
+                    Started for Free</a>
+                <a href="#"
+                    class="border border-gray-300 text-gray-800 text-sm font-semibold rounded-full px-6 py-3.5 hover:bg-gray-50 transition">Request
+                    a Demo</a>
+            </div>
+        </div>
+    </section>
+
+    {{-- Footer --}}
+    <footer class="bg-white border-t border-gray-200 pt-16 pb-8 reveal-element">
+        <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div>
+                <h3 class="text-xl font-extrabold mb-3 text-gray-900">Apex</h3>
+                <p class="text-sm text-gray-500 leading-relaxed max-w-xs">Redefining the relationship between
+                    professional performance and aesthetic clarity.</p>
+                <div class="flex gap-3 mt-5 text-gray-500">
+                    <span
+                        class="w-8 h-8 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center">🌐</span>
+                    <span
+                        class="w-8 h-8 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center">@</span>
+                    <span
+                        class="w-8 h-8 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center">≡</span>
+                </div>
+            </div>
+            <div>
+                <p class="text-[11px] tracking-widest text-gray-400 font-semibold mb-4">PLATFORM</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-black">Features</a></li>
+                    <li><a href="#" class="hover:text-black">Security</a></li>
+                    <li><a href="#" class="hover:text-black">Integrations</a></li>
+                    <li><a href="#" class="hover:text-black">Enterprise</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="text-[11px] tracking-widest text-gray-400 font-semibold mb-4">COMPANY</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-black">About Us</a></li>
+                    <li><a href="#" class="hover:text-black">Careers</a></li>
+                    <li><a href="#" class="hover:text-black">Press Kit</a></li>
+                    <li><a href="#" class="hover:text-black">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="text-[11px] tracking-widest text-gray-400 font-semibold mb-4">STAY AHEAD</p>
+                <p class="text-sm text-gray-600 mb-4">Receive weekly insights on high-performance workflows and luxury
+                    lifestyle curation.</p>
+                <form action="#" method="POST" class="flex gap-2">
+                    <input type="email" name="email" placeholder="Your work email" required
+                        class="bg-gray-50 border border-gray-200 rounded-full px-4 py-2.5 text-sm flex-1 outline-none focus:border-gray-400">
+                    <button type="submit"
+                        class="bg-black text-white text-sm font-semibold rounded-full px-5 py-2.5 hover:bg-gray-800 transition">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div
+            class="max-w-[1400px] mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-gray-100 mt-10 pt-6 text-xs text-gray-400">
+            <span>
+                <a href="#" class="hover:text-gray-600">PRIVACY POLICY</a> &nbsp;
+                <a href="#" class="hover:text-gray-600">TERMS OF SERVICE</a> &nbsp;
+                <a href="#" class="hover:text-gray-600">COOKIE POLICY</a>
+            </span>
+            <span>&copy; {{ date('Y') }} APEX DIGITAL GROUP. ESTABLISHED IN SWITZERLAND.</span>
+        </div>
+    </footer>
+
+    {{-- Alpine.js untuk carousel --}}
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script>
+        function heroCarousel(total) {
+            return {
+                active: 1,
+                total: total,
+                autoplayMs: 4000,
+                timer: null,
+                dragging: false,
+                startX: 0,
+                deltaX: 0,
+
+                init() {
+                    this.startAutoplay();
+                },
+                startAutoplay() {
+                    clearInterval(this.timer);
+                    this.timer = setInterval(() => this.next(), this.autoplayMs);
+                },
+                resetAutoplay() {
+                    this.startAutoplay();
+                },
+                next() {
+                    this.active = (this.active + 1) % this.total;
+                    this.resetAutoplay();
+                },
+                prev() {
+                    this.active = (this.active - 1 + this.total) % this.total;
+                    this.resetAutoplay();
+                },
+                goTo(i) {
+                    this.active = i;
+                    this.resetAutoplay();
+                },
+
+                dragStart(e) {
+                    this.dragging = true;
+                    this.startX = e.touches ? e.touches[0].clientX : e.clientX;
+                    clearInterval(this.timer);
+                },
+                dragMove(e) {
+                    if (!this.dragging) return;
+                    const x = e.touches ? e.touches[0].clientX : e.clientX;
+                    this.deltaX = x - this.startX;
+                },
+                dragEnd() {
+                    if (!this.dragging) return;
+                    this.dragging = false;
+                    if (this.deltaX > 50) {
+                        this.prev();
+                    } else if (this.deltaX < -50) {
+                        this.next();
+                    } else {
+                        this.resetAutoplay();
+                    }
+                    this.deltaX = 0;
+                },
+            };
+        }
+
+        // --- SCRIPT INTERSECTION OBSERVER UNTUK ANIMASI MASUK & KELUAR ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal-element');
+
+            let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let isScrollingDown = true;   // anggap "turun" di awal, biar elemen yg sudah kelihatan langsung tampil
+            let hasScrolled = false;      // arah baru dipercaya setelah user benar-benar scroll
+
+            // Satu-satunya tempat yang mengubah lastScrollTop/isScrollingDown,
+            // supaya tidak balapan dengan pembacaan di dalam observer callback.
+            window.addEventListener('scroll', () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                isScrollingDown = st > lastScrollTop;
+                lastScrollTop = st <= 0 ? 0 : st;
+                hasScrolled = true;
+            }, { passive: true });
+
+            const observerOptions = {
+                root: null,
+                threshold: 0.15 // Animasi terdeteksi jika minimal 15% elemen terlihat
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Tampilkan kalau sedang scroll turun, ATAU ini kemunculan pertama
+                        // (elemen sudah kelihatan sejak load, sebelum user sempat scroll sama sekali)
+                        if (!hasScrolled || isScrollingDown) {
+                            // Scroll ke bawah -> Animasi Masuk
+                            entry.target.classList.add('is-visible');
+                            entry.target.classList.remove('is-exiting');
+                        }
+                    } else {
+                        if (hasScrolled && !isScrollingDown) {
+                            // Scroll ke atas -> Animasi Keluar
+                            entry.target.classList.remove('is-visible');
+                            entry.target.classList.add('is-exiting');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
 </body>
+
 </html>
