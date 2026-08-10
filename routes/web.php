@@ -10,6 +10,7 @@ use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\RefillController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerProductController;
 
 Route::get('/', function () {
     return view('splash');
@@ -25,6 +26,9 @@ Route::get('/refill', [RefillController::class, 'index'])->name('refill');
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+Route::get('/product/{id}', [CustomerProductController::class, 'showDetail'])->name('product.show');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

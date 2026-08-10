@@ -84,22 +84,22 @@
 
     {{-- Scrolling Announcement Bar --}}
     @php
-// Data Dummy untuk Pengumuman
-$announcements = [
-    'VS Scandalous',
-    'VS Romantic Wish',
-    'Dior Sauvage',
-    'Aigner Blue Emotion',
-    'Baccarrat Rouge 405',
-    'CH Good Girl',
-    'Channel Coco Mademoiselle',
-    'David of Man Cool Water',
-    'Dunhill Blue',
-    'Escada Cherry',
-    'Escada Sexy Grafity',
-    'Aigner Black',
-    'Aqua Kiss',
-];
+        // Data Dummy untuk Pengumuman
+        $announcements = [
+            'VS Scandalous',
+            'VS Romantic Wish',
+            'Dior Sauvage',
+            'Aigner Blue Emotion',
+            'Baccarrat Rouge 405',
+            'CH Good Girl',
+            'Channel Coco Mademoiselle',
+            'David of Man Cool Water',
+            'Dunhill Blue',
+            'Escada Cherry',
+            'Escada Sexy Grafity',
+            'Aigner Black',
+            'Aqua Kiss',
+        ];
     @endphp
     <div class="bg-white border-b border-gray-200 text-gray-800 text-xs tracking-wide overflow-hidden">
         <div class="marquee-track py-2.5">
@@ -145,7 +145,7 @@ $announcements = [
             </div>
         </div>
     </header>
-    
+
     {{-- Hero Section --}}
     <section class="bg-gray-50 border-y border-gray-200/60 py-10 reveal-element">
         <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
@@ -181,82 +181,89 @@ $announcements = [
             </div>
         </div>
     </section>
+
     {{-- Product Catalog Section (Mykonos Style) --}}
-<section id="product" class="max-w-[1400px] mx-auto px-8 py-16 bg-white reveal-element">
-    {{-- Catalog Header --}}
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 border-b border-gray-100 pb-4 gap-4">
-        <div class="flex items-center gap-8">
-            <h2 href="#" class="text-3xl md:text-4xl font-extrabold text-black tracking-tight cursor-pointer">
-                Parfume
-            </h2>
-            <a href="{{ route('refill') }}">
-    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-300 hover:text-gray-500 transition cursor-pointer">
-        Refill
-    </h2>
-</a>
+    <section id="product" class="max-w-[1400px] mx-auto px-8 py-16 bg-white reveal-element">
+        {{-- Catalog Header --}}
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 border-b border-gray-100 pb-4 gap-4">
+            <div class="flex items-center gap-8">
+                <h2 href="#" class="text-3xl md:text-4xl font-extrabold text-black tracking-tight cursor-pointer">
+                    Parfume
+                </h2>
+                <a href="{{ route('refill') }}">
+                    <h2
+                        class="text-3xl md:text-4xl font-extrabold text-gray-300 hover:text-gray-500 transition cursor-pointer">
+                        Refill
+                    </h2>
+                </a>
+            </div>
+
+            <a href="#"
+                class="text-sm font-semibold text-black underline underline-offset-8 hover:text-gray-600 transition tracking-wide">
+                Shop All Products
+            </a>
         </div>
 
-        <a href="#" class="text-sm font-semibold text-black underline underline-offset-8 hover:text-gray-600 transition tracking-wide">
-            Shop All Products
-        </a>
-    </div>
+        {{-- Catalog Grid --}}
+        <div class="flex flex-wrap justify-center gap-6">
+            @php
+                $catalogProducts = [
+                    [
+                        'id' => 1,
+                        'name' => 'Empire Extrait de Parfum 100ml',
+                        'price' => 'Rp 499.000,00',
+                        'image' => 'storage/image/DSC00068.JPG',
+                        'image_hover' => 'storage/image/DSC00070 (1).JPG', // gambar kedua
+                        'is_sold_out' => false,
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'Conquer Extrait de Parfum 50ml',
+                        'price' => 'Rp 449.000,00',
+                        'image' => 'storage/image/DSC00047.JPG',
+                        'image_hover' => 'storage/image/Dinamist-parfu.me.JPG', // gambar kedua
+                        'is_sold_out' => true,
+                    ],
+                ];
+            @endphp
 
-    {{-- Catalog Grid --}}
-    <div class="flex flex-wrap justify-center gap-6">
-        @php
-$catalogProducts = [
-    [
-        'name' => 'Empire Extrait de Parfum 100ml',
-        'price' => 'Rp 499.000,00',
-        'image' => 'storage/image/DSC00068.JPG',
-        'image_hover' => 'storage/image/DSC00070 (1).JPG', // gambar kedua
-        'is_sold_out' => false,
-    ],
-    [
-        'name' => 'Conquer Extrait de Parfum 50ml',
-        'price' => 'Rp 449.000,00',
-        'image' => 'storage/image/DSC00047.JPG',
-        'image_hover' => 'storage/image/Dinamist-parfu.me.JPG', // gambar kedua
-        'is_sold_out' => true,
-    ],
-];
-        @endphp
+            @foreach ($catalogProducts as $item)
+                <a href="{{ route('product.show', $item['id']) }}"
+                    class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] group cursor-pointer flex flex-col justify-between rounded-2xl overflow-hidden bg-[#f8f8f8] border border-gray-100 card-hover reveal-element">
 
-       @foreach ($catalogProducts as $item)
-    <div class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] group cursor-pointer flex flex-col justify-between rounded-2xl overflow-hidden bg-[#f8f8f8] border border-gray-100 card-hover reveal-element">
-        
-        {{-- Container Foto Produk --}}
-        <div class="relative aspect-[3/4] w-full overflow-hidden bg-[#f8f8f8]">
-            @if ($item['is_sold_out'])
-                <span class="absolute top-4 left-4 bg-[#8a8a8a] text-white text-[11px] font-semibold px-3 py-1 rounded-md shadow-sm z-10 tracking-wide">
-                    Sold out
-                </span>
-            @endif
+                    {{-- Container Foto Produk --}}
+                    <div class="relative aspect-[3/4] w-full overflow-hidden bg-[#f8f8f8]">
+                        @if ($item['is_sold_out'])
+                            <span
+                                class="absolute top-4 left-4 bg-[#8a8a8a] text-white text-[11px] font-semibold px-3 py-1 rounded-md shadow-sm z-10 tracking-wide">
+                                Sold out
+                            </span>
+                        @endif
 
-            {{-- Gambar utama --}}
-            <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}"
-                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out opacity-100 group-hover:opacity-0">
+                        {{-- Gambar utama --}}
+                        <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}"
+                            class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out opacity-100 group-hover:opacity-0">
 
-            {{-- Gambar hover --}}
-            @if (!empty($item['image_hover']))
-                <img src="{{ $item['image_hover'] }}" alt="{{ $item['name'] }}"
-                    class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100">
-            @endif
+                        {{-- Gambar hover --}}
+                        @if (!empty($item['image_hover']))
+                            <img src="{{ $item['image_hover'] }}" alt="{{ $item['name'] }}"
+                                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100">
+                        @endif
+                    </div>
+
+                    {{-- Detail Produk --}}
+                    <div class="p-6 bg-white flex-1 flex flex-col justify-between">
+                        <h3 class="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 mb-3">
+                            {{ $item['name'] }}
+                        </h3>
+                        <p class="text-sm font-bold text-gray-900">
+                            From {{ $item['price'] }}
+                        </p>
+                    </div>
+                </a>
+            @endforeach
         </div>
-
-        {{-- Detail Produk --}}
-        <div class="p-6 bg-white flex-1 flex flex-col justify-between">
-            <h3 class="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 mb-3">
-                {{ $item['name'] }}
-            </h3>
-            <p class="text-sm font-bold text-gray-900">
-                From {{ $item['price'] }}
-            </p>
-        </div>
-    </div>
-@endforeach
-    </div>
-</section>
+    </section>
 
     {{-- CTA --}}
     <section class="max-w-[1400px] mx-auto px-8 py-20 bg-white reveal-element">
