@@ -138,22 +138,22 @@
 
     {{-- Scrolling Announcement Bar --}}
     @php
-        // Data Dummy untuk Pengumuman
-        $announcements = [
-            'VS Scandalous',
-            'VS Romantic Wish',
-            'Dior Sauvage',
-            'Aigner Blue Emotion',
-            'Baccarrat Rouge 405',
-            'CH Good Girl',
-            'Channel Coco Mademoiselle',
-            'David of Man Cool Water',
-            'Dunhill Blue',
-            'Escada Cherry',
-            'Escada Sexy Grafity',
-            'Aigner Black',
-            'Aqua Kiss',
-        ];
+// Data Dummy untuk Pengumuman
+$announcements = [
+    'VS Scandalous',
+    'VS Romantic Wish',
+    'Dior Sauvage',
+    'Aigner Blue Emotion',
+    'Baccarrat Rouge 405',
+    'CH Good Girl',
+    'Channel Coco Mademoiselle',
+    'David of Man Cool Water',
+    'Dunhill Blue',
+    'Escada Cherry',
+    'Escada Sexy Grafity',
+    'Aigner Black',
+    'Aqua Kiss',
+];
     @endphp
     <div class="bg-white border-b border-gray-200 text-gray-800 text-xs tracking-wide overflow-hidden">
         <div class="marquee-track py-2.5">
@@ -204,7 +204,7 @@
         <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div
                 class="relative rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 aspect-[4/5] flex items-end p-6">
-                <img src="{{ asset('images/essence-noir.jpg') }}"
+                <img src="{{ asset('storage/image/DSC00070 (1).JPG') }}"
                     onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6'"
                     alt="Essence Noir bottle" class="absolute inset-0 w-full h-full object-cover">
                 <span
@@ -214,11 +214,9 @@
 
             <div>
                 <p class="text-xs tracking-[0.2em] text-gray-400 font-semibold mb-3">LIFESTYLE DIVISION</p>
-                <h2 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5 text-gray-900">Apex Noir: The Scent of
-                    Focus.</h2>
-                <p class="text-gray-500 leading-relaxed max-w-md mb-8">Olfactory precision for deep work sessions. Our
-                    exclusive fragrance collection is hand-crafted to reduce cognitive load and ground your focus
-                    throughout the day.</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5 text-gray-900"></h2>
+                <p class="text-gray-500 leading-relaxed max-w-md mb-8">Koleksi wewangian eksklusif dengan konsentrasi Extrait tinggi. Hadir dengan karakter Bold Woody yang kuat dan tahan
+                hingga 12 jam, menciptakan ketenangan serta kesegaran optimal untuk menunjang aktivitas harian Anda.</p>
 
                 <div class="grid grid-cols-3 gap-6 mb-10 max-w-md border-t border-b border-gray-200/60 py-5">
                     <div>
@@ -231,7 +229,7 @@
                     </div>
                     <div>
                         <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">CHARACTER</p>
-                        <p class="font-bold text-gray-900 text-lg">Bold Woody</p>
+                        <p class="font-bold text-gray-900 text-lg">Sweet</p>
                     </div>
                 </div>
 
