@@ -58,7 +58,6 @@
             border-radius: 2px;
         }
 
-        /* --- STYLES FOR SCROLL ANIMATIONS --- */
         .reveal-element {
             opacity: 0;
             transform: translateY(40px);
@@ -66,21 +65,76 @@
             will-change: opacity, transform;
         }
 
-        /* State saat scroll ke bawah: Muncul */
         .reveal-element.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* State saat scroll ke atas: Keluar */
         .reveal-element.is-exiting {
             opacity: 0;
             transform: translateY(40px);
         }
+
+        @keyframes badgePop {
+            0% {
+                transform: scale(0.8);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .animate-pop {
+            animation: badgePop 0.3s ease-in-out;
+        }
+
+        @keyframes cartPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.25);
+                background-color: #333;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .animate-cart-pulse {
+            animation: cartPulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes badgePop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-badge-pop {
+            animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
     </style>
 </head>
 
-<body class="text-[#14161a] antialiased bg-white">
+<body class="text-[#14161a] antialiased bg-white" x-data="cartSystem()">
 
     {{-- Scrolling Announcement Bar --}}
     @php
@@ -137,15 +191,16 @@
                     <input type="text" name="q" placeholder="Search ..."
                         class="bg-transparent outline-none text-sm w-full placeholder:text-black/40">
                 </form>
-                <a href="#"
-                    class="bg-black text-white text-sm font-semibold rounded-full px-5 py-2.5 hover:bg-gray-800 transition">Get
-                    Started</a>
+
+                <a href="#product"
+                    class="bg-black text-white text-sm font-semibold rounded-full px-5 py-2.5 hover:bg-gray-800 transition">Shop
+                    Now</a>
             </div>
         </div>
     </header>
 
     {{-- Hero Section --}}
-    <section class="bg-gray-50 border-y border-gray-200/60 py-10 reveal-element">
+    <section class="bg-gray-50 border-y border-gray-200/60 py-16 reveal-element">
         <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div
                 class="relative rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 aspect-[4/5] flex items-end p-6">
@@ -162,7 +217,23 @@
                 <h2 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5 text-gray-900">Apex Noir: The Scent of
                     Focus.</h2>
                 <p class="text-gray-500 leading-relaxed max-w-md mb-8">Olfactory precision for deep work sessions. Our
-                    exclusive fragrance collection is hand-crafted to reduce cognitive load and ground your focus.</p>
+                    exclusive fragrance collection is hand-crafted to reduce cognitive load and ground your focus
+                    throughout the day.</p>
+
+                <div class="grid grid-cols-3 gap-6 mb-10 max-w-md border-t border-b border-gray-200/60 py-5">
+                    <div>
+                        <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">LONGEVITY</p>
+                        <p class="font-bold text-gray-900 text-lg">12 Hours</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">CONCENTRATION</p>
+                        <p class="font-bold text-gray-900 text-lg">Extrait</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">CHARACTER</p>
+                        <p class="font-bold text-gray-900 text-lg">Bold Woody</p>
+                    </div>
+                </div>
 
                 <div class="grid grid-cols-3 gap-6 mb-10 max-w-md">
                     <div>
@@ -171,10 +242,36 @@
                         <p class="text-xs text-gray-400">apaweh</p>
                     </div>
                 </div>
+            </div>
 
-                <a href="#"
-                    class="inline-block bg-black text-white text-sm font-semibold rounded-full px-6 py-3.5 hover:bg-gray-800 transition">Secure
-                    the Collection</a>
+            <div class="flex items-center gap-4 p-6 rounded-2xl bg-gray-50 border border-gray-100">
+                <div
+                    class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0 text-gray-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-gray-900">Long-Lasting Formula</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">Tahan seharian menemani aktivitas produktifmu.</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 p-6 rounded-2xl bg-gray-50 border border-gray-100">
+                <div
+                    class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0 text-gray-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-gray-900">Garansi Aman Pengiriman</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">Ganti baru jika botol pecah di perjalanan.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -199,6 +296,7 @@
                 Shop All Products
             </a>
         </div>
+    </section>
 
         {{-- Catalog Grid --}}
         <div class="flex flex-wrap justify-center gap-6">
@@ -249,13 +347,13 @@
                     a Demo</a>
             </div>
         </div>
-    </section>
+    </div>
 
     {{-- Footer --}}
     <footer class="bg-white border-t border-gray-200 pt-16 pb-8 reveal-element">
         <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
             <div>
-                <h3 class="text-xl font-extrabold mb-3 text-gray-900">Apex</h3>
+                <h3 class="text-xl font-extrabold mb-3 text-gray-900">Parfume.me</h3>
                 <p class="text-sm text-gray-500 leading-relaxed max-w-xs">Redefining the relationship between
                     professional performance and aesthetic clarity.</p>
                 <div class="flex gap-3 mt-5 text-gray-500">
@@ -279,7 +377,7 @@
             <div>
                 <p class="text-[11px] tracking-widest text-gray-400 font-semibold mb-4">COMPANY</p>
                 <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="#" class="hover:text-black">About Us</a></li>
+                    <li><a href="#story" class="hover:text-black">About Us</a></li>
                     <li><a href="#" class="hover:text-black">Careers</a></li>
                     <li><a href="#" class="hover:text-black">Press Kit</a></li>
                     <li><a href="#" class="hover:text-black">Contact</a></li>
@@ -304,81 +402,124 @@
                 <a href="#" class="hover:text-gray-600">TERMS OF SERVICE</a> &nbsp;
                 <a href="#" class="hover:text-gray-600">COOKIE POLICY</a>
             </span>
-            <span>&copy; {{ date('Y') }} APEX DIGITAL GROUP. ESTABLISHED IN SWITZERLAND.</span>
+            <span>&copy; {{ date('Y') }} PARFUME.ME DIGITAL GROUP. ESTABLISHED IN INDONESIA.</span>
         </div>
     </footer>
 
-    {{-- Alpine.js untuk carousel --}}
+    {{-- Alpine.js & Flying Ball Animation Logic Script --}}
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
-        function heroCarousel(total) {
+        function cartSystem() {
             return {
-                active: 1,
-                total: total,
-                autoplayMs: 4000,
-                timer: null,
-                dragging: false,
-                startX: 0,
-                deltaX: 0,
+                cartOpen: false,
+                isAnimating: false,
+                items: [],
+                addToCart(product, event) {
+                    this.playFlyingBallAnimation(event);
 
-                init() {
-                    this.startAutoplay();
-                },
-                startAutoplay() {
-                    clearInterval(this.timer);
-                    this.timer = setInterval(() => this.next(), this.autoplayMs);
-                },
-                resetAutoplay() {
-                    this.startAutoplay();
-                },
-                next() {
-                    this.active = (this.active + 1) % this.total;
-                    this.resetAutoplay();
-                },
-                prev() {
-                    this.active = (this.active - 1 + this.total) % this.total;
-                    this.resetAutoplay();
-                },
-                goTo(i) {
-                    this.active = i;
-                    this.resetAutoplay();
-                },
-
-                dragStart(e) {
-                    this.dragging = true;
-                    this.startX = e.touches ? e.touches[0].clientX : e.clientX;
-                    clearInterval(this.timer);
-                },
-                dragMove(e) {
-                    if (!this.dragging) return;
-                    const x = e.touches ? e.touches[0].clientX : e.clientX;
-                    this.deltaX = x - this.startX;
-                },
-                dragEnd() {
-                    if (!this.dragging) return;
-                    this.dragging = false;
-                    if (this.deltaX > 50) {
-                        this.prev();
-                    } else if (this.deltaX < -50) {
-                        this.next();
+                    let existing = this.items.find(item => item.name === product.name);
+                    if (existing) {
+                        existing.qty++;
                     } else {
-                        this.resetAutoplay();
+                        this.items.push({ ...product, qty: 1 });
                     }
-                    this.deltaX = 0;
                 },
-            };
+                playFlyingBallAnimation(event) {
+                    const button = event.target;
+                    const cartIcon = document.getElementById('floating-cart-btn');
+
+                    if (!button || !cartIcon) return;
+
+                    const btnRect = button.getBoundingClientRect();
+                    const cartRect = cartIcon.getBoundingClientRect();
+
+                    const ball = document.createElement('div');
+                    ball.style.position = 'fixed';
+                    ball.style.left = `${btnRect.left + btnRect.width / 2 - 10}px`;
+                    ball.style.top = `${btnRect.top + btnRect.height / 2 - 10}px`;
+                    ball.style.width = '18px';
+                    ball.style.height = '18px';
+                    ball.style.backgroundColor = '#000000';
+                    ball.style.borderRadius = '50%';
+                    ball.style.zIndex = '9999';
+                    ball.style.pointerEvents = 'none';
+                    ball.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+                    ball.style.transition = 'all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                    document.body.appendChild(ball);
+
+                    setTimeout(() => {
+                        ball.style.left = `${cartRect.left + cartRect.width / 2 - 9}px`;
+                        ball.style.top = `${cartRect.top + cartRect.height / 2 - 9}px`;
+                        ball.style.transform = 'scale(0.3)';
+                        ball.style.opacity = '0.7';
+                    }, 20);
+                    setTimeout(() => {
+                        ball.remove();
+                        this.isAnimating = true;
+                        setTimeout(() => {
+                            this.isAnimating = false;
+                        }, 400); // Durasi pulse
+                    }, 600);
+                },
+                increaseQty(index) {
+                    this.items[index].qty++;
+                },
+                decreaseQty(index) {
+                    if (this.items[index].qty > 1) {
+                        this.items[index].qty--;
+                    } else {
+                        this.removeItem(index);
+                    }
+                },
+                removeItem(index) {
+                    this.items.splice(index, 1);
+                },
+                get totalItems() {
+                    return this.items.reduce((sum, item) => sum + item.qty, 0);
+                },
+                get totalPrice() {
+                    return this.items.reduce((sum, item) => {
+                        let cleanPrice = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
+                        return sum + (cleanPrice * item.qty);
+                    }, 0);
+                },
+                formatRupiah(number) {
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+                },
+                checkoutWhatsApp() {
+                    if (this.items.length === 0) {
+                        alert('Keranjang belanjaan lu masih kosong!');
+                        return;
+                    }
+
+                    let phone = '6287774375755';
+                    let message = "Halo Kak, saya mau order parfum ini ya:\n\n";
+
+                    this.items.forEach((item, index) => {
+                        message += `${index + 1}. *${item.name}* - ${item.qty} pcs (${item.price})\n`;
+                    });
+
+                    message += `\n*Total Keseluruhan:* ${this.formatRupiah(this.totalPrice)}`;
+                    message += `\n\nBoleh tolong dicekkan stoknya dan total sama ongkir ke alamat saya ya kak? Terima kasih!`;
+
+                    let encodedMessage = encodeURIComponent(message);
+                    window.location.href = `https://wa.me/${phone}?text=${encodedMessage}`;
+                },
+                directCheckoutWhatsApp(name, price) {
+                    let phone = '6287774375755';
+                    let message = `Halo Kak, saya mau order 1 pcs *${name}* (${price}).\n\nBoleh tolong dicekkan ketersediaan stok dan total beserta ongkir ke alamat saya ya kak? Terima kasih!`;
+                    let encodedMessage = encodeURIComponent(message);
+                    window.location.href = `https://wa.me/${phone}?text=${encodedMessage}`;
+                }
+            }
         }
 
-        // --- SCRIPT INTERSECTION OBSERVER UNTUK ANIMASI MASUK & KELUAR ---
         document.addEventListener('DOMContentLoaded', () => {
             const revealElements = document.querySelectorAll('.reveal-element');
-
             let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
             let isScrollingDown = true; // anggap "turun" di awal, biar elemen yg sudah kelihatan langsung tampil
             let hasScrolled = false; // arah baru dipercaya setelah user benar-benar scroll
 
-            // Satu-satunya tempat yang mengubah lastScrollTop/isScrollingDown,
-            // supaya tidak balapan dengan pembacaan di dalam observer callback.
             window.addEventListener('scroll', () => {
                 const st = window.pageYOffset || document.documentElement.scrollTop;
                 isScrollingDown = st > lastScrollTop;
@@ -390,22 +531,18 @@
 
             const observerOptions = {
                 root: null,
-                threshold: 0.15 // Animasi terdeteksi jika minimal 15% elemen terlihat
+                threshold: 0.15
             };
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Tampilkan kalau sedang scroll turun, ATAU ini kemunculan pertama
-                        // (elemen sudah kelihatan sejak load, sebelum user sempat scroll sama sekali)
                         if (!hasScrolled || isScrollingDown) {
-                            // Scroll ke bawah -> Animasi Masuk
                             entry.target.classList.add('is-visible');
                             entry.target.classList.remove('is-exiting');
                         }
                     } else {
                         if (hasScrolled && !isScrollingDown) {
-                            // Scroll ke atas -> Animasi Keluar
                             entry.target.classList.remove('is-visible');
                             entry.target.classList.add('is-exiting');
                         }
