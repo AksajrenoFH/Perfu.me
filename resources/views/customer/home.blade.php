@@ -120,12 +120,10 @@
     <header class="bg-white/80 backdrop-blur border-b border-gray-100 sticky top-0 z-50">
         <div class="max-w-[1400px] mx-auto flex items-center justify-between px-8 h-[76px]">
             <div class="flex items-center gap-12">
-                <span class="text-xl font-extrabold tracking-tight">Parfume.me</span>
+                <span class="text-xl font-extrabold tracking-tight">Perfu.me</span>
                 <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
                     <a href="#" class="nav-underline text-black font-medium">Home</a>
                     <a href="#product" class="hover:text-black">Product</a>
-                    <a href="#" class="hover:text-black">Resources</a>
-                    <a href="#" class="hover:text-black">Pricing</a>
                 </nav>
             </div>
             <div class="flex items-center gap-4">
@@ -151,11 +149,12 @@
         <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div
                 class="relative rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 aspect-[4/5] flex items-end p-6">
-                <img src="{{ $product['image'] }}"
+                <img src="{{ asset('images/essence-noir.jpg') }}"
                     onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6'"
                     alt="Essence Noir bottle" class="absolute inset-0 w-full h-full object-cover">
                 <span
-                    class="relative bg-white/90 border border-gray-200 text-black text-xs font-semibold rounded-full px-4 py-2 shadow-sm">{{ $product['tag'] }}</span>
+                    class="relative bg-white/90 border border-gray-200 text-black text-xs font-semibold rounded-full px-4 py-2 shadow-sm">apa
+                    weh</span>
             </div>
 
             <div>
@@ -166,13 +165,11 @@
                     exclusive fragrance collection is hand-crafted to reduce cognitive load and ground your focus.</p>
 
                 <div class="grid grid-cols-3 gap-6 mb-10 max-w-md">
-                    @foreach ($product['notes'] as $note)
-                        <div>
-                            <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">{{ $note['label'] }}</p>
-                            <p class="font-semibold text-gray-900">{{ $note['title'] }}</p>
-                            <p class="text-xs text-gray-400">{{ $note['desc'] }}</p>
-                        </div>
-                    @endforeach
+                    <div>
+                        <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">apa weh</p>
+                        <p class="font-semibold text-gray-900">apa wehp>
+                        <p class="text-xs text-gray-400">apaweh</p>
+                    </div>
                 </div>
 
                 <a href="#"
@@ -181,7 +178,6 @@
             </div>
         </div>
     </section>
-
     {{-- Product Catalog Section (Mykonos Style) --}}
     <section id="product" class="max-w-[1400px] mx-auto px-8 py-16 bg-white reveal-element">
         {{-- Catalog Header --}}
@@ -206,34 +202,13 @@
 
         {{-- Catalog Grid --}}
         <div class="flex flex-wrap justify-center gap-6">
-            @php
-                $catalogProducts = [
-                    [
-                        'id' => 1,
-                        'name' => 'Empire Extrait de Parfum 100ml',
-                        'price' => 'Rp 499.000,00',
-                        'image' => 'storage/image/DSC00068.JPG',
-                        'image_hover' => 'storage/image/DSC00070 (1).JPG', // gambar kedua
-                        'is_sold_out' => false,
-                    ],
-                    [
-                        'id' => 2,
-                        'name' => 'Conquer Extrait de Parfum 50ml',
-                        'price' => 'Rp 449.000,00',
-                        'image' => 'storage/image/DSC00047.JPG',
-                        'image_hover' => 'storage/image/Dinamist-parfu.me.JPG', // gambar kedua
-                        'is_sold_out' => true,
-                    ],
-                ];
-            @endphp
-
-            @foreach ($catalogProducts as $item)
-                <a href="{{ route('product.show', $item['id']) }}"
+            @foreach ($productOri as $itemOri)
+                <div
                     class="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] group cursor-pointer flex flex-col justify-between rounded-2xl overflow-hidden bg-[#f8f8f8] border border-gray-100 card-hover reveal-element">
 
                     {{-- Container Foto Produk --}}
                     <div class="relative aspect-[3/4] w-full overflow-hidden bg-[#f8f8f8]">
-                        @if ($item['is_sold_out'])
+                        @if ($itemOri['stock'] === 0)
                             <span
                                 class="absolute top-4 left-4 bg-[#8a8a8a] text-white text-[11px] font-semibold px-3 py-1 rounded-md shadow-sm z-10 tracking-wide">
                                 Sold out
@@ -241,26 +216,20 @@
                         @endif
 
                         {{-- Gambar utama --}}
-                        <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}"
-                            class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out opacity-100 group-hover:opacity-0">
-
-                        {{-- Gambar hover --}}
-                        @if (!empty($item['image_hover']))
-                            <img src="{{ $item['image_hover'] }}" alt="{{ $item['name'] }}"
-                                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100">
-                        @endif
+                        <img src="{{ 'storage/' . $itemOri['image'] }}" alt="{{ $itemOri['name'] }}"
+                            class="absolute inset-0 w-full h-full object-cover duration-300 ease-in-out opacity-100 group-hover:scale-105 transition-all">
                     </div>
 
                     {{-- Detail Produk --}}
                     <div class="p-6 bg-white flex-1 flex flex-col justify-between">
                         <h3 class="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 mb-3">
-                            {{ $item['name'] }}
+                            {{ $itemOri['name'] }}
                         </h3>
                         <p class="text-sm font-bold text-gray-900">
-                            From {{ $item['price'] }}
+                            From {{ $itemOri['price'] }}
                         </p>
                     </div>
-                </a>
+                </div>
             @endforeach
         </div>
     </section>
@@ -405,8 +374,8 @@
             const revealElements = document.querySelectorAll('.reveal-element');
 
             let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            let isScrollingDown = true;   // anggap "turun" di awal, biar elemen yg sudah kelihatan langsung tampil
-            let hasScrolled = false;      // arah baru dipercaya setelah user benar-benar scroll
+            let isScrollingDown = true; // anggap "turun" di awal, biar elemen yg sudah kelihatan langsung tampil
+            let hasScrolled = false; // arah baru dipercaya setelah user benar-benar scroll
 
             // Satu-satunya tempat yang mengubah lastScrollTop/isScrollingDown,
             // supaya tidak balapan dengan pembacaan di dalam observer callback.
@@ -415,7 +384,9 @@
                 isScrollingDown = st > lastScrollTop;
                 lastScrollTop = st <= 0 ? 0 : st;
                 hasScrolled = true;
-            }, { passive: true });
+            }, {
+                passive: true
+            });
 
             const observerOptions = {
                 root: null,
