@@ -138,13 +138,13 @@
             </div>
         </div>
     </header>
-    
+
     {{-- Hero Section --}}
     <section class="bg-gray-50 border-y border-gray-200/60 py-16 reveal-element">
         <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div class="relative rounded-3xl overflow-hidden bg-gray-100 border border-gray-200 aspect-[4/5] flex items-end p-8 shadow-sm">
                 <img src="storage/image/DSC00057.JPG"
-                    onerror="this.src='https://via.placeholder.com/400x500?text=Apex+Noir'"
+                    onerror="this.src='storage/image/DSC00029.JPG'"
                     alt="Essence Noir bottle" class="absolute inset-0 w-full h-full object-cover">
                 <span class="relative bg-white/90 backdrop-blur border border-gray-200 text-black text-xs font-semibold rounded-full px-4 py-2 shadow-sm">
                     Signature Extrait
@@ -192,7 +192,7 @@
                     <p class="text-xs text-gray-500 mt-0.5">Diracik dari ekstrak pilihan berkualitas tinggi.</p>
                 </div>
             </div>
-            
+
             <div class="flex items-center gap-4 p-6 rounded-2xl bg-gray-50 border border-gray-100">
                 <div class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0 text-gray-900">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -245,16 +245,19 @@
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-gray-100 rounded-3xl aspect-[3/4] overflow-hidden">
-                    <img src="storage/image/DSC00122.JPG" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x500?text=Brand+1'">
+                    <img src="storage/image/DSC00047.JPG" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x500?text=Brand+1'">
                 </div>
                 <div class="bg-gray-100 rounded-3xl aspect-[3/4] overflow-hidden mt-8">
-                    <img src="storage/image/DSC00164.JPG" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x500?text=Brand+2'">
+                    <img src="storage/image/DSC00068.JPG" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x500?text=Brand+2'">
                 </div>
             </div>
         </div>
     </section>
 
     {{-- DETAILED PRODUCT SHOWCASE SECTION (ZIG-ZAG) --}}
+    {{-- FIX: header judul & daftar produk (space-y-24) sekarang berada dalam SATU <section>
+         yang sama, supaya sama-sama kena wrapper max-w-[1400px] mx-auto px-8.
+         Sebelumnya section ditutup terlalu awal sehingga produk kehilangan margin. --}}
     <section id="product" class="max-w-[1400px] mx-auto px-8 py-20 bg-white reveal-element">
         <div class="border-b border-gray-100 pb-6 mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
@@ -273,19 +276,18 @@
                 View All Refills & Variants
             </a>
         </div>
-    </section>
 
         <div class="space-y-24">
-            
+
             {{-- PRODUK 1: FOTO KIRI, TEKS KANAN --}}
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="relative group aspect-[4/5] rounded-3xl overflow-hidden bg-[#f8f8f8] border border-gray-100 shadow-sm">
-                    <img src="storage/image/DSC00057.JPG" alt="Empire Extrait de Parfum"
+                    <img src="storage/image/DSC00029.JPG" alt="Empire Extrait de Parfum"
                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Empire+Parfum+1'">
+                        onerror="this.src=''">
                     <img src="storage/image/DSC00093.JPG" alt="Empire Extrait de Parfum Hover"
                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Empire+Parfum+2'">
+                        onerror="this.src='storage/image/DSC00047.JPG'">
                 </div>
 
                 <div class="lg:py-6">
@@ -364,10 +366,10 @@
                 <div class="relative group aspect-[4/5] rounded-3xl overflow-hidden bg-[#f8f8f8] border border-gray-100 shadow-sm order-1 lg:order-2">
                     <img src="storage/image/DSC00122.JPG" alt="Conquer Extrait de Parfum"
                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Conquer+Parfum+1'">
+                        onerror="this.src='storage/image/DSC00068.JPG'">
                     <img src="storage/image/DSC00164.JPG" alt="Conquer Extrait de Parfum Hover"
                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Conquer+Parfum+2'">
+                        onerror="this.src='storage/image/DSC00070 (1).JPG'">
                 </div>
             </div>
 
@@ -421,21 +423,21 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            </div>
         </div>
     </section>
 
     {{-- FLOATING CART BUTTON (Kanan Bawah dengan ID untuk target animasi bola) --}}
     <div class="fixed bottom-6 right-6 z-40">
-        <button id="floating-cart-btn" @click="cartOpen = true" 
+        <button id="floating-cart-btn" @click="cartOpen = true"
             class="relative bg-black text-white p-4 rounded-full shadow-2xl hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer group">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
             {{-- Badge Counter --}}
-            <span x-show="totalItems > 0" 
+            <span x-show="totalItems > 0"
                   :key="totalItems"
-                  x-text="totalItems" 
+                  x-text="totalItems"
                   class="absolute -top-1 -right-1 bg-white text-black border border-black text-[11px] font-extrabold w-6 h-6 rounded-full flex items-center justify-center shadow-md animate-pop"></span>
         </button>
     </div>
