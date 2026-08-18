@@ -119,8 +119,6 @@
                 <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
                     <a href="#" class="nav-underline text-black font-medium">Home</a>
                     <a href="#product" class="hover:text-black">Product</a>
-                    <a href="#story" class="hover:text-black">About Us</a>
-                    <a href="#reviews" class="hover:text-black">Reviews</a>
                 </nav>
             </div>
             <div class="flex items-center gap-4">
@@ -169,7 +167,7 @@
                     </div>
                     <div>
                         <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">CHARACTER</p>
-                        <p class="font-bold text-gray-900 text-lg">Bold Woody</p>
+                        <p class="font-bold text-gray-900 text-lg">Sweet</p>
                     </div>
                 </div>
 
@@ -264,11 +262,18 @@
                 <h2 class="text-3xl md:text-4xl font-extrabold text-black tracking-tight">
                     Explore Our Signature Series
                 </h2>
+                <a href="{{ route('refill') }}">
+                    <h2
+                        class="text-3xl md:text-4xl font-extrabold text-gray-300 hover:text-gray-500 transition cursor-pointer">
+                        Refill
+                    </h2>
+                </a>
             </div>
             <a href="#" class="text-sm font-semibold text-black underline underline-offset-8 hover:text-gray-600 transition tracking-wide">
                 View All Refills & Variants
             </a>
         </div>
+    </section>
 
         <div class="space-y-24">
             
@@ -416,7 +421,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
@@ -693,15 +698,17 @@
         document.addEventListener('DOMContentLoaded', () => {
             const revealElements = document.querySelectorAll('.reveal-element');
             let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            let isScrollingDown = true;
-            let hasScrolled = false;
+            let isScrollingDown = true; // anggap "turun" di awal, biar elemen yg sudah kelihatan langsung tampil
+            let hasScrolled = false; // arah baru dipercaya setelah user benar-benar scroll
 
             window.addEventListener('scroll', () => {
                 const st = window.pageYOffset || document.documentElement.scrollTop;
                 isScrollingDown = st > lastScrollTop;
                 lastScrollTop = st <= 0 ? 0 : st;
                 hasScrolled = true;
-            }, { passive: true });
+            }, {
+                passive: true
+            });
 
             const observerOptions = {
                 root: null,
