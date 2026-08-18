@@ -1,4 +1,4 @@
-<x-app-layout>
+@if(!request('drawer'))<x-app-layout>@endif
     <div class="py-10 bg-[#F4F5F7] min-h-screen">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             
@@ -15,7 +15,7 @@
 
             <!-- Form Card -->
             <div class="bg-white rounded-3xl shadow-xs border border-gray-100 p-8">
-                <form action="{{ route('brands.update', $brand->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <form action="{{ route('brands.update', $brand->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6" target="{{ request('drawer') ? '_parent' : '_self' }}">
                     @csrf
                     @method('PUT')
 
@@ -73,4 +73,4 @@
 
         </div>
     </div>
-</x-app-layout>
+@if(!request('drawer'))</x-app-layout>@endif

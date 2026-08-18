@@ -20,6 +20,11 @@ class BrandController extends Controller
         return view('brands.create');
     }
 
+    public function show(Brand $brand)
+    {
+        return view('brands.show', compact('brand'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([

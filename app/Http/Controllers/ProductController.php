@@ -8,12 +8,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    // 1. READ: Menampilkan semua data (Bisa dikasih pagination)
     public function index(Request $request)
     {
         $query = Product::latest();
 
-        // Filter berdasarkan Tipe (Original / Refill)
         if ($request->has('type') && $request->type != '') {
             $query->where('category', $request->type);
         }
@@ -27,14 +25,11 @@ class ProductController extends Controller
 
         return view('products.index', compact('products'));
     }
-
-    // 2. Tampilkan halaman Form Create
     public function create()
     {
         return view('products.create');
     }
 
-    // 3. CREATE: Proses simpan data baru
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -53,33 +48,30 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
-
-        // Handle File Upload
         if ($request->hasFile('image')) {
             $validatedData['image'] = $request->file('image')->store('products', 'public');
         }
-
-        // Handle Checkbox Boolean (kalau dicentang true, kalau nggak false)
         $validatedData['is_best_seller'] = $request->boolean('is_best_seller');
 
         Product::create($validatedData);
 
+        if ($request->has('drawer')) {
+        return response()->view('products.drawer-success', ['message' => 'Produk berhasil ditambahkan']);
+    }
+
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    // 4. READ: Tampilkan detail 1 produk (Opsional untuk admin)
     public function show(Product $product)
     {
         return view('products.show', compact('product'));
     }
 
-    // 5. Tampilkan halaman Form Edit
     public function edit(Product $product)
     {
         return view('products.edit', compact('product'));
     }
 
-    // 6. UPDATE: Proses simpan perubahan data
     public function update(Request $request, Product $product)
     {
         $validatedData = $request->validate([
@@ -99,28 +91,27 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        // Handle File Upload saat Update (PENTING!)
         if ($request->hasFile('image')) {
-            // Hapus gambar lama dulu kalau ada
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
-            // Simpan gambar baru
             $validatedData['image'] = $request->file('image')->store('products', 'public');
         }
+        if ($request->has('drawer')) {
+        return response()->view('products.drawer-success', ['message' => 'Produk berhasil ditambahkan']);
+    }
 
         // Handle Checkbox
         $validatedData['is_best_seller'] = $request->boolean('is_best_seller');
 
         $product->update($validatedData);
 
+
         return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate!');
     }
 
-    // 7. DELETE: Proses hapus data
     public function destroy(Product $product)
     {
-        // Hapus file gambar fisik di server dulu sebelum hapus data di database (PENTING!)
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }

@@ -26,6 +26,12 @@ class ReviewController extends Controller
         return view('reviews.edit', compact('review', 'products'));
     }
 
+    public function show(Review $review)
+    {
+        $review->load('product');
+        return view('reviews.show', compact('review'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -38,6 +44,20 @@ class ReviewController extends Controller
         Review::create($request->all());
 
         return redirect()->route('reviews.index')->with('success', 'Review berhasil ditambahkan!');
+    }
+
+    public function update(Request $request, Review $review)
+    {
+        $validated = $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'user_name' => 'required|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string',
+        ]);
+
+        $review->update($validated);
+
+        return redirect()->route('reviews.index')->with('success', 'Review berhasil diperbarui!');
     }
 
     public function destroy(Review $review)
