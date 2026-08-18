@@ -30,52 +30,28 @@
             </div>
 
             <!-- Filter & Search Toolbar -->
-            <div
-                class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-white p-4 rounded-3xl shadow-xs border border-gray-100">
+            <div class="bg-white p-4 rounded-3xl shadow-xs border border-gray-100">
 
-                <!-- Tabs Kategori -->
-                <div class="md:col-span-7 flex items-center gap-2 overflow-x-auto py-1">
-                    <a href="{{ route('products.index') }}"
-                        class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ !request('type') && !request('search') ? 'bg-black text-white shadow-md shadow-black/10' : 'bg-gray-50 text-gray-600 hover:bg-gray-100' }}">
-                        Semua Produk
-                    </a>
-                    <a href="{{ route('products.index', ['type' => 'Original']) }}"
-                        class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ request('type') == 'Original' ? 'bg-black text-white shadow-md shadow-black/10' : 'bg-gray-50 text-gray-600 hover:bg-gray-100' }}">
-                        <svg class="w-3.5 h-3.5 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
-                            </path>
-                        </svg>
-                        Produk Original
-                    </a>
-                    <a href="{{ route('products.index', ['type' => 'Refill']) }}"
-                        class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ request('type') == 'Refill' ? 'bg-black text-white shadow-md shadow-black/10' : 'bg-gray-50 text-gray-600 hover:bg-gray-100' }}">
-                        <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
-                            </path>
-                        </svg>
-                        Parfum Refill
-                    </a>
-                </div>
-
-                <!-- Search Input Bar -->
-                <div class="md:col-span-5">
-                    <form action="{{ route('products.index') }}" method="GET" class="relative">
-                        @if(request('type'))
-                            <input type="hidden" name="type" value="{{ request('type') }}">
+                <form action="{{ route('products.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                    <div class="md:col-span-4">
+                        <label for="product-type" class="block mb-2 text-[11px] font-black uppercase tracking-wider text-gray-400">Kategori produk</label>
+                        <select id="product-type" name="type" class="w-full rounded-2xl border-gray-200 bg-gray-50/80 py-2.5 text-xs font-semibold focus:border-[#D4AF37] focus:ring-[#D4AF37]/20">
+                            <option value="">Semua Produk</option>
+                            <option value="Original" @selected(request('type') === 'Original')>Produk Original</option>
+                            <option value="Refill" @selected(request('type') === 'Refill')>Parfum Refill</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-5">
+                        <label for="product-search" class="block mb-2 text-[11px] font-black uppercase tracking-wider text-gray-400">Cari produk</label>
+                        <input id="product-search" type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama parfum..." class="w-full rounded-2xl border-gray-200 bg-gray-50/80 py-2.5 text-xs font-medium focus:border-[#D4AF37] focus:ring-[#D4AF37]/20">
+                    </div>
+                    <div class="md:col-span-3 flex gap-2">
+                        <button type="submit" class="flex-1 bg-black py-2.5 rounded-2xl text-xs font-bold text-white hover:bg-[#D4AF37] transition">Terapkan</button>
+                        @if(request('type') || request('search'))
+                            <a href="{{ route('products.index') }}" class="px-4 py-2.5 rounded-2xl bg-gray-100 text-xs font-bold text-gray-600 hover:bg-gray-200 transition">Reset</a>
                         @endif
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                        </span>
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Cari nama parfum di sini..."
-                            class="w-full pl-11 pr-4 py-2.5 bg-gray-50/80 border border-gray-200/80 rounded-2xl text-xs font-medium focus:bg-white focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 transition-all">
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
 
             <!-- Alert Success -->

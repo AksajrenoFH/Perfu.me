@@ -107,7 +107,15 @@ class OrderController extends Controller
 
         $data['items'] = collect(preg_split('/\r\n|\r|\n/', $data['items_text']))
             ->filter()
-            ->map(fn ($name) => ['name' => $name, 'price' => 0, 'qty' => 1])
+            ->map(function ($line) {
+                [$name, $qty, $price] = array_pad(array_map('trim', explode('|', $line)), 3, null);
+
+                return [
+                    'name' => $name,
+                    'qty' => max(1, (int) ($qty ?: 1)),
+                    'price' => max(0, (int) ($price ?: 0)),
+                ];
+            })
             ->values()
             ->all();
         unset($data['items_text']);
