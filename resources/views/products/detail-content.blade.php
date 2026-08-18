@@ -10,34 +10,25 @@
                     <span>/</span>
                     <span class="text-gray-400 truncate max-w-xs">{{ $product->name }}</span>
                 </div>
-                <a href="{{ route('products.index') }}" class="px-4 py-2 bg-gray-100 hover:bg-black hover:text-white text-gray-700 rounded-xl font-bold transition-all flex items-center gap-1.5" @if(request('drawer')) target="_parent" @endif>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                    Kembali
-                </a>
             </div>
-
-            <!-- MAIN CONTAINER: E-COMMERCE PRODUCT DETAIL -->
             <div class="bg-white rounded-3xl shadow-xs border border-gray-100 overflow-hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:divide-x divide-gray-100">
-                    
-                    <!-- ========================================== -->
-                    <!-- KOLOM KIRI: GALERI FOTO (STICKY)          -->
-                    <!-- ========================================== -->
                     <div class="lg:col-span-5 p-6 lg:p-8 space-y-4 lg:sticky lg:top-8 lg:self-start">
                         <!-- Foto Utama -->
                         <div class="w-full h-[380px] sm:h-[420px] rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 relative group cursor-pointer shadow-inner" @click="imageModalOpen = true">
                             @if($product->image)
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
                                 
-                                <!-- Badge Best Seller -->
                                 @if($product->is_best_seller)
-                                    <div class="absolute top-4 left-4 z-10">
-                                        <span class="bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg shadow-md flex items-center gap-1">
-                                            ⭐ Best Seller
-                                        </span>
-                                    </div>
-                                @endif
-
+    <div class="absolute top-4 left-4 z-10">
+        <span class="bg-[#D4AF37] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg shadow-md flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Best Seller
+        </span>
+    </div>
+@endif
                                 <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <span class="bg-white/90 backdrop-blur-xs text-black px-4 py-2 rounded-xl text-xs font-bold shadow-lg">Perbesar Foto</span>
                                 </div>
@@ -49,15 +40,18 @@
                             @endif
                         </div>
 
-                        <!-- Bagikan / Info Singkat Toko -->
-                        <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                            <span class="font-medium">Bagikan produk ini ke kolega?</span>
-                            <div class="flex items-center gap-2">
-                                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link produk disalin!');" class="p-2 bg-white rounded-xl border border-gray-200 hover:bg-gray-100 transition font-bold text-gray-700 flex items-center gap-1">
-                                    🔗 Salin Link
-                                </button>
-                            </div>
-                        </div>
+                       <!-- Bagikan / Info Singkat Toko -->
+<div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between text-xs text-gray-500">
+    <span class="font-medium">Bagikan produk ini ke kolega?</span>
+    <div class="flex items-center gap-2">
+        <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link produk disalin!');" class="p-2 bg-white rounded-xl border border-gray-200 hover:bg-gray-100 transition font-bold text-gray-700 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+            </svg>
+            Salin Link
+        </button>
+    </div>
+</div>
 
                         <!-- Tombol Aksi Manajemen (Edit & Hapus) -->
                         <div class="flex items-center gap-3 pt-2">
