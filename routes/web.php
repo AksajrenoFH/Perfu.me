@@ -11,6 +11,7 @@ use App\Http\Controllers\RefillController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerProductController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('splash');
@@ -19,6 +20,7 @@ Route::get('/', function () {
 // HOME PAGE CUSTOMER
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/refill', [RefillController::class, 'index'])->name('refill');
+Route::post('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
 
 // ==========================================
 // PINDAHKAN DASHBOARD KE SINI (DI LUAR ADMIN)
@@ -41,6 +43,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('reviews', ReviewController::class);
+    Route::resource('orders', OrderController::class);
 });
 
 require __DIR__ . '/auth.php';
