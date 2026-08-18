@@ -39,6 +39,11 @@
                     P<span class="text-[#D4AF37] transition-colors duration-300 group-hover:text-black">.</span>
                 </span>
             </a>
+
+            <a href="{{ route('orders.index') }}" class="group relative flex items-center py-3.5 text-sm font-semibold rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('orders.*') ? 'bg-gradient-to-r from-gray-900 to-black text-white shadow-md shadow-gray-900/20' : 'text-gray-500 hover:bg-gray-50 hover:text-black' }}" :class="isCollapsed ? 'justify-center px-0' : 'px-4'">
+                <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('orders.*') ? 'text-[#D4AF37]' : 'text-gray-400' }}" :class="isCollapsed ? 'mr-0' : 'mr-3'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a3 3 0 006 0M9 5a3 3 0 016 0m-6 9l2 2 4-4"/></svg>
+                <span x-show="!isCollapsed" class="whitespace-nowrap">Manajemen Pesanan</span>
+            </a>
         </div>
 
         <!-- Scrollable Navigation Links -->
