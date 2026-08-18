@@ -1,4 +1,4 @@
-<x-app-layout>
+@if(!request('drawer'))<x-app-layout>@endif
     <div class="py-12 bg-gray-50 min-h-screen" x-data="{ rating: '{{ old('rating', '5') }}' }">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             
@@ -17,7 +17,7 @@
             </div>
 
             <!-- Form Card Utama -->
-            <form action="{{ route('reviews.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('reviews.store') }}" method="POST" class="space-y-6" target="{{ request('drawer') ? '_parent' : '_self' }}">
                 @csrf
 
                 <!-- SECTION 1: Relasi & Reviewer -->
@@ -141,4 +141,4 @@
             </form>
         </div>
     </div>
-</x-app-layout>
+@if(!request('drawer'))</x-app-layout>@endif

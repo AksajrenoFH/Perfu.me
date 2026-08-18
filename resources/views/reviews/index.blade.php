@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div x-data="{ deleteModalOpen: false, deleteUrl: '', reviewerName: '' }" class="min-h-screen bg-[#F8F9FA] py-8">
+    <div x-data="{ deleteModalOpen: false, deleteUrl: '', reviewerName: '', drawerOpen: false, drawerUrl: '', drawerTitle: '', openDrawer(url, title) { this.drawerUrl=url; this.drawerTitle=title; this.drawerOpen=true; } }" class="min-h-screen bg-[#F8F9FA] py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             
             <!-- Top Header & Action Banner -->
@@ -13,7 +13,7 @@
                 </div>
                 
                 <!-- Tombol Tambah Produk (Dengan Efek Shimmer & Ikon Muter Berputar) -->
-                <a href="{{ route('reviews.create') }}"
+                <button type="button" @click="openDrawer('{{ route('reviews.create', ['drawer'=>1]) }}', 'Tambah Ulasan Baru')"
                     class="group relative inline-flex items-center justify-center gap-2.5 bg-black hover:bg-[#D4AF37] text-white px-6 py-3 rounded-2xl font-bold text-xs uppercase tracking-wider overflow-hidden shadow-lg shadow-black/10 hover:shadow-[#D4AF37]/30 hover:-translate-y-0.5 transition-all duration-300">
                     <div
                         class="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]">
@@ -24,7 +24,7 @@
                         </path>
                     </svg>
                     <span class="relative">Tambah Ulasan Baru</span>
-                </a>
+                </button>
             </div>
 
             <!-- Alert Success -->
@@ -85,6 +85,8 @@
                                 <!-- Tombol Aksi -->
                                 <td class="py-4 px-6 text-right">
                                     <div class="flex items-center justify-end gap-2">
+                                        <button type="button" @click="openDrawer('{{ route('reviews.show', ['review'=>$review, 'drawer'=>1]) }}', 'Detail Ulasan')" class="px-3 py-1.5 bg-gray-100 hover:bg-black hover:text-white text-gray-700 rounded-xl transition-all shadow-xs text-xs font-bold">Detail</button>
+                                        <button type="button" @click="openDrawer('{{ route('reviews.edit', ['review'=>$review, 'drawer'=>1]) }}', 'Edit Ulasan')" class="px-3 py-1.5 bg-[#D4AF37]/10 hover:bg-[#D4AF37] hover:text-white text-[#D4AF37] rounded-xl transition-all shadow-xs text-xs font-bold">Edit</button>
                                         <button @click="deleteModalOpen = true; deleteUrl = '{{ route('reviews.destroy', $review->id) }}'; reviewerName = '{{ $review->user_name }}'" type="button" class="px-3 py-1.5 bg-red-50 hover:bg-red-600 hover:text-white text-red-600 rounded-xl transition-all shadow-xs text-xs font-bold">Hapus</button>
                                     </div>
                                 </td>
@@ -111,6 +113,8 @@
                 @endif
             </div>
         </div>
+
+        <div x-show="drawerOpen" x-cloak class="fixed inset-0 z-50" style="display:none"><div @click="drawerOpen=false;drawerUrl=''" class="absolute inset-0 bg-black/30 backdrop-blur-[2px]" x-transition.opacity></div><section class="absolute inset-y-0 right-0 flex w-full max-w-xl flex-col bg-[#F8F9FA] shadow-[-20px_0_60px_rgba(0,0,0,0.16)]" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="translate-x-full opacity-60" x-transition:enter-end="translate-x-0 opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-60"><header class="flex items-center justify-between bg-white border-b p-5 transition-colors hover:bg-gray-50"><div><p class="text-[10px] font-black tracking-[.2em] text-[#D4AF37]">MANAJEMEN ULASAN</p><h2 class="font-black" x-text="drawerTitle"></h2></div><button @click="drawerOpen=false;drawerUrl=''" class="w-10 h-10 rounded-xl bg-gray-100 hover:rotate-90 hover:bg-black hover:text-white transition duration-300">✕</button></header><iframe :src="drawerUrl" class="flex-1 w-full border-0"></iframe></section></div>
 
         <!-- MODAL POP-UP HAPUS -->
         <div x-show="deleteModalOpen" class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" style="display: none;" x-transition.opacity>
