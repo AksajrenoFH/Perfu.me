@@ -43,6 +43,10 @@ class ReviewController extends Controller
 
         Review::create($request->all());
 
+        if ($request->has('drawer')) {
+        return response()->view('reviews.drawer-success', ['message' => 'Review berhasil ditambahkan']);
+    }
+
         return redirect()->route('reviews.index')->with('success', 'Review berhasil ditambahkan!');
     }
 
@@ -56,6 +60,10 @@ class ReviewController extends Controller
         ]);
 
         $review->update($validated);
+
+        if ($request->has('drawer')) {
+        return response()->view('reviews.drawer-success', ['message' => 'Produk berhasil ditambahkan']);
+    }
 
         return redirect()->route('reviews.index')->with('success', 'Review berhasil diperbarui!');
     }

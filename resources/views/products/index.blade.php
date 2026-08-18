@@ -146,7 +146,7 @@
                                     </td>
 
                                     <td class="py-4 px-6 text-center">
-                                        <span class="inline-block px-3 py-1 rounded-xl font-bold text-xs {{ $product->stock < 10 ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-gray-100/80 text-gray-800' }}">
+                                        <span class="inline-block px-3 py-1 rounded-xl font-bold text-xs {{ $product->stock < 10 ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-green-100/80 text-green-800' }}">
                                             {{ $product->stock }} pcs
                                         </span>
                                     </td>
