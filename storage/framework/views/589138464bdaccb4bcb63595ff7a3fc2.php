@@ -89,8 +89,8 @@
 
 <body class="text-neutral-900 antialiased bg-white selection:bg-neutral-900 selection:text-white" x-data="cartSystem()">
 
-    {{-- Top Announcement Bar --}}
-    @php
+    
+    <?php
         $announcements = [
             'DYNAMYST (Bold Woody & Fresh)',
             'VANESSENCE (Citrus Warm Earthy)',
@@ -102,31 +102,33 @@
             '100% Extrait de Parfum Murni',
             'Konsultasi Aroma Gratis via WhatsApp',
         ];
-    @endphp
+    ?>
     <div class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
         <div class="marquee-track">
             <div class="flex items-center shrink-0">
-                @foreach ($announcements as $item)
+                <?php $__currentLoopData = $announcements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="flex items-center shrink-0" aria-hidden="true">
-                @foreach ($announcements as $item)
+                <?php $__currentLoopData = $announcements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
 
-    {{-- Navbar --}}
+    
     <header class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
         <div class="max-w-[1240px] mx-auto flex items-center justify-between px-8 sm:px-10 h-[70px]">
             <div class="flex items-center gap-12">
-                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
                     <span class="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center text-sm font-bold font-serif-luxury tracking-tighter shadow-sm">P.</span>
                     <div class="flex flex-col">
                         <span class="text-xl font-extrabold tracking-tight text-neutral-950 leading-none">Perfu.me</span>
@@ -135,7 +137,7 @@
                 </a>
                 
                 <nav class="hidden md:flex items-center gap-8 text-[13px] font-medium text-neutral-500">
-                    <a href="{{ route('home') }}" class="nav-underline text-neutral-950 font-semibold">Home</a>
+                    <a href="<?php echo e(route('home')); ?>" class="nav-underline text-neutral-950 font-semibold">Home</a>
                     <a href="#hero-section" class="hover:text-neutral-950 transition-colors">Signature</a>
                     <a href="#product" class="hover:text-neutral-950 transition-colors">Collection</a>
                     <a href="#story" class="hover:text-neutral-950 transition-colors">Philosophy</a>
@@ -152,7 +154,7 @@
                     <input type="text" placeholder="Cari varian aroma..." class="bg-transparent outline-none text-[13px] w-full text-neutral-900 placeholder:text-neutral-400 font-medium">
                 </div>
 
-                {{-- Cart Trigger in Header --}}
+                
                 <button @click="cartOpen = true" class="relative p-2.5 rounded-full border border-neutral-200 hover:border-neutral-900 text-neutral-800 hover:text-neutral-950 transition-colors flex items-center justify-center cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -167,9 +169,9 @@
         </div>
     </header>
     
-    {{-- ================================================================ --}}
-    {{-- HERO SECTION — SPLIT SCREEN WITH FLOATING PRODUCT CARDS         --}}
-    {{-- ================================================================ --}}
+    
+    
+    
     <section id="hero-section" class="relative overflow-hidden border-b border-neutral-100" style="min-height: 88vh;" x-data="{
         activeScent: 0,
         scents: [
@@ -183,7 +185,7 @@
                 heartNotes: 'French Lavender',
                 baseNotes: 'Amber & White Musk',
                 tag: 'Best Seller',
-                image: '{{ asset('storage/image/DSC00057.JPG') }}',
+                image: '<?php echo e(asset('storage/image/DSC00057.JPG')); ?>',
                 alt: 'Dynamyst Extrait de Parfum – Signature Collection'
             },
             {
@@ -196,12 +198,12 @@
                 heartNotes: 'Ambroxan',
                 baseNotes: 'Oakmoss & Cedar',
                 tag: 'Exclusive Series',
-                image: '{{ asset('storage/image/DSC00122.JPG') }}',
+                image: '<?php echo e(asset('storage/image/DSC00122.JPG')); ?>',
                 alt: 'Vanessence Extrait de Parfum – Exclusive Series'
             }
         ]
     }">
-        {{-- ── LEFT HALF: Full-bleed Fragrance Image ── --}}
+        
         <div class="hidden lg:block absolute inset-y-0 left-0 w-[48%] overflow-hidden">
             <template x-for="(scent, index) in scents" :key="'bg-' + index">
                 <img
@@ -218,24 +220,24 @@
                     onerror="this.src='https://via.placeholder.com/800x900?text=Perfu.me'"
                 >
             </template>
-            {{-- Gradient overlay — fades the image edge into white on the right --}}
+            
             <div class="absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
-            {{-- Floating stat badge — top left --}}
+            
             <div class="absolute top-8 left-8 glass-panel border border-white/60 shadow-lg rounded-2xl px-4 py-3 space-y-0.5">
                 <p class="text-[9px] font-bold tracking-widest text-neutral-400 uppercase">Concentration</p>
                 <p class="text-sm font-extrabold text-neutral-950">40% Pure Extrait</p>
             </div>
-            {{-- Floating stat badge — bottom left --}}
+            
             <div class="absolute bottom-10 left-8 glass-panel border border-white/60 shadow-lg rounded-2xl px-4 py-3 space-y-0.5">
                 <p class="text-[9px] font-bold tracking-widest text-neutral-400 uppercase">Longevity</p>
                 <p class="text-sm font-extrabold text-neutral-950">12–16 Hours</p>
             </div>
         </div>
 
-        {{-- ── RIGHT HALF: Editorial Content + Product Switcher ── --}}
+        
         <div class="relative z-10 flex flex-col justify-center min-h-screen lg:min-h-0 lg:ml-[48%] px-6 sm:px-10 lg:px-12 py-16 lg:py-20 space-y-8 bg-white">
 
-            {{-- Mobile-only image (shows above text on small screens) --}}
+            
             <div class="lg:hidden relative aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-200 shadow-md">
                 <template x-for="(scent, index) in scents" :key="'mob-' + index">
                     <img :src="scent.image" :alt="scent.alt"
@@ -247,7 +249,7 @@
                 </template>
             </div>
 
-            {{-- ── EDITORIAL HEADER ── --}}
+            
             <div class="space-y-4 max-w-lg">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-[10px] font-bold text-neutral-600 tracking-widest uppercase">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -265,7 +267,7 @@
                 </p>
             </div>
 
-            {{-- ── PRODUCT SWITCHER CARDS ── --}}
+            
             <div class="space-y-2 max-w-lg">
                 <p class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase mb-3">Pilih Aroma Signature</p>
 
@@ -277,14 +279,14 @@
                             : 'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400'"
                         class="w-full flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer text-left group"
                     >
-                        {{-- Scent number chip --}}
+                        
                         <span
                             :class="activeScent === index ? 'bg-white/15 text-white' : 'bg-neutral-100 text-neutral-500'"
                             class="w-8 h-8 shrink-0 rounded-lg flex items-center justify-center text-[11px] font-extrabold transition-colors"
                             x-text="scent.label"
                         ></span>
 
-                        {{-- Info --}}
+                        
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-extrabold tracking-wider" x-text="scent.name"></span>
@@ -297,13 +299,13 @@
                             <p class="text-[11px] mt-0.5 truncate opacity-70" x-text="scent.character"></p>
                         </div>
 
-                        {{-- Price --}}
+                        
                         <span class="text-xs font-extrabold shrink-0" x-text="scent.price"></span>
                     </button>
                 </template>
             </div>
 
-            {{-- ── ACTIVE SCENT NOTES STRIP ── --}}
+            
             <template x-for="(scent, index) in scents" :key="'notes-' + index">
                 <div x-show="activeScent === index"
                      x-transition:enter="transition ease-out duration-200"
@@ -325,7 +327,7 @@
                 </div>
             </template>
 
-            {{-- ── CTA BUTTONS ── --}}
+            
             <div class="flex flex-col sm:flex-row gap-2.5 max-w-lg">
                 <template x-for="(scent, index) in scents" :key="'cta-' + index">
                     <div x-show="activeScent === index" class="flex flex-col sm:flex-row gap-2.5 w-full">
@@ -349,7 +351,7 @@
                 </template>
             </div>
 
-            {{-- ── SOCIAL PROOF ── --}}
+            
             <div class="flex items-center gap-3 pt-1 max-w-lg border-t border-neutral-100">
                 <div class="flex -space-x-2 overflow-hidden pt-3">
                     <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-900 text-white text-[9px] font-bold items-center justify-center">RD</span>
@@ -370,9 +372,9 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- VALUE PROPOSITIONS / USP BADGES STRIP (SVG ICONS)        --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section class="max-w-[1240px] mx-auto px-6 sm:px-8 py-12 border-b border-neutral-100">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             
@@ -416,9 +418,9 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- ABOUT US / BRAND PHILOSOPHY                              --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="story" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 lg:py-24">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
             
@@ -459,13 +461,13 @@
 
             <div class="lg:col-span-6 grid grid-cols-2 gap-4 sm:gap-5">
                 <div class="bg-neutral-100 rounded-2xl aspect-[3/4] overflow-hidden shadow-sm border border-neutral-200/80">
-                    <img src="{{ asset('storage/image/DSC00122.JPG') }}" 
+                    <img src="<?php echo e(asset('storage/image/DSC00122.JPG')); ?>" 
                          alt="Perfu.me Craftsmanship" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
                          onerror="this.src='https://via.placeholder.com/400x500?text=Perfu.me+Bottle+1'">
                 </div>
                 <div class="bg-neutral-100 rounded-2xl aspect-[3/4] overflow-hidden shadow-sm border border-neutral-200/80 mt-6">
-                    <img src="{{ asset('storage/image/DSC00164.JPG') }}" 
+                    <img src="<?php echo e(asset('storage/image/DSC00164.JPG')); ?>" 
                          alt="Perfu.me Essence" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
                          onerror="this.src='https://via.placeholder.com/400x500?text=Perfu.me+Bottle+2'">
@@ -475,9 +477,9 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- DETAILED PRODUCT SHOWCASE SECTION (ZIG-ZAG)              --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="product" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 bg-white border-t border-neutral-100">
         <div class="border-b border-neutral-200/80 pb-5 mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
@@ -485,12 +487,6 @@
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-950 tracking-tight">
                     Explore Our Masterpieces
                 </h2>
-                <a href="{{ route('refill') }}">
-                    <h2
-                        class="text-3xl md:text-4xl font-extrabold text-gray-300 hover:text-gray-500 transition cursor-pointer">
-                        Refill
-                    </h2>
-                </a>
             </div>
             <a href="https://wa.me/6287774375755?text=Halo%20Perfu.me,%20saya%20ingin%20melihat%20katalog%20lengkap%20semua%20varian" 
                target="_blank"
@@ -501,29 +497,29 @@
 
         <div class="space-y-20 sm:space-y-24">
             
-            {{-- PRODUK 1: FOTO KIRI, TEKS KANAN --}}
+            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
                 
-                {{-- IMAGE COLUMN (Produk 1) --}}
+                
                 <div class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full" style="min-height: 480px;">
-                    <img src="{{ asset('storage/image/DSC00057.JPG') }}" alt="Dynamyst Extrait de Parfum"
+                    <img src="<?php echo e(asset('storage/image/DSC00057.JPG')); ?>" alt="Dynamyst Extrait de Parfum"
                         class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-100 group-hover:opacity-0"
                         style="min-height: 480px;"
                         onerror="this.src='https://via.placeholder.com/600x750?text=Dynamyst'">
-                    <img src="{{ asset('storage/image/DSC00093.JPG') }}" alt="Dynamyst – alternate view"
+                    <img src="<?php echo e(asset('storage/image/DSC00093.JPG')); ?>" alt="Dynamyst – alternate view"
                         class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                         style="min-height: 480px;"
                         onerror="this.src='https://via.placeholder.com/600x750?text=Dynamyst+Alt'">
                     <span class="absolute top-4 left-4 bg-neutral-950 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                         Best Seller #1
                     </span>
-                    {{-- Hover hint --}}
+                    
                     <span class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         Alternate View
                     </span>
                 </div>
 
-                {{-- TEXT COLUMN (Produk 1) --}}
+                
                 <div class="lg:py-4 space-y-6">
                     <div class="space-y-2">
                         <span class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">EXTRAIT DE PARFUM · 50ML</span>
@@ -551,7 +547,7 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-2.5">
-                        <button @click="addToCart({ name: 'Dynamyst Extrait de Parfum 50ml', price: 'Rp 45.000', image: '{{ asset('storage/image/DSC00057.JPG') }}' }, $event)"
+                        <button @click="addToCart({ name: 'Dynamyst Extrait de Parfum 50ml', price: 'Rp 45.000', image: '<?php echo e(asset('storage/image/DSC00057.JPG')); ?>' }, $event)"
                             class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition text-center cursor-pointer shadow-xs active:scale-[0.98]">
                             + Add to Cart
                         </button>
@@ -563,10 +559,10 @@
                 </div>
             </div>
 
-            {{-- PRODUK 2: TEKS KIRI, FOTO KANAN --}}
+            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
 
-                {{-- TEXT COLUMN (Produk 2) --}}
+                
                 <div class="lg:py-4 space-y-6 order-2 lg:order-1">
                     <div class="space-y-2">
                         <span class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">EXTRAIT DE PARFUM · 50ML</span>
@@ -594,7 +590,7 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-2.5">
-                        <button @click="addToCart({ name: 'Vanessence Extrait de Parfum 50ml', price: 'Rp 45.000', image: '{{ asset('storage/image/DSC00122.JPG') }}' }, $event)"
+                        <button @click="addToCart({ name: 'Vanessence Extrait de Parfum 50ml', price: 'Rp 45.000', image: '<?php echo e(asset('storage/image/DSC00122.JPG')); ?>' }, $event)"
                             class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition text-center cursor-pointer shadow-xs active:scale-[0.98]">
                             + Add to Cart
                         </button>
@@ -605,13 +601,13 @@
                     </div>
                 </div>
 
-                {{-- IMAGE COLUMN (Produk 2) --}}
+                
                 <div class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full order-1 lg:order-2" style="min-height: 480px;">
-                    <img src="{{ asset('storage/image/DSC00122.JPG') }}" alt="Vanessence Extrait de Parfum"
+                    <img src="<?php echo e(asset('storage/image/DSC00122.JPG')); ?>" alt="Vanessence Extrait de Parfum"
                         class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-100 group-hover:opacity-0"
                         style="min-height: 480px;"
                         onerror="this.src='https://via.placeholder.com/600x750?text=Vanessence'">
-                    <img src="{{ asset('storage/image/DSC00164.JPG') }}" alt="Vanessence – alternate view"
+                    <img src="<?php echo e(asset('storage/image/DSC00164.JPG')); ?>" alt="Vanessence – alternate view"
                         class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                         style="min-height: 480px;"
                         onerror="this.src='https://via.placeholder.com/600x750?text=Vanessence+Alt'">
@@ -627,9 +623,9 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- TESTIMONIALS / REVIEWS SECTION                           --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="reviews" class="bg-neutral-50/70 py-16 lg:py-24 border-t border-b border-neutral-200/70">
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8">
             <div class="text-center max-w-lg mx-auto mb-14 space-y-2">
@@ -684,22 +680,22 @@
         </div>
     </section>
 
-    {{-- FLOATING CART BUTTON --}}
+    
     <div class="fixed bottom-6 right-6 z-40">
         <button id="floating-cart-btn" @click="cartOpen = true" 
             class="relative bg-neutral-950 text-white p-3.5 rounded-full shadow-2xl hover:bg-neutral-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer group">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
-            {{-- Badge Counter --}}
-            <span x-show="totalItems > 0"
+            
+            <span x-show="totalItems > 0" 
                   :key="totalItems"
                   x-text="totalItems" 
                   class="absolute -top-1 -right-1 bg-white text-neutral-950 border border-neutral-950 text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-sm animate-pop"></span>
         </button>
     </div>
 
-    {{-- Slide-over Cart Drawer Sidebar --}}
+    
     <div x-cloak x-show="cartOpen" class="relative z-50">
         <div x-show="cartOpen"
              x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -776,7 +772,7 @@
                             </button>
                         </div>
 
-                        {{-- ── DELETE CONFIRMATION MODAL (inline inside cart drawer) ── --}}
+                        
                         <div
                             x-show="deleteConfirm.open"
                             x-transition:enter="transition ease-out duration-200"
@@ -798,14 +794,14 @@
                                 x-transition:leave-end="opacity-0 scale-95"
                                 class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 space-y-4">
 
-                                {{-- Icon --}}
+                                
                                 <div class="flex items-center justify-center w-12 h-12 rounded-2xl bg-red-50 mx-auto">
                                     <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
                                 </div>
 
-                                {{-- Copy --}}
+                                
                                 <div class="text-center space-y-1.5">
                                     <h3 class="text-sm font-extrabold text-neutral-950">Hapus dari Keranjang?</h3>
                                     <p class="text-[12px] text-neutral-500 leading-relaxed">
@@ -814,7 +810,7 @@
                                     </p>
                                 </div>
 
-                                {{-- Actions --}}
+                                
                                 <div class="flex gap-2.5 pt-1">
                                     <button @click="cancelDelete()"
                                         class="flex-1 border border-neutral-200 text-neutral-700 text-xs font-semibold py-3 rounded-xl hover:bg-neutral-50 transition-colors cursor-pointer">
@@ -828,7 +824,7 @@
 
                             </div>
                         </div>
-                        {{-- ── END DELETE CONFIRMATION MODAL ── --}}
+                        
 
                     </div>
                 </div>
@@ -836,7 +832,7 @@
         </div>
     </div>
 
-    {{-- Footer --}}
+    
     <footer class="bg-neutral-950 text-neutral-400 border-t border-neutral-900 pt-14 pb-8">
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="space-y-3">
@@ -902,12 +898,12 @@
         </div>
 
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-2.5 border-t border-neutral-900 mt-10 pt-5 text-[10px] text-neutral-500">
-            <span>&copy; {{ date('Y') }} PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
+            <span>&copy; <?php echo e(date('Y')); ?> PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
             <span>CRAFTED WITH PRECISION · EXTRAIT DE PARFUM</span>
         </div>
     </footer>
 
-    {{-- Alpine.js & Flying Ball Animation Script --}}
+    
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
         function cartSystem() {
@@ -1028,9 +1024,9 @@
                 },
                 async saveOrder(items) {
                     try {
-                        const response = await fetch('{{ route('orders.checkout') }}', {
+                        const response = await fetch('<?php echo e(route('orders.checkout')); ?>', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>' },
                             body: JSON.stringify({ items: items.map(item => ({ ...item, price: typeof item.price === 'string' ? (parseInt(item.price.replace(/[^0-9]/g, '')) || 0) : item.price })) })
                         });
                         if (!response.ok) throw new Error();
@@ -1046,3 +1042,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\Users\Faiz\Perfu.me\resources\views/customer/home.blade.php ENDPATH**/ ?>
