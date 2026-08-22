@@ -28,6 +28,9 @@ Route::post('/checkout', [OrderController::class, 'checkout'])->name('orders.che
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+Route::get('/product/{id}', [CustomerProductController::class, 'showDetail'])->name('product.show');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
