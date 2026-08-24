@@ -32,6 +32,7 @@ return new class extends Migration {
             $table->date('launch_date')->nullable();
             $table->text('description')->nullable();
             $table->string('image')->nullable();
+            $table->string('image_hover')->nullable();
             $table->boolean('is_best_seller')->default(false);
             $table->timestamps();
         });

@@ -2,75 +2,92 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Review;
 use App\Models\Product;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
     public function index()
     {
-        $reviews = Review::with('product')->latest()->paginate(10);
+        $reviews = Review::with('product')
+            ->latest()
+            ->paginate(10);
+
         return view('reviews.index', compact('reviews'));
     }
 
     public function create()
     {
-        $products = Product::all();
+        $products = Product::orderBy('name')->get();
+
         return view('reviews.create', compact('products'));
     }
 
-    public function edit(Review $review)
+    public function store(Request $request)
     {
-        $products = Product::all();
-        return view('reviews.edit', compact('review', 'products'));
+        $validated = $request->validate([
+            'product_id' => ['required', 'exists:products,id'],
+            'user_name' => ['required', 'string', 'max:255'],
+            'rating' => ['required', 'integer', 'between:1,5'],
+            'comment' => ['required', 'string'],
+        ]);
+
+        Review::create($validated);
+
+        if ($request->boolean('drawer')) {
+            return response()->view('reviews.drawer-success', [
+                'message' => 'Ulasan berhasil ditambahkan.',
+            ]);
+        }
+
+        return redirect()
+            ->route('reviews.index')
+            ->with('success', 'Ulasan berhasil ditambahkan!');
     }
 
     public function show(Review $review)
     {
         $review->load('product');
+
         return view('reviews.show', compact('review'));
     }
 
-    public function store(Request $request)
+    public function edit(Review $review)
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'user_name' => 'required|string|max:255',
-            'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string',
-        ]);
+        $products = Product::orderBy('name')->get();
 
-        Review::create($request->all());
-
-        if ($request->has('drawer')) {
-        return response()->view('reviews.drawer-success', ['message' => 'Review berhasil ditambahkan']);
-    }
-
-        return redirect()->route('reviews.index')->with('success', 'Review berhasil ditambahkan!');
+        return view('reviews.edit', compact('review', 'products'));
     }
 
     public function update(Request $request, Review $review)
     {
         $validated = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'user_name' => 'required|string|max:255',
-            'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string',
+            'product_id' => ['required', 'exists:products,id'],
+            'user_name' => ['required', 'string', 'max:255'],
+            'rating' => ['required', 'integer', 'between:1,5'],
+            'comment' => ['required', 'string'],
         ]);
 
         $review->update($validated);
 
-        if ($request->has('drawer')) {
-        return response()->view('reviews.drawer-success', ['message' => 'Produk berhasil ditambahkan']);
-    }
+        if ($request->boolean('drawer')) {
+            return response()->view('reviews.drawer-success', [
+                'message' => 'Ulasan berhasil diperbarui.',
+            ]);
+        }
 
-        return redirect()->route('reviews.index')->with('success', 'Review berhasil diperbarui!');
+        return redirect()
+            ->route('reviews.index')
+            ->with('success', 'Ulasan berhasil diperbarui!');
     }
 
     public function destroy(Review $review)
     {
         $review->delete();
-        return redirect()->route('reviews.index')->with('success', 'Review berhasil dihapus!');
+
+        return redirect()
+            ->route('reviews.index')
+            ->with('success', 'Ulasan berhasil dihapus!');
     }
 }

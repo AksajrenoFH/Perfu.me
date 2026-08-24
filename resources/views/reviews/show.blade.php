@@ -1,3 +1,28 @@
-@if (!request('drawer'))<x-app-layout>@endif
-<div class="min-h-screen bg-[#F8F9FA] p-6"><div class="max-w-3xl mx-auto space-y-5"><div class="bg-white rounded-3xl border border-gray-100 p-7"><p class="text-[10px] font-black tracking-[.2em] text-[#D4AF37]">DETAIL ULASAN</p><h1 class="text-2xl font-black mt-3">{{ $review->user_name }}</h1><p class="text-sm text-gray-500 mt-1">{{ $review->product?->name ?? 'Produk telah dihapus' }}</p><div class="mt-5 text-[#D4AF37] text-xl">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5-$review->rating) }}</div><p class="mt-5 border-t pt-5 text-sm text-gray-600 whitespace-pre-line">{{ $review->comment }}</p></div><a href="{{ route('reviews.edit', ['review'=>$review, 'drawer'=>request('drawer')]) }}" class="inline-block bg-black text-white px-5 py-3 rounded-xl text-xs font-bold">Edit Ulasan</a></div></div>
-@if (!request('drawer'))</x-app-layout>@endif
+@if (request('drawer'))
+    <!DOCTYPE html>
+    <html lang="id">
+
+    <head>
+        <meta charset="UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Detail Ulasan</title>
+
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+
+    <body class="bg-[#F8F9FA] antialiased">
+
+        @include('reviews.detail-content')
+
+    </body>
+
+    </html>
+@else
+    <x-app-layout>
+
+        @include('reviews.detail-content')
+
+    </x-app-layout>
+@endif

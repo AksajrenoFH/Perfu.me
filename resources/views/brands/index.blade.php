@@ -1,5 +1,27 @@
 <x-app-layout>
-    <div x-data="{ deleteModalOpen: false, deleteUrl: '', brandName: '', drawerOpen: false, drawerUrl: '', drawerTitle: '', openDrawer(url, title) { this.drawerUrl=url; this.drawerTitle=title; this.drawerOpen=true; } }" class="min-h-screen bg-[#F8F9FA] py-8">
+    <div x-data="{ 
+            deleteModalOpen: false, 
+            deleteUrl: '', 
+            brandName: '', 
+            drawerOpen: false, 
+            drawerUrl: '', 
+            drawerTitle: '', 
+            iframeLoading: false,
+            openDrawer(url, title) { 
+                this.iframeLoading = true;
+                this.drawerUrl = url; 
+                this.drawerTitle = title; 
+                this.drawerOpen = true; 
+            },
+            closeDrawer() {
+                this.drawerOpen = false;
+                this.drawerUrl = '';
+                this.iframeLoading = false;
+            }
+         }" 
+         @message.window="if ($event.data === 'brand-saved') { closeDrawer(); window.location.reload(); }"
+         class="min-h-screen bg-[#F8F9FA] py-8">
+        
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             
             <!-- Top Header & Action Banner -->
@@ -12,16 +34,13 @@
                     <p class="text-xs text-gray-500 mt-1 ml-5">Kelola seluruh daftar merek atau brand parfum resmi Perfu.me.</p>
                 </div>
                 
-                <!-- Tombol Tambah Produk (Dengan Efek Shimmer & Ikon Muter Berputar) -->
+                <!-- Tombol Tambah Brand Baru -->
                 <button type="button" @click="openDrawer('{{ route('brands.create', ['drawer'=>1]) }}', 'Tambah Brand Baru')"
-                    class="group relative inline-flex items-center justify-center gap-2.5 bg-black hover:bg-[#D4AF37] text-white px-6 py-3 rounded-2xl font-bold text-xs uppercase tracking-wider overflow-hidden shadow-lg shadow-black/10 hover:shadow-[#D4AF37]/30 hover:-translate-y-0.5 transition-all duration-300">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]">
-                    </div>
+                    class="group relative inline-flex items-center justify-center gap-2.5 bg-black hover:bg-[#D4AF37] text-white px-6 py-3 rounded-2xl font-bold text-xs uppercase tracking-wider overflow-hidden shadow-lg shadow-black/10 hover:shadow-[#D4AF37]/30 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                     <svg class="w-4 h-4 text-[#D4AF37] group-hover:text-white transition-transform duration-500 group-hover:rotate-90 flex-shrink-0 relative"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4">
-                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
                     </svg>
                     <span class="relative">Tambah Brand Baru</span>
                 </button>
@@ -34,7 +53,7 @@
                         <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold">✓</div>
                         <p class="text-xs font-bold">{{ session('success') }}</p>
                     </div>
-                    <button @click="show = false" class="text-emerald-600 hover:text-emerald-800 font-bold px-2">✕</button>
+                    <button @click="show = false" class="text-emerald-600 hover:text-emerald-800 font-bold px-2 cursor-pointer">✕</button>
                 </div>
             @endif
 
@@ -83,9 +102,9 @@
                                 <!-- Tombol Aksi -->
                                 <td class="py-4 px-6 text-right">
                                     <div class="flex items-center justify-end gap-2">
-                                        <button type="button" @click="openDrawer('{{ route('brands.show', ['brand'=>$brand, 'drawer'=>1]) }}', 'Detail Brand')" class="px-3 py-1.5 bg-gray-100 hover:bg-black hover:text-white text-gray-700 rounded-xl transition-all shadow-xs text-xs font-bold">Detail</button>
-                                        <button type="button" @click="openDrawer('{{ route('brands.edit', ['brand'=>$brand, 'drawer'=>1]) }}', 'Edit Brand')" class="px-3 py-1.5 bg-[#D4AF37]/10 hover:bg-[#D4AF37] hover:text-white text-[#D4AF37] rounded-xl transition-all shadow-xs text-xs font-bold">Edit</button>
-                                        <button @click="deleteModalOpen = true; deleteUrl = '{{ route('brands.destroy', $brand->id) }}'; brandName = '{{ $brand->name }}'" type="button" class="px-3 py-1.5 bg-red-50 hover:bg-red-600 hover:text-white text-red-600 rounded-xl transition-all shadow-xs text-xs font-bold">Hapus</button>
+                                        <button type="button" @click="openDrawer('{{ route('brands.show', ['brand'=>$brand, 'drawer'=>1]) }}', 'Detail Brand')" class="px-3 py-1.5 bg-gray-100 hover:bg-black hover:text-white text-gray-700 rounded-xl transition-all shadow-xs text-xs font-bold cursor-pointer">Detail</button>
+                                        <button type="button" @click="openDrawer('{{ route('brands.edit', ['brand'=>$brand, 'drawer'=>1]) }}', 'Edit Brand')" class="px-3 py-1.5 bg-[#D4AF37]/10 hover:bg-[#D4AF37] hover:text-white text-[#D4AF37] rounded-xl transition-all shadow-xs text-xs font-bold cursor-pointer">Edit</button>
+                                        <button @click="deleteModalOpen = true; deleteUrl = '{{ route('brands.destroy', $brand->id) }}'; brandName = '{{ $brand->name }}'" type="button" class="px-3 py-1.5 bg-red-50 hover:bg-red-600 hover:text-white text-red-600 rounded-xl transition-all shadow-xs text-xs font-bold cursor-pointer">Hapus</button>
                                     </div>
                                 </td>
                             </tr>
@@ -112,7 +131,41 @@
             </div>
         </div>
 
-        <div x-show="drawerOpen" x-cloak class="fixed inset-0 z-50" style="display:none"><div @click="drawerOpen=false;drawerUrl=''" class="absolute inset-0 bg-black/30 backdrop-blur-[2px]" x-transition.opacity></div><section class="absolute inset-y-0 right-0 flex w-full max-w-xl flex-col bg-[#F8F9FA] shadow-[-20px_0_60px_rgba(0,0,0,0.16)]" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="translate-x-full opacity-60" x-transition:enter-end="translate-x-0 opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-60"><header class="flex items-center justify-between bg-white border-b p-5 transition-colors hover:bg-gray-50"><div><p class="text-[10px] font-black tracking-[.2em] text-[#D4AF37]">MANAJEMEN BRAND</p><h2 class="font-black" x-text="drawerTitle"></h2></div><button @click="drawerOpen=false;drawerUrl=''" class="w-10 h-10 rounded-xl bg-gray-100 hover:rotate-90 hover:bg-black hover:text-white transition duration-300">✕</button></header><iframe :src="drawerUrl" class="flex-1 w-full border-0"></iframe></section></div>
+        <!-- SIDE DRAWER PANEL -->
+        <div x-show="drawerOpen" x-cloak class="fixed inset-0 z-50" style="display:none">
+            <div @click="closeDrawer()" class="absolute inset-0 bg-black/40 backdrop-blur-xs" 
+                 x-transition:enter="transition-opacity ease-out duration-300" 
+                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                 x-transition:leave="transition-opacity ease-in duration-200" 
+                 x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
+
+            <section class="absolute inset-y-0 right-0 flex w-full max-w-xl flex-col bg-[#F8F9FA] shadow-[-20px_0_60px_rgba(0,0,0,0.16)]" 
+                     x-transition:enter="transition ease-out duration-500" 
+                     x-transition:enter-start="translate-x-full opacity-60" 
+                     x-transition:enter-end="translate-x-0 opacity-100" 
+                     x-transition:leave="transition ease-in duration-300" 
+                     x-transition:leave-start="translate-x-0 opacity-100" 
+                     x-transition:leave-end="translate-x-full opacity-60">
+                
+                <header class="flex items-center justify-between bg-white border-b border-gray-100 px-6 py-4 shrink-0 shadow-xs z-10 relative">
+                    <div>
+                        <p class="text-[10px] font-black tracking-[0.2em] text-[#D4AF37]">MANAJEMEN BRAND</p>
+                        <h2 class="mt-1 text-lg font-black text-gray-900" x-text="drawerTitle"></h2>
+                    </div>
+                    <button type="button" @click="closeDrawer()" class="w-10 h-10 rounded-xl bg-gray-50 text-gray-500 hover:rotate-90 hover:bg-black hover:text-white transition duration-300 flex items-center justify-center cursor-pointer">✕</button>
+                </header>
+
+                <div class="relative flex-1 bg-[#F8F9FA]">
+                    <div x-show="iframeLoading" class="absolute inset-0 flex items-center justify-center z-20 bg-[#F8F9FA]">
+                        <svg class="animate-spin h-8 w-8 text-[#D4AF37]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                    <iframe :src="drawerUrl" @load="iframeLoading = false" class="h-full w-full border-0 absolute inset-0 z-10" title="Panel brand"></iframe>
+                </div>
+            </section>
+        </div>
 
         <!-- MODAL POP-UP HAPUS -->
         <div x-show="deleteModalOpen" class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" style="display: none;" x-transition.opacity>
@@ -122,11 +175,11 @@
                     <p class="text-xs text-gray-500 mt-1">Yakin ingin menghapus brand <span class="font-bold text-gray-800" x-text="brandName"></span>? Data yang dihapus tidak bisa dikembalikan.</p>
                 </div>
                 <div class="flex items-center gap-2 pt-2">
-                    <button @click="deleteModalOpen = false" type="button" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-100 transition">Batal</button>
+                    <button @click="deleteModalOpen = false" type="button" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-100 transition cursor-pointer">Batal</button>
                     <form :action="deleteUrl" method="POST" class="flex-1">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="w-full py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold hover:bg-red-700 transition shadow-md shadow-red-600/20">Ya, Hapus</button>
+                        <button type="submit" class="w-full py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold hover:bg-red-700 transition shadow-md shadow-red-600/20 cursor-pointer">Ya, Hapus</button>
                     </form>
                 </div>
             </div>

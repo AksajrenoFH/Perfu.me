@@ -4,20 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfu.me · Refill Collection</title>
+    <title>Perfu.me · Products Collection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #111827;
+        }
+
+        .font-serif-luxury {
+            font-family: 'Playfair Display', Georgia, serif;
         }
 
         .marquee-track {
             display: flex;
             width: max-content;
-            animation: scrollLeft 50s linear infinite;
+            animation: scrollLeft 45s linear infinite;
         }
 
         .marquee-track:hover {
@@ -35,12 +41,12 @@
         }
 
         .card-hover {
-            transition: transform .25s ease, box-shadow .25s ease;
+            transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .card-hover:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 16px 30px -8px rgba(0, 0, 0, 0.06);
         }
 
         .nav-underline {
@@ -54,7 +60,7 @@
             right: 0;
             bottom: -6px;
             height: 2px;
-            background: #111;
+            background: #000000;
             border-radius: 2px;
         }
 
@@ -77,7 +83,7 @@
             }
 
             50% {
-                transform: scale(1.3);
+                transform: scale(1.25);
             }
 
             100% {
@@ -95,146 +101,228 @@
     </style>
 </head>
 
-<body class="text-[#14161a] antialiased bg-white" x-data="refillPage()">
+<body class="text-neutral-900 antialiased bg-white selection:bg-neutral-900 selection:text-white" x-data="productPage()">
 
     {{-- Scrolling Announcement Bar --}}
     @php
-        $announcements = [
-            'Refill Mulai 15rb',
-            'Dior Sauvage',
-            'Baccarrat Rouge 405',
-            'Bvlgari Extreme',
-            'One Million Lucky',
-            'YSL Black Opium',
-            'Greed Aventus',
-            'Vercase Eros',
-            'Zara Orchid',
-            'Miss Dior Blooming Bouquet',
-        ];
+        $announcements = (isset($brands) && $brands->count() > 0)
+            ? $brands->pluck('name')->filter()->values()->toArray()
+            : [
+                'Refill Mulai 15rb',
+                'Dior Sauvage',
+                'Baccarrat Rouge 540',
+                'Bvlgari Extreme',
+                'One Million Lucky',
+                'YSL Black Opium',
+                'Creed Aventus',
+                'Versace Eros',
+                'Zara Orchid',
+                'Miss Dior Blooming Bouquet',
+            ];
     @endphp
-    <div class="bg-white border-b border-gray-200 text-gray-800 text-xs tracking-wide overflow-hidden">
-        <div class="marquee-track py-2.5">
+    <div class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
+        <div class="marquee-track">
             <div class="flex items-center shrink-0">
                 @foreach ($announcements as $item)
-                    <span class="px-8 flex items-center gap-2">✦ {{ $item }}</span>
+                    <span class="px-6 flex items-center gap-2">
+                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                    </span>
                 @endforeach
             </div>
             <div class="flex items-center shrink-0" aria-hidden="true">
                 @foreach ($announcements as $item)
-                    <span class="px-8 flex items-center gap-2">✦ {{ $item }}</span>
+                    <span class="px-6 flex items-center gap-2">
+                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                    </span>
                 @endforeach
             </div>
         </div>
     </div>
 
-    {{-- Navbar --}}
-    <header class="bg-white/80 backdrop-blur border-b border-gray-100 sticky top-0 z-50">
-        <div class="max-w-[1400px] mx-auto flex items-center justify-between px-8 h-[76px]">
+    {{-- Navbar (Identical to Home) --}}
+    <header class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
+        <div class="max-w-[1240px] mx-auto flex items-center justify-between px-8 sm:px-10 h-[70px]">
             <div class="flex items-center gap-12">
-                <a href="{{ route('home') }}" class="text-xl font-extrabold tracking-tight">Perfu.me</a>
+                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                    <span class="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center text-sm font-bold font-serif-luxury tracking-tighter shadow-sm">P.</span>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold tracking-tight text-neutral-950 leading-none">Perfu.me</span>
+                        <span class="text-[9px] tracking-[0.22em] text-neutral-400 font-semibold uppercase mt-0.5">Haute Parfumerie</span>
+                    </div>
+                </a>
+                
                 <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
                     <a href="{{ route('home') }}" class="hover:text-black">Home</a>
-                    <a href="{{ route('home') }}#product" class="hover:text-black">Product</a>
-                    <a href="#" class="nav-underline text-black font-medium">Refill</a>
+                    <a href="{{ route('refill') }}" class="nav-underline text-black font-medium">Products</a>
                 </nav>
             </div>
-            <div class="flex items-center gap-4">
-                <div
-                    class="hidden sm:flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 w-64 text-black/40 border border-gray-200/50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="7" />
-                        <path stroke-linecap="round" d="m21 21-4.3-4.3" />
-                    </svg>
-                    <input type="text" x-model="search" placeholder="Cari varian aroma..."
-                        class="bg-transparent outline-none text-sm w-full placeholder:text-black/40 text-black">
-                </div>
 
-                <a href="#refill-grid"
-                    class="bg-black text-white text-sm font-semibold rounded-full px-5 py-2.5 hover:bg-gray-800 transition">Shop
-                    Now</a>
+            <div class="flex items-center gap-3.5">
+                {{-- Cart Trigger in Header --}}
+                <button @click="cartOpen = true" class="relative p-2.5 rounded-full border border-neutral-200 hover:border-neutral-900 text-neutral-800 hover:text-neutral-950 transition-colors flex items-center justify-center cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span x-show="totalItems > 0" x-text="totalItems" class="absolute -top-1 -right-1 bg-neutral-950 text-white text-[9px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-xs"></span>
+                </button>
+
+                <a href="#products-grid" class="bg-neutral-950 text-white text-[13px] font-semibold rounded-full px-5 py-2.5 hover:bg-neutral-800 transition tracking-wide shadow-sm">
+                    Shop Now
+                </a>
             </div>
         </div>
     </header>
 
     {{-- Hero / Page Header --}}
-    <section class="bg-gray-50 border-y border-gray-200/60 py-16 reveal-element">
-        <div class="max-w-[1400px] mx-auto px-8">
-            <p class="text-xs tracking-[0.2em] text-gray-400 font-semibold mb-3">DIVISI GAYA HIDUP</p>
-            <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5 text-gray-900 max-w-2xl">Refill Collection
+    <section class="bg-neutral-50/70 border-b border-neutral-200/70 py-16 reveal-element">
+        <div class="max-w-[1240px] mx-auto px-6 sm:px-8">
+            <p class="text-xs tracking-[0.25em] text-neutral-400 font-bold uppercase mb-2">PRODUCT CATALOG & REFILL</p>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4 text-neutral-950 max-w-2xl">Products Collection
             </h1>
-            <p class="text-gray-500 leading-relaxed max-w-xl mb-8">Isi ulang aroma favoritmu dari koleksi terlengkap
-                kami — mulai dari fragrance house ternama hingga aroma eksklusif Perfu.me. Pilih ukuran botol sesuai
-                kebutuhan harianmu.</p>
+            <p class="text-neutral-500 leading-relaxed text-xs sm:text-sm max-w-xl mb-8">Temukan seluruh koleksi parfum eksklusif Perfu.me — mulai dari Original Signature Series hingga Refill Travel Collection. Pilih varian favoritmu sekarang.</p>
 
-            <div class="flex flex-wrap gap-6 border-t border-b border-gray-200/60 py-5 max-w-xl">
+            <div class="flex flex-wrap gap-6 border-t border-b border-neutral-200/80 py-5 max-w-2xl">
                 <div>
-                    <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">TOTAL VARIAN</p>
-                    <p class="font-bold text-gray-900 text-lg" x-text="totalVariants + ' Aroma'"></p>
+                    <p class="text-[9px] tracking-widest text-neutral-400 font-bold uppercase mb-1">TOTAL PRODUK</p>
+                    <p class="font-extrabold text-neutral-950 text-base sm:text-lg" x-text="totalProducts + ' Varian'"></p>
                 </div>
                 <div>
-                    <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">UKURAN</p>
-                    <p class="font-bold text-gray-900 text-lg">3ml · 5ml · 8ml</p>
+                    <p class="text-[9px] tracking-widest text-neutral-400 font-bold uppercase mb-1">KATEGORI</p>
+                    <p class="font-extrabold text-neutral-950 text-base sm:text-lg">Original · Refill · Best Seller</p>
                 </div>
                 <div>
-                    <p class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">MULAI DARI</p>
-                    <p class="font-bold text-gray-900 text-lg">Rp 15.000</p>
+                    <p class="text-[9px] tracking-widest text-neutral-400 font-bold uppercase mb-1">KONSENTRASI</p>
+                    <p class="font-extrabold text-neutral-950 text-base sm:text-lg">EDP · EDT · Roll-on · Body Mist</p>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- Refill Grid Section --}}
-    <section id="refill-grid" class="max-w-[1400px] mx-auto px-8 py-20 bg-white reveal-element">
-        <div class="border-b border-gray-100 pb-6 mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-                <p class="text-xs tracking-[0.2em] text-gray-400 font-semibold mb-2">ALL VARIANTS</p>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-black tracking-tight">Varian Aroma</h2>
+    {{-- Products Grid Section with Filter Tabs & Search Bar --}}
+    <section id="products-grid" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 bg-white reveal-element">
+        
+        {{-- Toolbar: Filter Category Tabs & Search Bar --}}
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-100 pb-8 mb-10">
+            
+            {{-- Filter Category Buttons --}}
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
+                <button type="button" @click="activeTab = 'all'"
+                    :class="activeTab === 'all' ? 'bg-neutral-950 text-white font-bold shadow-md' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 font-medium'"
+                    class="px-5 py-2.5 rounded-full text-xs transition whitespace-nowrap cursor-pointer">
+                    Semua Produk (<span x-text="allProducts.length"></span>)
+                </button>
+
+                <button type="button" @click="activeTab = 'Refill'"
+                    :class="activeTab === 'Refill' ? 'bg-neutral-950 text-white font-bold shadow-md' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 font-medium'"
+                    class="px-5 py-2.5 rounded-full text-xs transition whitespace-nowrap cursor-pointer">
+                    Parfum Refill (<span x-text="refillCount"></span>)
+                </button>
+
+                <button type="button" @click="activeTab = 'Original'"
+                    :class="activeTab === 'Original' ? 'bg-neutral-950 text-white font-bold shadow-md' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 font-medium'"
+                    class="px-5 py-2.5 rounded-full text-xs transition whitespace-nowrap cursor-pointer">
+                    Original Signature (<span x-text="originalCount"></span>)
+                </button>
+
+                <button type="button" @click="activeTab = 'bestseller'"
+                    :class="activeTab === 'bestseller' ? 'bg-[#D4AF37] text-white font-bold shadow-md ring-2 ring-[#D4AF37]/30' : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60 font-medium'"
+                    class="px-5 py-2.5 rounded-full text-xs transition whitespace-nowrap cursor-pointer flex items-center gap-1.5">
+                    <span>★ Best Seller</span>
+                    <span>(<span x-text="bestSellerCount"></span>)</span>
+                </button>
             </div>
-            <p class="text-sm text-gray-400" x-show="!search">Menampilkan <span class="font-semibold text-gray-700"
-                    x-text="totalVariants"></span> aroma</p>
-            <p class="text-sm text-gray-400" x-show="search" x-cloak>Menampilkan <span
-                    class="font-semibold text-gray-700" x-text="filteredVariants.length"></span> hasil untuk "<span
-                    x-text="search"></span>"</p>
+
+            {{-- Search Bar Input --}}
+            <div class="relative w-full md:w-80">
+                <input type="text" x-model="search" placeholder="Cari parfum, aroma, varian..."
+                    class="w-full pl-10 pr-4 py-2.5 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-medium text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-neutral-400 absolute left-3.5 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7" />
+                    <path stroke-linecap="round" d="m21 21-4.3-4.3" />
+                </svg>
+                <button x-show="search" @click="search = ''" class="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-950 text-xs font-bold px-1">✕</button>
+            </div>
+
         </div>
 
+        {{-- Section Subheader --}}
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-2xl font-extrabold text-neutral-950 tracking-tight" x-text="activeTabTitle"></h2>
+            <p class="text-xs text-neutral-500">
+                Menampilkan <span class="font-bold text-neutral-950" x-text="filteredProducts.length"></span> dari <span x-text="allProducts.length"></span> produk
+            </p>
+        </div>
+
+        {{-- Products Grid --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <template x-for="(product, index) in filteredVariants" :key="product.name">
-                <div class="card-hover bg-white border border-gray-100 rounded-3xl p-5 flex flex-col shadow-sm">
-                    <div
-                        class="aspect-square rounded-2xl bg-gray-50 border border-gray-100 mb-4 flex items-center justify-center overflow-hidden">
-                        <img :src="'storage/image/refill-placeholder.jpg'"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                            class="w-full h-full object-cover" :alt="product.name">
-                        <div class="hidden w-full h-full items-center justify-center text-gray-300 text-4xl font-extrabold"
-                            x-text="product.name.charAt(0)"></div>
+            <template x-for="(product, index) in filteredProducts" :key="product.id || index">
+                <div class="card-hover bg-white border border-neutral-200/80 rounded-3xl p-5 flex flex-col shadow-xs relative">
+                    
+                    {{-- Badges Header --}}
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-1.5">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-neutral-950 text-white"
+                                x-text="product.category || 'Product'"></span>
+                            
+                            <template x-if="product.is_best_seller">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-[#D4AF37] text-white shadow-xs">
+                                    ★ Best Seller
+                                </span>
+                            </template>
+                        </div>
+                        
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold border"
+                            :class="product.stock > 0 ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200'"
+                            x-text="product.stock > 0 ? 'Stok: ' + product.stock + ' pcs' : 'Stok Habis'"></span>
                     </div>
 
-                    <span class="text-[10px] tracking-widest text-gray-400 font-semibold mb-1">FRAGRANCE</span>
-                    <h3 class="text-sm font-bold text-gray-900 mb-3 leading-snug min-h-[2.5rem]" x-text="product.name">
-                    </h3>
-
-                    <div class="flex items-center gap-2 mb-4">
-                        <template x-for="size in sizes" :key="size.ml">
-                            <button type="button" @click="product.selectedSize = size.ml"
-                                :class="product.selectedSize === size.ml ? 'bg-black text-white border-black' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'"
-                                class="text-xs font-semibold px-3 py-1.5 rounded-full border transition cursor-pointer">
-                                <span x-text="size.ml + 'ml'"></span>
-                            </button>
-                        </template>
+                    {{-- Image Container (Uses Column Image) --}}
+                    <div class="aspect-square rounded-2xl bg-neutral-50 border border-neutral-100 mb-4 flex items-center justify-center overflow-hidden relative group">
+                        <img :src="product.image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" :alt="product.name"
+                             onerror="this.src='https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&q=80'">
                     </div>
 
-                    <p class="text-lg font-extrabold text-gray-900 mb-4" x-text="formatRupiah(currentPrice(product))">
-                    </p>
+                    {{-- Attribute Chips --}}
+                    <div class="flex items-center gap-1.5 flex-wrap mb-2">
+                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600 uppercase" x-text="product.variant || 'EDP'"></span>
+                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600 uppercase" x-text="'For ' + (product.gender || 'Unisex')"></span>
+                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600" x-text="(product.volume || 50) + ' ml'"></span>
+                    </div>
 
-                    <div class="mt-auto flex flex-col gap-2">
-                        <button @click="addRefillToCart(product, $event)"
-                            class="w-full bg-black text-white text-xs font-semibold py-3 rounded-full hover:bg-gray-800 transition cursor-pointer">
+                    {{-- Name --}}
+                    <h3 class="text-sm font-bold text-neutral-950 mb-1 leading-snug" x-text="product.name"></h3>
+
+                    {{-- Description Snippet --}}
+                    <p class="text-[11px] text-neutral-500 line-clamp-2 mb-3 leading-relaxed" x-text="product.description || 'Aroma parfum eksklusif berkonsentrasi Extrait murni.'"></p>
+
+                    {{-- Aroma Notes breakdown --}}
+                    <template x-if="product.top_note || product.middle_note || product.base_note">
+                        <div class="bg-neutral-50 p-2.5 rounded-xl border border-neutral-100 mb-4 space-y-1 text-[10px]">
+                            <p class="text-neutral-500 truncate" x-show="product.top_note"><strong class="text-neutral-800">Top:</strong> <span x-text="product.top_note"></span></p>
+                            <p class="text-neutral-500 truncate" x-show="product.middle_note"><strong class="text-neutral-800">Mid:</strong> <span x-text="product.middle_note"></span></p>
+                            <p class="text-neutral-500 truncate" x-show="product.base_note"><strong class="text-neutral-800">Base:</strong> <span x-text="product.base_note"></span></p>
+                        </div>
+                    </template>
+
+                    {{-- Price --}}
+                    <div class="mt-auto pt-2 border-t border-neutral-100 mb-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-neutral-400 font-bold block uppercase">HARGA JUAL</span>
+                            <p class="text-base font-extrabold text-neutral-950" x-text="formatRupiah(product.price)"></p>
+                        </div>
+                    </div>
+
+                    {{-- Action Buttons --}}
+                    <div class="flex flex-col gap-2">
+                        <button @click="addToCart(product, $event)"
+                            :disabled="product.stock <= 0"
+                            :class="product.stock <= 0 ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed' : 'bg-neutral-950 text-white hover:bg-neutral-800 cursor-pointer'"
+                            class="w-full text-xs font-semibold py-3 rounded-full transition shadow-xs active:scale-[0.98]">
                             + Add to Cart
                         </button>
                         <button
-                            @click="directCheckoutWhatsApp(product.name + ' (' + product.selectedSize + 'ml)', formatRupiah(currentPrice(product)))"
-                            class="w-full border border-gray-300 text-gray-900 text-xs font-semibold py-3 rounded-full hover:bg-gray-50 transition cursor-pointer">
+                            @click="directCheckoutWhatsApp(product.name + ' (' + (product.volume || 50) + 'ml ' + (product.variant || '') + ')', formatRupiah(product.price))"
+                            class="w-full border border-neutral-300 text-neutral-900 text-xs font-semibold py-2.5 rounded-full hover:bg-neutral-50 transition cursor-pointer active:scale-[0.98]">
                             Checkout via WA
                         </button>
                     </div>
@@ -242,264 +330,182 @@
             </template>
         </div>
 
-        <div x-show="filteredVariants.length === 0" x-cloak class="text-center py-24 text-gray-400">
-            <p class="text-sm">Aroma yang kamu cari belum tersedia. Coba kata kunci lain.</p>
+        {{-- Empty State --}}
+        <div x-show="filteredProducts.length === 0" x-cloak class="text-center py-24 text-neutral-400 space-y-2">
+            <p class="text-sm font-bold text-neutral-700">Produk tidak ditemukan.</p>
+            <p class="text-xs text-neutral-400">Tidak ada produk yang cocok dengan pencarian Anda.</p>
+            <button @click="activeTab = 'all'; search = ''" class="inline-block px-4 py-2 bg-neutral-950 text-white text-xs font-semibold rounded-full mt-2 cursor-pointer">
+                Reset Filter
+            </button>
         </div>
     </section>
 
-    {{-- Info Strip --}}
-    <section class="max-w-[1400px] mx-auto px-8 py-12 border-t border-gray-100 reveal-element">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-            <div class="flex items-center gap-4 p-6 rounded-2xl bg-gray-50 border border-gray-100">
-                <div
-                    class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0 text-gray-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-                    </svg>
+    {{-- Footer (Identical Dark Theme to Home) --}}
+    <footer class="bg-neutral-950 text-neutral-400 border-t border-neutral-900 pt-14 pb-8">
+        <div class="max-w-[1240px] mx-auto px-6 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-white text-neutral-950 flex items-center justify-center text-[10px] font-bold font-serif-luxury">P.</span>
+                    <span class="text-lg font-extrabold text-white tracking-tight">Perfu.me</span>
                 </div>
-                <div>
-                    <h4 class="text-sm font-bold text-gray-900">Aroma Autentik</h4>
-                    <p class="text-xs text-gray-500 mt-0.5">Diracik menyerupai aroma original secara presisi.</p>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4 p-6 rounded-2xl bg-gray-50 border border-gray-100">
-                <div
-                    class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0 text-gray-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div>
-                    <h4 class="text-sm font-bold text-gray-900">Botol Travel Size</h4>
-                    <p class="text-xs text-gray-500 mt-0.5">Praktis dibawa kemana saja, muat di tas kecil.</p>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4 p-6 rounded-2xl bg-gray-50 border border-gray-100">
-                <div
-                    class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0 text-gray-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                    </svg>
-                </div>
-                <div>
-                    <h4 class="text-sm font-bold text-gray-900">Harga Bersahabat</h4>
-                    <p class="text-xs text-gray-500 mt-0.5">Coba banyak aroma tanpa harus beli full bottle.</p>
+                <p class="text-xs text-neutral-400 leading-relaxed max-w-xs">
+                    Haute Parfumerie & Extrait de Parfum berstandar internasional. Menghadirkan identitas aroma yang berkelas, elegan, dan tahan lama.
+                </p>
+                <div class="flex gap-2 pt-1 text-neutral-400">
+                    <span class="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center text-xs hover:text-white transition cursor-pointer">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </span>
+                    <span class="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center text-xs hover:text-white transition cursor-pointer">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </span>
+                    <span class="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center text-xs hover:text-white transition cursor-pointer">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                    </span>
                 </div>
             </div>
-        </div>
-    </section>
 
-    {{-- FLOATING CART BUTTON --}}
-    <div class="fixed bottom-6 right-6 z-40">
-        <button id="floating-cart-btn" @click="cartOpen = true"
-            class="relative bg-black text-white p-4 rounded-full shadow-2xl hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
-            <span x-show="totalItems > 0" :key="totalItems" x-text="totalItems"
-                class="absolute -top-1 -right-1 bg-white text-black border border-black text-[11px] font-extrabold w-6 h-6 rounded-full flex items-center justify-center shadow-md animate-pop"></span>
-        </button>
-    </div>
-
-    {{-- Slide-over Cart Drawer Sidebar --}}
-    <div x-cloak x-show="cartOpen" class="relative z-50">
-        <div x-show="cartOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="cartOpen = false"
-            class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"></div>
-
-        <div class="fixed inset-0 overflow-hidden">
-            <div class="absolute inset-0 overflow-hidden">
-                <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-                    <div x-show="cartOpen"
-                        x-transition:enter="transform transition ease-in-out duration-300 sm:duration-300"
-                        x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
-                        x-transition:leave="transform transition ease-in-out duration-300 sm:duration-300"
-                        x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
-                        class="pointer-events-auto w-screen max-w-md bg-white shadow-xl flex flex-col">
-
-                        <div class="flex items-center justify-between px-6 py-6 border-b border-gray-100">
-                            <h2 class="text-lg font-bold text-gray-900">Your Shopping Cart</h2>
-                            <button @click="cartOpen = false" class="text-gray-400 hover:text-black cursor-pointer">
-                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
-                            <template x-if="items.length === 0">
-                                <div class="text-center py-20 text-gray-400">
-                                    <p class="text-sm">Your cart is currently empty.</p>
-                                </div>
-                            </template>
-
-                            <template x-for="(item, index) in items" :key="index">
-                                <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-2xl border border-gray-100">
-                                    <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-300 font-extrabold text-lg shrink-0"
-                                        x-text="item.name.charAt(0)"></div>
-                                    <div class="flex-1">
-                                        <h4 class="text-xs font-semibold text-gray-900 line-clamp-1" x-text="item.name">
-                                        </h4>
-                                        <p class="text-xs font-bold text-gray-700 mt-1" x-text="item.price"></p>
-                                        <div class="flex items-center gap-2 mt-2">
-                                            <button @click="decreaseQty(index)"
-                                                class="w-6 h-6 bg-white border border-gray-200 rounded-full text-xs flex items-center justify-center cursor-pointer">-</button>
-                                            <span class="text-xs font-semibold" x-text="item.qty"></span>
-                                            <button @click="increaseQty(index)"
-                                                class="w-6 h-6 bg-white border border-gray-200 rounded-full text-xs flex items-center justify-center cursor-pointer">+</button>
-                                        </div>
-                                    </div>
-                                    <button @click="removeItem(index)"
-                                        class="text-gray-400 hover:text-red-500 p-2 cursor-pointer">
-                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </template>
-                        </div>
-
-                        <div class="border-t border-gray-100 px-6 py-6 bg-gray-50">
-                            <div class="flex justify-between text-sm font-semibold text-gray-900 mb-4">
-                                <span>Estimated Total</span>
-                                <span x-text="formatRupiah(totalPrice)"></span>
-                            </div>
-                            <button @click="checkoutWhatsApp()"
-                                class="w-full bg-black text-white text-sm font-semibold py-3.5 rounded-full hover:bg-gray-800 transition text-center block cursor-pointer">
-                                Checkout via WhatsApp
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Footer --}}
-    <footer class="bg-white border-t border-gray-200 pt-16 pb-8 reveal-element">
-        <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
             <div>
-                <h3 class="text-xl font-extrabold mb-3 text-gray-900">Perfu.me</h3>
-                <p class="text-sm text-gray-500 leading-relaxed max-w-xs">Redefining the relationship between
-                    professional performance and aesthetic clarity.</p>
-                <div class="flex gap-3 mt-5 text-gray-500">
-                    <span
-                        class="w-8 h-8 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center">🌐</span>
-                    <span
-                        class="w-8 h-8 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center">@</span>
-                    <span
-                        class="w-8 h-8 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center">≡</span>
-                </div>
-            </div>
-            <div>
-                <p class="text-[11px] tracking-widest text-gray-400 font-semibold mb-4">PLATFORM</p>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="{{ route('home') }}" class="hover:text-black">Home</a></li>
-                    <li><a href="{{ route('home') }}#product" class="hover:text-black">Product</a></li>
-                    <li><a href="#refill-grid" class="hover:text-black">Refill</a></li>
+                <p class="text-[10px] tracking-widest text-neutral-300 font-bold uppercase mb-3">FRAGRANCE SERIES</p>
+                <ul class="space-y-1.5 text-xs text-neutral-400">
+                    <li><a href="{{ route('home') }}#product" class="hover:text-white transition">Dynamyst Extrait</a></li>
+                    <li><a href="{{ route('home') }}#product" class="hover:text-white transition">Vanessence Extrait</a></li>
+                    <li><a href="#products-grid" class="hover:text-white transition">Discovery Refills</a></li>
+                    <li><a href="#products-grid" class="hover:text-white transition">Signature Bundles</a></li>
                 </ul>
             </div>
+
             <div>
-                <p class="text-[11px] tracking-widest text-gray-400 font-semibold mb-4">COMPANY</p>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="{{ route('home') }}#story" class="hover:text-black">About Us</a></li>
-                    <li><a href="#" class="hover:text-black">Careers</a></li>
-                    <li><a href="#" class="hover:text-black">Contact</a></li>
+                <p class="text-[10px] tracking-widest text-neutral-300 font-bold uppercase mb-3">CUSTOMER CARE</p>
+                <ul class="space-y-1.5 text-xs text-neutral-400">
+                    <li><a href="https://wa.me/6287774375755" class="hover:text-white transition">Konsultasi Aroma</a></li>
+                    <li><a href="#" class="hover:text-white transition">Garansi Pengiriman</a></li>
+                    <li><a href="#" class="hover:text-white transition">Cara Pemesanan</a></li>
+                    <li><a href="#" class="hover:text-white transition">Panduan Longevity</a></li>
                 </ul>
             </div>
+
             <div>
-                <p class="text-[11px] tracking-widest text-gray-400 font-semibold mb-4">STAY AHEAD</p>
-                <p class="text-sm text-gray-600 mb-4">Receive weekly insights on high-performance workflows and luxury
-                    lifestyle curation.</p>
+                <p class="text-[10px] tracking-widest text-neutral-300 font-bold uppercase mb-3">NEWSLETTER</p>
+                <p class="text-xs text-neutral-400 mb-3">Dapatkan info rilis aroma baru dan penawaran terbatas langsung ke email Anda.</p>
                 <form action="#" method="POST" class="flex gap-2">
-                    <input type="email" name="email" placeholder="Your work email" required
-                        class="bg-gray-50 border border-gray-200 rounded-full px-4 py-2.5 text-sm flex-1 outline-none focus:border-gray-400">
-                    <button type="submit"
-                        class="bg-black text-white text-sm font-semibold rounded-full px-5 py-2.5 hover:bg-gray-800 transition">Subscribe</button>
+                    <input type="email" placeholder="Email Anda..." required
+                        class="bg-neutral-900 border border-neutral-800 rounded-full px-3.5 py-2 text-xs flex-1 outline-none text-white focus:border-neutral-500 placeholder:text-neutral-600">
+                    <button type="button" class="bg-white text-neutral-950 text-xs font-bold rounded-full px-3.5 py-2 hover:bg-neutral-200 transition">Join</button>
                 </form>
             </div>
         </div>
-        <div
-            class="max-w-[1400px] mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-gray-100 mt-10 pt-6 text-xs text-gray-400">
-            <span>
-                <a href="#" class="hover:text-gray-600">PRIVACY POLICY</a> &nbsp;
-                <a href="#" class="hover:text-gray-600">TERMS OF SERVICE</a> &nbsp;
-                <a href="#" class="hover:text-gray-600">COOKIE POLICY</a>
-            </span>
-            <span>&copy; {{ date('Y') }} PERFU.ME DIGITAL GROUP. ESTABLISHED IN INDONESIA.</span>
+
+        <div class="max-w-[1240px] mx-auto px-6 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-2.5 border-t border-neutral-900 mt-10 pt-5 text-[10px] text-neutral-500">
+            <span>&copy; {{ date('Y') }} PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
+            <span>CRAFTED WITH PRECISION · EXTRAIT DE PARFUM</span>
         </div>
     </footer>
 
-    {{-- Alpine.js & Refill Page Logic --}}
+    {{-- Alpine.js & Product Page Logic --}}
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
-        function refillPage() {
+        function productPage() {
             return {
                 cartOpen: false,
                 items: [],
                 search: '',
-                sizes: [
-                    { ml: 3, price: 15000 },
-                    { ml: 5, price: 25000 },
-                    { ml: 8, price: 35000 },
-                ],
-                variants: [
-                    'Dynamyst', 'Vanessence', 'VS Scandalous', 'VS Romantic Wish', 'Dior Sauvage',
-                    'Aigner Blue Emotion', 'Baccarrat Rouge 405', 'CH Good Girl', 'Channel Coco Mademoiselle',
-                    'David of Man Cool Water', 'Dunhill Blue', 'Escada Cherry', 'Escada Sexy Grafity',
-                    'Aigner Black', 'Aqua Kiss', 'Black XS', 'Bvlgari Extreme', 'Bvlgari Omnia Amethyste',
-                    'Escada Sorbeto', 'Greed Aventus', 'Jaguar Blue', 'Miss Dior Blooming Bouquet',
-                    'One Million Lucky', 'Polo Sport', 'Vanilla Bodies', 'Vanilla Ice Pink Chiffon',
-                    'Vercase Eros', 'VS Amber Romance', 'VS Bomshell', 'VS So Sexy', 'White Musk',
-                    'YSL Black Opium', 'YSL Libre Women', 'Zahrat Hawaii', 'Zara Orchid',
-                ],
+                activeTab: 'all',
 
-                get products() {
-                    return this.variants.map(name => ({ name, selectedSize: 5 }));
+                allProducts: @js(isset($allProducts) ? $allProducts->map(function($p) {
+                    return [
+                        'id' => $p->id,
+                        'name' => $p->name,
+                        'category' => $p->category ?? 'Original',
+                        'variant' => $p->variant ?? 'EDP',
+                        'gender' => $p->gender ?? 'Unisex',
+                        'top_note' => $p->top_note,
+                        'middle_note' => $p->middle_note,
+                        'base_note' => $p->base_note,
+                        'composition' => $p->composition,
+                        'packaging' => $p->packaging ?? 'Botol Kaca',
+                        'volume' => $p->volume ?? 50,
+                        'price' => (int) $p->price,
+                        'stock' => (int) $p->stock,
+                        'description' => $p->description,
+                        'image' => $p->image ? asset('storage/' . $p->image) : 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&q=80',
+                        'image_hover' => $p->image_hover ? asset('storage/' . $p->image_hover) : null,
+                        'is_best_seller' => (bool) $p->is_best_seller,
+                    ];
+                })->values()->toArray() : []),
+
+                get refillCount() {
+                    return this.allProducts.filter(p => p.category === 'Refill').length;
+                },
+                get originalCount() {
+                    return this.allProducts.filter(p => p.category === 'Original').length;
+                },
+                get bestSellerCount() {
+                    return this.allProducts.filter(p => p.is_best_seller).length;
                 },
 
-                get totalVariants() {
-                    return this.variants.length;
+                get totalProducts() {
+                    return this.allProducts.length;
                 },
 
-                get filteredVariants() {
-                    if (!this.search.trim()) return this._productList;
-                    const q = this.search.trim().toLowerCase();
-                    return this._productList.filter(p => p.name.toLowerCase().includes(q));
+                get activeTabTitle() {
+                    if (this.activeTab === 'Refill') return 'Koleksi Parfum Refill';
+                    if (this.activeTab === 'Original') return 'Koleksi Original Signature';
+                    if (this.activeTab === 'bestseller') return 'Koleksi Produk Best Seller';
+                    return 'Semua Katalog Produk';
                 },
 
-                init() {
-                    // stateful product list so selectedSize persists per card while filtering
-                    this._productList = this.products;
+                get filteredProducts() {
+                    let list = this.allProducts;
+
+                    if (this.activeTab === 'Refill') {
+                        list = list.filter(p => p.category === 'Refill');
+                    } else if (this.activeTab === 'Original') {
+                        list = list.filter(p => p.category === 'Original');
+                    } else if (this.activeTab === 'bestseller') {
+                        list = list.filter(p => p.is_best_seller);
+                    }
+
+                    if (this.search.trim()) {
+                        const q = this.search.trim().toLowerCase();
+                        list = list.filter(p => 
+                            p.name.toLowerCase().includes(q) || 
+                            (p.category && p.category.toLowerCase().includes(q)) ||
+                            (p.variant && p.variant.toLowerCase().includes(q)) ||
+                            (p.gender && p.gender.toLowerCase().includes(q)) ||
+                            (p.top_note && p.top_note.toLowerCase().includes(q)) ||
+                            (p.description && p.description.toLowerCase().includes(q))
+                        );
+                    }
+
+                    return list;
                 },
 
-                currentPrice(product) {
-                    const size = this.sizes.find(s => s.ml === product.selectedSize);
-                    return size ? size.price : this.sizes[0].price;
-                },
-
-                addRefillToCart(product, event) {
+                addToCart(product, event) {
                     this.playFlyingBallAnimation(event);
-                    const price = this.currentPrice(product);
-                    const label = `${product.name} (${product.selectedSize}ml)`;
+                    const price = product.price || 0;
+                    const label = `${product.name} (${product.volume || 50}ml ${product.variant || ''})`;
+                    const imageUrl = product.image;
+
                     let existing = this.items.find(item => item.name === label);
                     if (existing) {
                         existing.qty++;
                     } else {
-                        this.items.push({ name: label, price: this.formatRupiah(price), qty: 1 });
+                        this.items.push({ 
+                            name: label, 
+                            price: this.formatRupiah(price), 
+                            image: imageUrl,
+                            qty: 1 
+                        });
                     }
                 },
 
@@ -554,7 +560,7 @@
                     }, 0);
                 },
                 formatRupiah(number) {
-                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number || 0);
                 },
 
                 async checkoutWhatsApp() {
@@ -565,7 +571,7 @@
                     const orderId = await this.saveOrder(this.items);
                     if (!orderId) return;
                     let phone = '6287774375755';
-                    let message = "Halo Kak, saya mau order refill parfum ini ya:\n\n";
+                    let message = "Halo Kak, saya mau order parfum ini ya:\n\n";
                     this.items.forEach((item, index) => {
                         message += `${index + 1}. *${item.name}* - ${item.qty} pcs (${item.price})\n`;
                     });

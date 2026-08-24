@@ -16,7 +16,6 @@ class ProductController extends Controller
             $query->where('category', $request->type);
         }
 
-        // Filter berdasarkan Pencarian Nama Produk (Search)
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
@@ -25,6 +24,7 @@ class ProductController extends Controller
 
         return view('products.index', compact('products'));
     }
+
     public function create()
     {
         return view('products.create');
@@ -37,29 +37,47 @@ class ProductController extends Controller
             'category' => 'nullable|string',
             'variant' => 'nullable|in:EDP,EDT,Roll-on,Body Mist',
             'gender' => 'nullable|string',
+
             'top_note' => 'nullable|string',
             'middle_note' => 'nullable|string',
             'base_note' => 'nullable|string',
             'composition' => 'nullable|string',
             'packaging' => 'nullable|string',
-            'volume' => 'nullable|integer',
-            'price' => 'required|numeric',
-            'stock' => 'nullable|integer',
+            'volume' => 'nullable|integer|min:1',
+
+            'price' => 'required|numeric|min:0',
+            'stock' => 'nullable|integer|min:0',
+
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'image_hover' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
+
         if ($request->hasFile('image')) {
-            $validatedData['image'] = $request->file('image')->store('products', 'public');
+            $validatedData['image'] =
+                $request->file('image')->store('products', 'public');
         }
-        $validatedData['is_best_seller'] = $request->boolean('is_best_seller');
+
+        if ($request->hasFile('image_hover')) {
+            $validatedData['image_hover'] =
+                $request->file('image_hover')->store('products', 'public');
+        }
+
+        $validatedData['is_best_seller'] =
+            $request->boolean('is_best_seller');
 
         Product::create($validatedData);
 
         if ($request->has('drawer')) {
-        return response()->view('products.drawer-success', ['message' => 'Produk berhasil ditambahkan']);
-    }
+            return response()->view('products.drawer-success', [
+                'message' => 'Produk berhasil ditambahkan'
+            ]);
+        }
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!');
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Produk berhasil ditambahkan!');
     }
 
     public function show(Product $product)
@@ -79,35 +97,55 @@ class ProductController extends Controller
             'category' => 'nullable|string',
             'variant' => 'nullable|in:EDP,EDT,Roll-on,Body Mist',
             'gender' => 'nullable|string',
+
             'top_note' => 'nullable|string',
             'middle_note' => 'nullable|string',
             'base_note' => 'nullable|string',
             'composition' => 'nullable|string',
             'packaging' => 'nullable|string',
-            'volume' => 'nullable|integer',
-            'price' => 'required|numeric',
-            'stock' => 'nullable|integer',
+            'volume' => 'nullable|integer|min:1',
+
+            'price' => 'required|numeric|min:0',
+            'stock' => 'nullable|integer|min:0',
+
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'image_hover' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
 
         if ($request->hasFile('image')) {
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
-            $validatedData['image'] = $request->file('image')->store('products', 'public');
-        }
-        if ($request->has('drawer')) {
-        return response()->view('products.drawer-success', ['message' => 'Produk berhasil ditambahkan']);
-    }
 
-        // Handle Checkbox
-        $validatedData['is_best_seller'] = $request->boolean('is_best_seller');
+            $validatedData['image'] =
+                $request->file('image')->store('products', 'public');
+        }
+
+        if ($request->hasFile('image_hover')) {
+            if ($product->image_hover) {
+                Storage::disk('public')->delete($product->image_hover);
+            }
+
+            $validatedData['image_hover'] =
+                $request->file('image_hover')->store('products', 'public');
+        }
+
+        $validatedData['is_best_seller'] =
+            $request->boolean('is_best_seller');
 
         $product->update($validatedData);
 
+        if ($request->has('drawer')) {
+            return response()->view('products.drawer-success', [
+                'message' => 'Produk berhasil diupdate'
+            ]);
+        }
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate!');
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Produk berhasil diupdate!');
     }
 
     public function destroy(Product $product)
@@ -116,9 +154,14 @@ class ProductController extends Controller
             Storage::disk('public')->delete($product->image);
         }
 
+        if ($product->image_hover) {
+            Storage::disk('public')->delete($product->image_hover);
+        }
+
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Produk berhasil dihapus!');
     }
 }
-
