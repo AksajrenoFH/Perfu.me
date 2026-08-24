@@ -91,29 +91,31 @@
 
     {{-- Top Announcement Bar --}}
     @php
-        $announcements = [
-            'DYNAMYST (Bold Woody & Fresh)',
-            'VANESSENCE (Citrus Warm Earthy)',
-            'Dior Sauvage Extrait',
-            'Baccarat Rouge 540',
-            'Aigner Blue Emotion',
-            'Channel Coco Mademoiselle',
-            'VS Scandalous',
-            '100% Extrait de Parfum Murni',
-            'Konsultasi Aroma Gratis via WhatsApp',
-        ];
+        $announcementList = (isset($brands) && $brands->count() > 0)
+            ? $brands->pluck('name')->filter()->values()->toArray()
+            : [
+                'DYNAMYST (Bold Woody & Fresh)',
+                'VANESSENCE (Citrus Warm Earthy)',
+                'Dior Sauvage Extrait',
+                'Baccarat Rouge 540',
+                'Aigner Blue Emotion',
+                'Channel Coco Mademoiselle',
+                'VS Scandalous',
+                '100% Extrait de Parfum Murni',
+                'Konsultasi Aroma Gratis via WhatsApp',
+            ];
     @endphp
     <div class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
         <div class="marquee-track">
             <div class="flex items-center shrink-0">
-                @foreach ($announcements as $item)
+                @foreach ($announcementList as $item)
                     <span class="px-6 flex items-center gap-2">
                         <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
                     </span>
                 @endforeach
             </div>
             <div class="flex items-center shrink-0" aria-hidden="true">
-                @foreach ($announcements as $item)
+                @foreach ($announcementList as $item)
                     <span class="px-6 flex items-center gap-2">
                         <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
                     </span>
@@ -134,24 +136,13 @@
                     </div>
                 </a>
                 
-                <nav class="hidden md:flex items-center gap-8 text-[13px] font-medium text-neutral-500">
-                    <a href="{{ route('home') }}" class="nav-underline text-neutral-950 font-semibold">Home</a>
-                    <a href="#hero-section" class="hover:text-neutral-950 transition-colors">Signature</a>
-                    <a href="#product" class="hover:text-neutral-950 transition-colors">Collection</a>
-                    <a href="#story" class="hover:text-neutral-950 transition-colors">Philosophy</a>
-                    <a href="#reviews" class="hover:text-neutral-950 transition-colors">Reviews</a>
+                <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
+                    <a href="{{ route('home') }}" class="nav-underline text-black font-medium">Home</a>
+                    <a href="{{ route('refill') }}" class="hover:text-black">Products</a>
                 </nav>
             </div>
 
             <div class="flex items-center gap-3.5">
-                <div class="hidden lg:flex items-center gap-2.5 bg-neutral-50 rounded-full px-4 py-2 w-56 text-neutral-400 border border-neutral-200/80 focus-within:border-neutral-900 focus-within:text-neutral-900 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="7" />
-                        <path stroke-linecap="round" d="m21 21-4.3-4.3" />
-                    </svg>
-                    <input type="text" placeholder="Cari varian aroma..." class="bg-transparent outline-none text-[13px] w-full text-neutral-900 placeholder:text-neutral-400 font-medium">
-                </div>
-
                 {{-- Cart Trigger in Header --}}
                 <button @click="cartOpen = true" class="relative p-2.5 rounded-full border border-neutral-200 hover:border-neutral-900 text-neutral-800 hover:text-neutral-950 transition-colors flex items-center justify-center cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
@@ -170,36 +161,55 @@
     {{-- ================================================================ --}}
     {{-- HERO SECTION — SPLIT SCREEN WITH FLOATING PRODUCT CARDS         --}}
     {{-- ================================================================ --}}
+    @php
+        $heroScents = (isset($heroProducts) && $heroProducts->count() > 0)
+            ? $heroProducts->map(function($product, $index) {
+                return [
+                    'name' => strtoupper($product->name),
+                    'label' => sprintf('%02d', $index + 1),
+                    'subname' => ($product->category ?? 'Signature') . ' ' . ($product->variant ?? 'Extrait de Parfum'),
+                    'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
+                    'character' => $product->description ? \Illuminate\Support\Str::limit($product->description, 60) : (($product->variant ? $product->variant . ' · ' : '') . ($product->gender ?? 'Universal')),
+                    'topNotes' => $product->top_note ?: 'Fresh Notes',
+                    'heartNotes' => $product->middle_note ?: 'Floral Notes',
+                    'baseNotes' => $product->base_note ?: 'Woody Musk',
+                    'tag' => $product->is_best_seller ? 'Best Seller' : 'Featured',
+                    'image' => $product->image ? asset('storage/' . $product->image) : asset('storage/image/DSC00057.JPG'),
+                    'alt' => $product->name . ' - Perfu.me Collection'
+                ];
+            })->values()->toArray()
+            : [
+                [
+                    'name' => 'DYNAMYST',
+                    'label' => '01',
+                    'subname' => 'Signature Extrait de Parfum',
+                    'price' => 'Rp 45.000',
+                    'character' => 'Bold Woody & Fresh Citrus',
+                    'topNotes' => 'Bergamot, Mandarin',
+                    'heartNotes' => 'French Lavender',
+                    'baseNotes' => 'Amber & White Musk',
+                    'tag' => 'Best Seller',
+                    'image' => asset('storage/image/DSC00057.JPG'),
+                    'alt' => 'Dynamyst Extrait de Parfum – Signature Collection'
+                ],
+                [
+                    'name' => 'VANESSENCE',
+                    'label' => '02',
+                    'subname' => 'Exclusive Extrait de Parfum',
+                    'price' => 'Rp 45.000',
+                    'character' => 'Citrus Fresh & Warm Earthy',
+                    'topNotes' => 'Lemon Zest, Apple',
+                    'heartNotes' => 'Ambroxan',
+                    'baseNotes' => 'Oakmoss & Cedar',
+                    'tag' => 'Exclusive Series',
+                    'image' => asset('storage/image/DSC00122.JPG'),
+                    'alt' => 'Vanessence Extrait de Parfum – Exclusive Series'
+                ]
+            ];
+    @endphp
     <section id="hero-section" class="relative overflow-hidden border-b border-neutral-100" style="min-height: 88vh;" x-data="{
         activeScent: 0,
-        scents: [
-            {
-                name: 'DYNAMYST',
-                label: '01',
-                subname: 'Signature Extrait de Parfum',
-                price: 'Rp 45.000',
-                character: 'Bold Woody & Fresh Citrus',
-                topNotes: 'Bergamot, Mandarin',
-                heartNotes: 'French Lavender',
-                baseNotes: 'Amber & White Musk',
-                tag: 'Best Seller',
-                image: '{{ asset('storage/image/DSC00057.JPG') }}',
-                alt: 'Dynamyst Extrait de Parfum – Signature Collection'
-            },
-            {
-                name: 'VANESSENCE',
-                label: '02',
-                subname: 'Exclusive Extrait de Parfum',
-                price: 'Rp 45.000',
-                character: 'Citrus Fresh & Warm Earthy',
-                topNotes: 'Lemon Zest, Apple',
-                heartNotes: 'Ambroxan',
-                baseNotes: 'Oakmoss & Cedar',
-                tag: 'Exclusive Series',
-                image: '{{ asset('storage/image/DSC00122.JPG') }}',
-                alt: 'Vanessence Extrait de Parfum – Exclusive Series'
-            }
-        ]
+        scents: @js($heroScents)
     }">
         {{-- ── LEFT HALF: Full-bleed Fragrance Image ── --}}
         <div class="hidden lg:block absolute inset-y-0 left-0 w-[48%] overflow-hidden">
@@ -352,15 +362,15 @@
             {{-- ── SOCIAL PROOF ── --}}
             <div class="flex items-center gap-3 pt-1 max-w-lg border-t border-neutral-100">
                 <div class="flex -space-x-2 overflow-hidden pt-3">
-                    <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-900 text-white text-[9px] font-bold items-center justify-center">RD</span>
-                    <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-800 text-white text-[9px] font-bold items-center justify-center">AN</span>
-                    <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-700 text-white text-[9px] font-bold items-center justify-center">KP</span>
-                    <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-200 text-neutral-800 text-[9px] font-bold items-center justify-center">+</span>
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Minjeong" class="inline-block h-7 w-7 rounded-full ring-2 ring-white object-cover">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Reza" class="inline-block h-7 w-7 rounded-full ring-2 ring-white object-cover">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Amanda" class="inline-block h-7 w-7 rounded-full ring-2 ring-white object-cover">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Kevin" class="inline-block h-7 w-7 rounded-full ring-2 ring-white object-cover">
                 </div>
                 <div class="pt-3">
                     <div class="flex items-center gap-1 text-amber-500 text-[11px]">
                         <span>★★★★★</span>
-                        <span class="font-bold text-neutral-950 ml-0.5">4.9</span>
+                        <span class="font-bold text-neutral-950 ml-0.5">{{ number_format($avgRating ?? 5.0, 1) }}</span>
                         <span class="text-neutral-400 font-normal">/ 5.0</span>
                     </div>
                     <p class="text-[10px] text-neutral-400">Dipercaya 1.400+ pelanggan Indonesia</p>
@@ -450,7 +460,7 @@
                 </div>
 
                 <div class="pt-3">
-                    <a href="#product" class="inline-flex items-center gap-2 text-xs font-bold text-neutral-950 underline underline-offset-8 hover:text-neutral-500 transition tracking-wide uppercase">
+                    <a href="{{ route('refill') }}" class="inline-flex items-center gap-2 text-xs font-bold text-neutral-950 underline underline-offset-8 hover:text-neutral-500 transition tracking-wide uppercase">
                         <span>Lihat Semua Koleksi Aroma</span>
                         <span>&rarr;</span>
                     </a>
@@ -485,12 +495,6 @@
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-950 tracking-tight">
                     Explore Our Masterpieces
                 </h2>
-                <a href="{{ route('refill') }}">
-                    <h2
-                        class="text-3xl md:text-4xl font-extrabold text-gray-300 hover:text-gray-500 transition cursor-pointer">
-                        Refill
-                    </h2>
-                </a>
             </div>
             <a href="https://wa.me/6287774375755?text=Halo%20Perfu.me,%20saya%20ingin%20melihat%20katalog%20lengkap%20semua%20varian" 
                target="_blank"
@@ -500,129 +504,92 @@
         </div>
 
         <div class="space-y-20 sm:space-y-24">
-            
-            {{-- PRODUK 1: FOTO KIRI, TEKS KANAN --}}
+
+            @foreach ($productOri as $ori)
+            @php
+                $isEven = $loop->even;
+
+                $gender = match($ori->gender){
+                    'Pria' => 'Men',
+                    'Wanita' => 'Women',
+                    'Unisex' => 'Unisex',
+                }
+            @endphp
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
                 
-                {{-- IMAGE COLUMN (Produk 1) --}}
-                <div class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full" style="min-height: 480px;">
-                    <img src="{{ asset('storage/image/DSC00057.JPG') }}" alt="Dynamyst Extrait de Parfum"
-                        class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-100 group-hover:opacity-0"
-                        style="min-height: 480px;"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Dynamyst'">
-                    <img src="{{ asset('storage/image/DSC00093.JPG') }}" alt="Dynamyst – alternate view"
-                        class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-                        style="min-height: 480px;"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Dynamyst+Alt'">
+                <div class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full min-h-[480px] {{ $isEven ? 'lg:order-2' : 'lg:order-1'}}">
+                    <img
+                        src="{{ asset('storage/' . $ori->image) }}"
+                        alt="{{ $ori->name }}"
+                        class="absolute inset-0 w-full h-full min-h-[480px] object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0"
+                        onerror="console.error('Image failed:', this.src)"
+                    >
+                    @if($ori->image_hover)
+                        <img
+                            src="{{ asset('storage/' . $ori->image_hover) }}"
+                            alt="{{ $ori->name }} alternate view"
+                            class="absolute inset-0 w-full h-full min-h-[480px] object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+                            onerror="console.error('Hover image failed:', this.src)"
+                        >
+                    @endif
+
                     <span class="absolute top-4 left-4 bg-neutral-950 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        Best Seller #1
+                        Best Seller #{{ $loop->iteration }}
                     </span>
-                    {{-- Hover hint --}}
-                    <span class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        Alternate View
-                    </span>
+
+                    @if($ori->image_hover)
+                        <span class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Alternate View
+                        </span>
+                    @endif
                 </div>
 
-                {{-- TEXT COLUMN (Produk 1) --}}
-                <div class="lg:py-4 space-y-6">
+                <div class="lg:py-4 space-y-6 {{ $isEven ? 'lg:order-1' : 'lg:order-2' }}">
                     <div class="space-y-2">
-                        <span class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">EXTRAIT DE PARFUM · 50ML</span>
-                        <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight">DYNAMYST</h3>
-                        <p class="text-2xl font-extrabold text-neutral-950">Rp 45.000</p>
+                        <span class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">{{ $ori->variant }} for {{ $gender }} · {{ $ori->volume }}ml</span>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight">{{ $ori->name }}</h3>
+                        <p class="text-2xl font-extrabold text-neutral-950">Rp {{ number_format($ori->price, 0, ',', '.') }}</p>
                     </div>
 
                     <p class="text-neutral-500 leading-relaxed text-sm">
-                        Aroma megah yang memadukan kesegaran citrus Mediterania dan kehangatan woody notes. Dirancang khusus untuk memberikan kesan wibawa, karisma tinggi, dan aura elegan sepanjang hari.
+                        {{ $ori->description }}
                     </p>
 
                     <div class="grid grid-cols-3 gap-3 bg-neutral-50 p-4 rounded-xl border border-neutral-200/80">
                         <div>
                             <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">TOP NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Bergamot, Mandarin, Pink Pepper</p>
+                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->top_note }}</p>
                         </div>
                         <div>
                             <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">MIDDLE NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">French Lavender, Cedarwood</p>
+                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->middle_note }}</p>
                         </div>
                         <div>
                             <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">BASE NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Amber, White Musk, Vanilla</p>
+                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->base_note }}</p>
                         </div>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-2.5">
-                        <button @click="addToCart({ name: 'Dynamyst Extrait de Parfum 50ml', price: 'Rp 45.000', image: '{{ asset('storage/image/DSC00057.JPG') }}' }, $event)"
+                        <button @click="addToCart({
+                                name: @js($ori->name),
+                                price: @js('Rp '.number_format($ori->price, 0, ',', '.')),
+                                image: @js(asset('storage/'.$ori->image))
+                            }, $event)"
                             class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition text-center cursor-pointer shadow-xs active:scale-[0.98]">
                             + Add to Cart
                         </button>
-                        <button @click="directCheckoutWhatsApp('Dynamyst Extrait de Parfum 50ml', 'Rp 45.000')"
+                        <button @click="directCheckoutWhatsApp(
+                                @js($ori->name.' '.$ori->variant.' '.$ori->volume.'ml'),
+                                @js('Rp '.number_format($ori->price, 0, ',', '.'))
+                            )"
                             class="flex-1 border border-neutral-300 text-neutral-900 text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-50 transition text-center cursor-pointer active:scale-[0.98]">
                             Checkout via WhatsApp
                         </button>
                     </div>
                 </div>
             </div>
-
-            {{-- PRODUK 2: TEKS KIRI, FOTO KANAN --}}
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
-
-                {{-- TEXT COLUMN (Produk 2) --}}
-                <div class="lg:py-4 space-y-6 order-2 lg:order-1">
-                    <div class="space-y-2">
-                        <span class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">EXTRAIT DE PARFUM · 50ML</span>
-                        <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight">VANESSENCE</h3>
-                        <p class="text-2xl font-extrabold text-neutral-950">Rp 45.000</p>
-                    </div>
-
-                    <p class="text-neutral-500 leading-relaxed text-sm">
-                        Karakter wangi yang maskulin dan berani. Menghadirkan kesegaran fruity-citrus di awal yang disusul dengan kesan earthy-woody yang mewah dan tahan lama untuk aktivitas malam.
-                    </p>
-
-                    <div class="grid grid-cols-3 gap-3 bg-neutral-50 p-4 rounded-xl border border-neutral-200/80">
-                        <div>
-                            <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">TOP NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Lemon Zest, Apple, Mint</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">MIDDLE NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Geranium, Ambroxan</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">BASE NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Oakmoss, Vetiver, Cedar</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-2.5">
-                        <button @click="addToCart({ name: 'Vanessence Extrait de Parfum 50ml', price: 'Rp 45.000', image: '{{ asset('storage/image/DSC00122.JPG') }}' }, $event)"
-                            class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition text-center cursor-pointer shadow-xs active:scale-[0.98]">
-                            + Add to Cart
-                        </button>
-                        <button @click="directCheckoutWhatsApp('Vanessence Extrait de Parfum 50ml', 'Rp 45.000')"
-                            class="flex-1 border border-neutral-300 text-neutral-900 text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-50 transition text-center cursor-pointer active:scale-[0.98]">
-                            Checkout via WhatsApp
-                        </button>
-                    </div>
-                </div>
-
-                {{-- IMAGE COLUMN (Produk 2) --}}
-                <div class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full order-1 lg:order-2" style="min-height: 480px;">
-                    <img src="{{ asset('storage/image/DSC00122.JPG') }}" alt="Vanessence Extrait de Parfum"
-                        class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-100 group-hover:opacity-0"
-                        style="min-height: 480px;"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Vanessence'">
-                    <img src="{{ asset('storage/image/DSC00164.JPG') }}" alt="Vanessence – alternate view"
-                        class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-                        style="min-height: 480px;"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Vanessence+Alt'">
-                    <span class="absolute top-4 left-4 bg-neutral-950 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        Exclusive Edition
-                    </span>
-                    <span class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        Alternate View
-                    </span>
-                </div>
-            </div>
+            @endforeach
 
         </div>
     </section>
@@ -639,47 +606,74 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
-                    <div>
-                        <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
-                        <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Wanginya tahan seharian di kantor ber-AC. Tipe wangi yang nggak bikin pusing tapi ninggalin kesan mewah pas salaman sama klien."</p>
-                    </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                        <div class="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-[11px]">RD</div>
+                @if (isset($reviews) && $reviews->count() > 0)
+                    @foreach ($reviews as $review)
+                        <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
+                            <div>
+                                <div class="text-amber-500 mb-3 text-xs tracking-widest">
+                                    {{ str_repeat('★', min(5, max(1, (int)$review->rating))) }}{{ str_repeat('☆', max(0, 5 - (int)$review->rating)) }}
+                                </div>
+                                <p class="text-xs text-neutral-600 leading-relaxed mb-5">"{{ $review->comment }}"</p>
+                            </div>
+                            <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
+                                @php
+                                    $initial = str($review->user_name)->substr(0, 1)->upper();
+                                @endphp
+                                <div class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs flex items-center justify-center bg-black/80">
+                                    <p class="text-white font-medium">
+                                        {{ $initial }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-neutral-900 capitalize">{{ $review->user_name }}</h4>
+                                    <p class="text-[10px] text-neutral-400">{{ $review->product->name ?? 'Pelanggan Perfu.me' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                         <div>
-                            <h4 class="text-xs font-bold text-neutral-900">Reza Darmawan</h4>
-                            <p class="text-[10px] text-neutral-400">Software Engineer · Jakarta</p>
+                            <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
+                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Wanginya tahan seharian di kantor ber-AC. Tipe wangi yang nggak bikin pusing tapi ninggalin kesan mewah pas salaman sama klien."</p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" alt="Reza Darmawan" class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs">
+                            <div>
+                                <h4 class="text-xs font-bold text-neutral-900">Reza Darmawan</h4>
+                                <p class="text-[10px] text-neutral-400">Software Engineer · Jakarta</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
-                    <div>
-                        <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
-                        <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Order via WhatsApp gampang banget, tinggal klik langsung ke format pesan otomatis. Pengiriman aman banget pakai bubble wrap tebal."</p>
-                    </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                        <div class="w-9 h-9 rounded-full bg-neutral-800 text-white flex items-center justify-center font-bold text-[11px]">AN</div>
+                    <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                         <div>
-                            <h4 class="text-xs font-bold text-neutral-900">Amanda Nadia</h4>
-                            <p class="text-[10px] text-neutral-400">Creative Director · Bandung</p>
+                            <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
+                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Order via WhatsApp gampang banget, tinggal klik langsung ke format pesan otomatis. Pengiriman aman banget pakai bubble wrap tebal."</p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80" alt="Amanda Nadia" class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs">
+                            <div>
+                                <h4 class="text-xs font-bold text-neutral-900">Amanda Nadia</h4>
+                                <p class="text-[10px] text-neutral-400">Creative Director · Bandung</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
-                    <div>
-                        <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
-                        <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Kualitas Extrait de Parfum-nya beneran kerasa. Dipakai pagi jam 7, sampai pulang kantor malam masih nempel aromanya di kemeja."</p>
-                    </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                        <div class="w-9 h-9 rounded-full bg-neutral-700 text-white flex items-center justify-center font-bold text-[11px]">KP</div>
+                    <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                         <div>
-                            <h4 class="text-xs font-bold text-neutral-900">Kevin Pratama</h4>
-                            <p class="text-[10px] text-neutral-400">Entrepreneur · Surabaya</p>
+                            <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
+                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Kualitas Extrait de Parfum-nya beneran kerasa. Dipakai pagi jam 7, sampai pulang kantor malam masih nempel aromanya di kemeja."</p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80" alt="Kevin Pratama" class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs">
+                            <div>
+                                <h4 class="text-xs font-bold text-neutral-900">Kevin Pratama</h4>
+                                <p class="text-[10px] text-neutral-400">Entrepreneur · Surabaya</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </section>

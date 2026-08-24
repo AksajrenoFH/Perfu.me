@@ -45,6 +45,12 @@ class BrandController extends Controller
             'description' => $request->description,
         ]);
 
+        if ($request->boolean('drawer') || $request->filled('drawer')) {
+            return response()->view('brands.drawer-success', [
+                'message' => 'Brand berhasil ditambahkan.',
+            ]);
+        }
+
         return redirect()->route('brands.index')->with('success', 'Brand berhasil ditambahkan!');
     }
 
@@ -75,6 +81,12 @@ class BrandController extends Controller
             'logo' => $logoPath,
             'description' => $request->description,
         ]);
+
+        if ($request->boolean('drawer') || $request->filled('drawer')) {
+            return response()->view('brands.drawer-success', [
+                'message' => 'Brand berhasil diperbarui.',
+            ]);
+        }
 
         return redirect()->route('brands.index')->with('success', 'Brand berhasil diperbarui!');
     }
