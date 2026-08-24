@@ -487,6 +487,12 @@
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-950 tracking-tight">
                     Explore Our Masterpieces
                 </h2>
+                <a href="<?php echo e(route('refill')); ?>">
+                    <h2
+                        class="text-3xl md:text-4xl font-extrabold text-gray-300 hover:text-gray-500 transition cursor-pointer">
+                        Refill
+                    </h2>
+                </a>
             </div>
             <a href="https://wa.me/6287774375755?text=Halo%20Perfu.me,%20saya%20ingin%20melihat%20katalog%20lengkap%20semua%20varian" 
                target="_blank"
@@ -688,7 +694,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
             
-            <span x-show="totalItems > 0" 
+            <span x-show="totalItems > 0"
                   :key="totalItems"
                   x-text="totalItems" 
                   class="absolute -top-1 -right-1 bg-white text-neutral-950 border border-neutral-950 text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-sm animate-pop"></span>
@@ -1041,5 +1047,4 @@
     </script>
 </body>
 
-</html>
-<?php /**PATH C:\Users\Faiz\Perfu.me\resources\views/customer/home.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\Ghani\kelompok parfum\Perfu.me\resources\views/customer/home.blade.php ENDPATH**/ ?>
