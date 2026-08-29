@@ -105,7 +105,7 @@
                 'Konsultasi Aroma Gratis via WhatsApp',
             ];
     @endphp
-    <div class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
+    <div id="marquee-bar" class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
         <div class="marquee-track">
             <div class="flex items-center shrink-0">
                 @foreach ($announcementList as $item)
@@ -125,7 +125,7 @@
     </div>
 
     {{-- Navbar --}}
-    <header class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
+    <header id="site-header" class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
         <div class="max-w-[1240px] mx-auto flex items-center justify-between px-8 sm:px-10 h-[70px]">
             <div class="flex items-center gap-12">
                 <a href="{{ route('home') }}" class="flex items-center gap-3 group">
@@ -149,6 +149,15 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                     <span x-show="totalItems > 0" x-text="totalItems" class="absolute -top-1 -right-1 bg-neutral-950 text-white text-[9px] font-bold w-4.5 h-4.5 w-5 h-5 rounded-full flex items-center justify-center"></span>
+                </button>
+
+                <button @click="startTour()" class="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-semibold text-neutral-600 hover:text-neutral-950 border border-neutral-200 hover:border-neutral-900 rounded-full px-3.5 py-2.5 transition cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                        <circle cx="12" cy="12" r="10" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2 1.5-2 3.5" />
+                        <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
+                    </svg>
+                    <span>Panduan</span>
                 </button>
 
                 <a href="#product" class="bg-neutral-950 text-white text-[13px] font-semibold rounded-full px-5 py-2.5 hover:bg-neutral-800 transition tracking-wide shadow-sm">
@@ -276,7 +285,7 @@
             </div>
 
             {{-- ── PRODUCT SWITCHER CARDS ── --}}
-            <div class="space-y-2 max-w-lg">
+            <div id="scent-switcher" class="space-y-2 max-w-lg">
                 <p class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase mb-3">Pilih Aroma Signature</p>
 
                 <template x-for="(scent, index) in scents" :key="'card-' + index">
@@ -336,7 +345,7 @@
             </template>
 
             {{-- ── CTA BUTTONS ── --}}
-            <div class="flex flex-col sm:flex-row gap-2.5 max-w-lg">
+            <div id="hero-cta" class="flex flex-col sm:flex-row gap-2.5 max-w-lg">
                 <template x-for="(scent, index) in scents" :key="'cta-' + index">
                     <div x-show="activeScent === index" class="flex flex-col sm:flex-row gap-2.5 w-full">
                         <button
@@ -383,7 +392,7 @@
     {{-- ======================================================== --}}
     {{-- VALUE PROPOSITIONS / USP BADGES STRIP (SVG ICONS)        --}}
     {{-- ======================================================== --}}
-    <section class="max-w-[1240px] mx-auto px-6 sm:px-8 py-12 border-b border-neutral-100">
+    <section id="usp-section" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-12 border-b border-neutral-100">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             
             <div class="flex items-start gap-3.5 p-5 rounded-2xl bg-neutral-50/70 border border-neutral-200/70 card-hover">
@@ -489,7 +498,7 @@
     {{-- DETAILED PRODUCT SHOWCASE SECTION (ZIG-ZAG)              --}}
     {{-- ======================================================== --}}
     <section id="product" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 bg-white border-t border-neutral-100">
-        <div class="border-b border-neutral-200/80 pb-5 mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div id="product-intro" class="border-b border-neutral-200/80 pb-5 mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
                 <p class="text-xs tracking-[0.25em] text-neutral-400 font-bold uppercase mb-1.5">CURATED SIGNATURES</p>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-950 tracking-tight">
@@ -678,6 +687,68 @@
         </div>
     </section>
 
+    {{-- FLOATING GUIDE / TOUR BUTTON --}}
+    <div class="fixed bottom-6 left-6 z-40">
+        <button @click="startTour()" title="Panduan Penggunaan Website"
+            class="bg-white text-neutral-900 border border-neutral-200 p-3.5 rounded-full shadow-xl hover:bg-neutral-50 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                <circle cx="12" cy="12" r="10" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2 1.5-2 3.5" />
+                <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
+            </svg>
+        </button>
+    </div>
+
+    {{-- ===================== ONBOARDING TOUR OVERLAY ===================== --}}
+    <template x-if="tourOpen">
+        <div class="fixed inset-0 z-[999]">
+            {{-- Spotlight highlight (the huge box-shadow dims everything outside the box) --}}
+            <div class="fixed rounded-2xl pointer-events-none transition-all duration-300 ease-out"
+                 :style="{ top: tourHighlightStyle.top, left: tourHighlightStyle.left, width: tourHighlightStyle.width, height: tourHighlightStyle.height, boxShadow: '0 0 0 9999px rgba(10,10,10,0.65)', border: '2px solid rgba(255,255,255,0.9)' }">
+            </div>
+
+            {{-- Popup card, positioned right next to the highlighted feature --}}
+            <div class="fixed z-[1000] bg-white rounded-2xl shadow-2xl border border-neutral-200 p-5 space-y-3.5 transition-all duration-300 ease-out"
+                 :style="{ top: tourPopupStyle.top, left: tourPopupStyle.left, width: tourPopupStyle.width }">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase" x-text="'Panduan ' + (tourStep + 1) + ' / ' + tourSteps.length"></span>
+                    <button @click="closeTour()" class="text-neutral-400 hover:text-neutral-950 transition cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <h3 class="text-sm font-extrabold text-neutral-950" x-text="tourSteps[tourStep]?.title"></h3>
+                <p class="text-xs text-neutral-500 leading-relaxed" x-text="tourSteps[tourStep]?.desc"></p>
+
+                <div class="flex items-center justify-between pt-2 border-t border-neutral-100">
+                    <button @click="closeTour()" class="text-[11px] font-semibold text-neutral-400 hover:text-neutral-700 transition cursor-pointer">
+                        Lewati
+                    </button>
+                    <div class="flex gap-2">
+                        <button x-show="tourStep > 0" @click="prevStep()"
+                            class="text-xs font-semibold px-3.5 py-2 rounded-full border border-neutral-200 hover:bg-neutral-50 transition cursor-pointer">
+                            Kembali
+                        </button>
+                        <button @click="tourStep === tourSteps.length - 1 ? closeTour() : nextStep()"
+                            class="text-xs font-semibold px-4 py-2 rounded-full bg-neutral-950 text-white hover:bg-neutral-800 transition cursor-pointer">
+                            <span x-text="tourStep === tourSteps.length - 1 ? 'Selesai' : 'Lanjut'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- progress dots --}}
+                <div class="flex gap-1 pt-1">
+                    <template x-for="(s, i) in tourSteps" :key="i">
+                        <span :class="i === tourStep ? 'bg-neutral-950 w-4' : 'bg-neutral-200 w-1.5'"
+                              class="h-1.5 rounded-full transition-all duration-300"></span>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </template>
+
     {{-- FLOATING CART BUTTON --}}
     <div class="fixed bottom-6 right-6 z-40">
         <button id="floating-cart-btn" @click="cartOpen = true" 
@@ -708,6 +779,7 @@
                          x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
                          x-transition:leave="transform transition ease-in-out duration-300"
                          x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+                         id="cart-drawer-panel"
                          class="pointer-events-auto w-screen max-w-md bg-white shadow-2xl flex flex-col">
 
                         <div class="flex items-center justify-between px-6 py-5 border-b border-neutral-100">
@@ -884,7 +956,7 @@
                 </ul>
             </div>
 
-            <div>
+            <div id="footer-newsletter">
                 <p class="text-[10px] tracking-widest text-neutral-300 font-bold uppercase mb-3">NEWSLETTER</p>
                 <p class="text-xs text-neutral-400 mb-3">Dapatkan info rilis aroma baru dan penawaran terbatas langsung ke email Anda.</p>
                 <form action="#" method="POST" class="flex gap-2">
@@ -909,6 +981,187 @@
                 cartOpen: false,
                 items: [],
                 deleteConfirm: { open: false, index: null, name: '' },
+
+                // ===================== ONBOARDING TOUR =====================
+                tourOpen: false,
+                tourStep: 0,
+                tourHighlightStyle: {},
+                tourPopupStyle: {},
+                _reposHandler: null,
+                init() {
+                    // 1) Auto-buka panduan sekali saat pertama kali membuka website
+                    try {
+                        const alreadySeen = localStorage.getItem('perfume_tour_seen');
+                        if (!alreadySeen) {
+                            setTimeout(() => this.startTour(), 900);
+                        }
+                    } catch (e) {
+                        // localStorage tidak tersedia (mis. mode private) — abaikan, panduan tetap bisa dibuka manual
+                    }
+                },
+                tourSteps: [
+                    {
+                        id: 'marquee-bar',
+                        title: 'Info Berjalan',
+                        desc: 'Pita berjalan ini menampilkan daftar brand/varian yang tersedia beserta info promo. Arahkan kursor ke sini untuk menghentikan sementara animasinya.'
+                    },
+                    {
+                        id: 'site-header',
+                        title: 'Navigasi & Keranjang',
+                        desc: 'Menu ini untuk berpindah ke halaman Products, mengecek isi keranjang lewat ikon tas, atau klik "Shop Now" untuk langsung menuju koleksi produk.'
+                    },
+                    {
+                        id: 'scent-switcher',
+                        title: 'Pilih Aroma Signature',
+                        desc: 'Klik salah satu kartu aroma untuk mengganti gambar, harga, dan detail notes (Top / Heart / Base) sesuai varian yang ingin kamu lihat.'
+                    },
+                    {
+                        id: 'hero-cta',
+                        title: 'Tambah ke Keranjang / Order Cepat',
+                        desc: '"Add to Cart" menyimpan aroma yang sedang dipilih ke keranjang. "Order via WhatsApp" langsung membuka chat dengan pesan otomatis khusus untuk aroma ini.'
+                    },
+                    {
+                        id: 'usp-section',
+                        title: 'Keunggulan Produk',
+                        desc: 'Tiga poin ini menjelaskan kualitas formula Extrait, daya tahan wangi, dan jaminan keamanan pengiriman dari Perfu.me.'
+                    },
+                    {
+                        id: 'product-intro',
+                        title: 'Koleksi Lengkap',
+                        desc: 'Scroll di area ini untuk melihat semua varian parfum. Setiap produk punya tombol "+ Add to Cart" dan "Checkout via WhatsApp" masing-masing, lengkap dengan detail notes aromanya.'
+                    },
+                    {
+                        id: 'reviews',
+                        title: 'Ulasan Pelanggan',
+                        desc: 'Baca pengalaman nyata pelanggan lain sebelum memutuskan aroma pilihanmu.'
+                    },
+                    {
+                        id: 'floating-cart-btn',
+                        target: 'cart-drawer-panel',
+                        skipScroll: true,
+                        title: 'Keranjang Belanja',
+                        desc: 'Tombol ini selalu muncul di pojok kanan bawah dari halaman manapun. Klik untuk membuka ringkasan belanja seperti ini, atur jumlah pesanan, lalu checkout langsung via WhatsApp.'
+                    },
+                    {
+                        id: 'footer-newsletter',
+                        title: 'Newsletter & Kontak',
+                        desc: 'Daftarkan email di sini untuk info rilis aroma baru, atau hubungi kami langsung lewat ikon sosial media di footer.'
+                    }
+                ],
+                startTour() {
+                    this.tourOpen = true;
+                    this._reposHandler = this.positionTour.bind(this);
+                    window.addEventListener('resize', this._reposHandler);
+                    window.addEventListener('scroll', this._reposHandler, true);
+                    this.goToStep(0);
+                },
+                closeTour() {
+                    this.tourOpen = false;
+                    this.cartOpen = false;
+                    if (this._reposHandler) {
+                        window.removeEventListener('resize', this._reposHandler);
+                        window.removeEventListener('scroll', this._reposHandler, true);
+                        this._reposHandler = null;
+                    }
+                    try {
+                        localStorage.setItem('perfume_tour_seen', '1');
+                    } catch (e) {
+                        // abaikan jika localStorage tidak tersedia
+                    }
+                },
+                nextStep() {
+                    this.goToStep(this.tourStep + 1);
+                },
+                prevStep() {
+                    this.goToStep(this.tourStep - 1);
+                },
+                goToStep(index) {
+                    if (index < 0 || index >= this.tourSteps.length) {
+                        this.closeTour();
+                        return;
+                    }
+                    this.tourStep = index;
+                    const step = this.tourSteps[index];
+                    // Auto-open the cart drawer when the tour reaches the cart step
+                    this.cartOpen = (step.id === 'floating-cart-btn');
+                    this.$nextTick(() => {
+                        if (!step.skipScroll) {
+                            const scrollId = step.target || step.id;
+                            const el = document.getElementById(scrollId);
+                            if (el) {
+                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                        }
+                        // wait for smooth-scroll / drawer transition to (mostly) finish before measuring position
+                        setTimeout(() => this.positionTour(), step.skipScroll ? 360 : 420);
+                    });
+                },
+                positionTour() {
+                    if (!this.tourOpen) return;
+                    const step = this.tourSteps[this.tourStep];
+                    if (!step) return;
+                    const targetId = step.target || step.id;
+                    const el = document.getElementById(targetId);
+                    if (!el) { this.nextStep(); return; }
+
+                    const raw = el.getBoundingClientRect();
+                    const vw = window.innerWidth;
+                    const vh = window.innerHeight;
+                    const margin = 14;
+                    const isMobile = vw < 768;
+                    const popupW = isMobile ? Math.min(vw - 32, 320) : 300;
+                    const popupHEstimate = 220;
+                    const pad = 8;
+
+                    // Clamp the target's rect to the visible viewport. This guarantees the
+                    // spotlight and popup stay on-screen and sane even when the target
+                    // element is taller/wider than the viewport (e.g. a long product list)
+                    // or currently sits partly off-screen.
+                    const rTop = Math.min(Math.max(raw.top, pad), vh - pad);
+                    const rLeft = Math.min(Math.max(raw.left, pad), vw - pad);
+                    const rBottom = Math.max(Math.min(raw.bottom, vh - pad), rTop + 24);
+                    const rRight = Math.max(Math.min(raw.right, vw - pad), rLeft + 24);
+                    const rWidth = rRight - rLeft;
+                    const rHeight = rBottom - rTop;
+
+                    this.tourHighlightStyle = {
+                        top: (rTop - 6) + 'px',
+                        left: (rLeft - 6) + 'px',
+                        width: (rWidth + 12) + 'px',
+                        height: (rHeight + 12) + 'px',
+                    };
+
+                    let top, left;
+                    if (isMobile) {
+                        const spaceBelow = vh - rBottom;
+                        top = spaceBelow > popupHEstimate
+                            ? rBottom + margin
+                            : Math.max(margin, rTop - margin - popupHEstimate);
+                        left = Math.max(16, Math.min(vw - popupW - 16, rLeft + rWidth / 2 - popupW / 2));
+                    } else {
+                        const spaceRight = vw - rRight;
+                        const spaceLeft = rLeft;
+                        if (spaceRight >= popupW + margin * 2) {
+                            left = rRight + margin;
+                            top = rTop;
+                        } else if (spaceLeft >= popupW + margin * 2) {
+                            left = rLeft - popupW - margin;
+                            top = rTop;
+                        } else {
+                            left = Math.max(16, Math.min(vw - popupW - 16, rLeft));
+                            top = rBottom + margin;
+                        }
+                        top = Math.max(16, Math.min(vh - popupHEstimate, top));
+                    }
+
+                    this.tourPopupStyle = {
+                        top: top + 'px',
+                        left: left + 'px',
+                        width: popupW + 'px',
+                    };
+                },
+                // ===================== END ONBOARDING TOUR =====================
+
                 addToCart(product, event) {
                     this.playFlyingBallAnimation(event);
 

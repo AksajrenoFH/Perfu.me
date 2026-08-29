@@ -91,22 +91,24 @@
 
     
     <?php
-        $announcements = [
-            'DYNAMYST (Bold Woody & Fresh)',
-            'VANESSENCE (Citrus Warm Earthy)',
-            'Dior Sauvage Extrait',
-            'Baccarat Rouge 540',
-            'Aigner Blue Emotion',
-            'Channel Coco Mademoiselle',
-            'VS Scandalous',
-            '100% Extrait de Parfum Murni',
-            'Konsultasi Aroma Gratis via WhatsApp',
-        ];
+        $announcementList = (isset($brands) && $brands->count() > 0)
+            ? $brands->pluck('name')->filter()->values()->toArray()
+            : [
+                'DYNAMYST (Bold Woody & Fresh)',
+                'VANESSENCE (Citrus Warm Earthy)',
+                'Dior Sauvage Extrait',
+                'Baccarat Rouge 540',
+                'Aigner Blue Emotion',
+                'Channel Coco Mademoiselle',
+                'VS Scandalous',
+                '100% Extrait de Parfum Murni',
+                'Konsultasi Aroma Gratis via WhatsApp',
+            ];
     ?>
-    <div class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
+    <div id="marquee-bar" class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
         <div class="marquee-track">
             <div class="flex items-center shrink-0">
-                <?php $__currentLoopData = $announcements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php $__currentLoopData = $announcementList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
                         <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
 
@@ -114,7 +116,7 @@
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="flex items-center shrink-0" aria-hidden="true">
-                <?php $__currentLoopData = $announcements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php $__currentLoopData = $announcementList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
                         <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
 
@@ -125,7 +127,7 @@
     </div>
 
     
-    <header class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
+    <header id="site-header" class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
         <div class="max-w-[1240px] mx-auto flex items-center justify-between px-8 sm:px-10 h-[70px]">
             <div class="flex items-center gap-12">
                 <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
@@ -136,30 +138,28 @@
                     </div>
                 </a>
                 
-                <nav class="hidden md:flex items-center gap-8 text-[13px] font-medium text-neutral-500">
-                    <a href="<?php echo e(route('home')); ?>" class="nav-underline text-neutral-950 font-semibold">Home</a>
-                    <a href="#hero-section" class="hover:text-neutral-950 transition-colors">Signature</a>
-                    <a href="#product" class="hover:text-neutral-950 transition-colors">Collection</a>
-                    <a href="#story" class="hover:text-neutral-950 transition-colors">Philosophy</a>
-                    <a href="#reviews" class="hover:text-neutral-950 transition-colors">Reviews</a>
+                <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
+                    <a href="<?php echo e(route('home')); ?>" class="nav-underline text-black font-medium">Home</a>
+                    <a href="<?php echo e(route('refill')); ?>" class="hover:text-black">Products</a>
                 </nav>
             </div>
 
             <div class="flex items-center gap-3.5">
-                <div class="hidden lg:flex items-center gap-2.5 bg-neutral-50 rounded-full px-4 py-2 w-56 text-neutral-400 border border-neutral-200/80 focus-within:border-neutral-900 focus-within:text-neutral-900 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="7" />
-                        <path stroke-linecap="round" d="m21 21-4.3-4.3" />
-                    </svg>
-                    <input type="text" placeholder="Cari varian aroma..." class="bg-transparent outline-none text-[13px] w-full text-neutral-900 placeholder:text-neutral-400 font-medium">
-                </div>
-
                 
                 <button @click="cartOpen = true" class="relative p-2.5 rounded-full border border-neutral-200 hover:border-neutral-900 text-neutral-800 hover:text-neutral-950 transition-colors flex items-center justify-center cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                     <span x-show="totalItems > 0" x-text="totalItems" class="absolute -top-1 -right-1 bg-neutral-950 text-white text-[9px] font-bold w-4.5 h-4.5 w-5 h-5 rounded-full flex items-center justify-center"></span>
+                </button>
+
+                <button @click="startTour()" class="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-semibold text-neutral-600 hover:text-neutral-950 border border-neutral-200 hover:border-neutral-900 rounded-full px-3.5 py-2.5 transition cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                        <circle cx="12" cy="12" r="10" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2 1.5-2 3.5" />
+                        <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
+                    </svg>
+                    <span>Panduan</span>
                 </button>
 
                 <a href="#product" class="bg-neutral-950 text-white text-[13px] font-semibold rounded-full px-5 py-2.5 hover:bg-neutral-800 transition tracking-wide shadow-sm">
@@ -172,36 +172,55 @@
     
     
     
+    <?php
+        $heroScents = (isset($heroProducts) && $heroProducts->count() > 0)
+            ? $heroProducts->map(function($product, $index) {
+                return [
+                    'name' => strtoupper($product->name),
+                    'label' => sprintf('%02d', $index + 1),
+                    'subname' => ($product->category ?? 'Signature') . ' ' . ($product->variant ?? 'Extrait de Parfum'),
+                    'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
+                    'character' => $product->description ? \Illuminate\Support\Str::limit($product->description, 60) : (($product->variant ? $product->variant . ' · ' : '') . ($product->gender ?? 'Universal')),
+                    'topNotes' => $product->top_note ?: 'Fresh Notes',
+                    'heartNotes' => $product->middle_note ?: 'Floral Notes',
+                    'baseNotes' => $product->base_note ?: 'Woody Musk',
+                    'tag' => $product->is_best_seller ? 'Best Seller' : 'Featured',
+                    'image' => $product->image ? asset('storage/' . $product->image) : asset('storage/image/DSC00057.JPG'),
+                    'alt' => $product->name . ' - Perfu.me Collection'
+                ];
+            })->values()->toArray()
+            : [
+                [
+                    'name' => 'DYNAMYST',
+                    'label' => '01',
+                    'subname' => 'Signature Extrait de Parfum',
+                    'price' => 'Rp 45.000',
+                    'character' => 'Bold Woody & Fresh Citrus',
+                    'topNotes' => 'Bergamot, Mandarin',
+                    'heartNotes' => 'French Lavender',
+                    'baseNotes' => 'Amber & White Musk',
+                    'tag' => 'Best Seller',
+                    'image' => asset('storage/image/DSC00057.JPG'),
+                    'alt' => 'Dynamyst Extrait de Parfum – Signature Collection'
+                ],
+                [
+                    'name' => 'VANESSENCE',
+                    'label' => '02',
+                    'subname' => 'Exclusive Extrait de Parfum',
+                    'price' => 'Rp 45.000',
+                    'character' => 'Citrus Fresh & Warm Earthy',
+                    'topNotes' => 'Lemon Zest, Apple',
+                    'heartNotes' => 'Ambroxan',
+                    'baseNotes' => 'Oakmoss & Cedar',
+                    'tag' => 'Exclusive Series',
+                    'image' => asset('storage/image/DSC00122.JPG'),
+                    'alt' => 'Vanessence Extrait de Parfum – Exclusive Series'
+                ]
+            ];
+    ?>
     <section id="hero-section" class="relative overflow-hidden border-b border-neutral-100" style="min-height: 88vh;" x-data="{
         activeScent: 0,
-        scents: [
-            {
-                name: 'DYNAMYST',
-                label: '01',
-                subname: 'Signature Extrait de Parfum',
-                price: 'Rp 45.000',
-                character: 'Bold Woody & Fresh Citrus',
-                topNotes: 'Bergamot, Mandarin',
-                heartNotes: 'French Lavender',
-                baseNotes: 'Amber & White Musk',
-                tag: 'Best Seller',
-                image: '<?php echo e(asset('storage/image/DSC00057.JPG')); ?>',
-                alt: 'Dynamyst Extrait de Parfum – Signature Collection'
-            },
-            {
-                name: 'VANESSENCE',
-                label: '02',
-                subname: 'Exclusive Extrait de Parfum',
-                price: 'Rp 45.000',
-                character: 'Citrus Fresh & Warm Earthy',
-                topNotes: 'Lemon Zest, Apple',
-                heartNotes: 'Ambroxan',
-                baseNotes: 'Oakmoss & Cedar',
-                tag: 'Exclusive Series',
-                image: '<?php echo e(asset('storage/image/DSC00122.JPG')); ?>',
-                alt: 'Vanessence Extrait de Parfum – Exclusive Series'
-            }
-        ]
+        scents: <?php echo \Illuminate\Support\Js::from($heroScents)->toHtml() ?>
     }">
         
         <div class="hidden lg:block absolute inset-y-0 left-0 w-[48%] overflow-hidden">
@@ -268,7 +287,7 @@
             </div>
 
             
-            <div class="space-y-2 max-w-lg">
+            <div id="scent-switcher" class="space-y-2 max-w-lg">
                 <p class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase mb-3">Pilih Aroma Signature</p>
 
                 <template x-for="(scent, index) in scents" :key="'card-' + index">
@@ -328,7 +347,7 @@
             </template>
 
             
-            <div class="flex flex-col sm:flex-row gap-2.5 max-w-lg">
+            <div id="hero-cta" class="flex flex-col sm:flex-row gap-2.5 max-w-lg">
                 <template x-for="(scent, index) in scents" :key="'cta-' + index">
                     <div x-show="activeScent === index" class="flex flex-col sm:flex-row gap-2.5 w-full">
                         <button
@@ -354,15 +373,15 @@
             
             <div class="flex items-center gap-3 pt-1 max-w-lg border-t border-neutral-100">
                 <div class="flex -space-x-2 overflow-hidden pt-3">
-                    <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-900 text-white text-[9px] font-bold items-center justify-center">RD</span>
-                    <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-800 text-white text-[9px] font-bold items-center justify-center">AN</span>
-                    <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-700 text-white text-[9px] font-bold items-center justify-center">KP</span>
-                    <span class="inline-flex h-7 w-7 rounded-full ring-2 ring-white bg-neutral-200 text-neutral-800 text-[9px] font-bold items-center justify-center">+</span>
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Minjeong" class="inline-block h-7 w-7 rounded-full ring-2 ring-white object-cover">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Reza" class="inline-block h-7 w-7 rounded-full ring-2 ring-white object-cover">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Amanda" class="inline-block h-7 w-7 rounded-full ring-2 ring-white object-cover">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Kevin" class="inline-block h-7 w-7 rounded-full ring-2 ring-white object-cover">
                 </div>
                 <div class="pt-3">
                     <div class="flex items-center gap-1 text-amber-500 text-[11px]">
                         <span>★★★★★</span>
-                        <span class="font-bold text-neutral-950 ml-0.5">4.9</span>
+                        <span class="font-bold text-neutral-950 ml-0.5"><?php echo e(number_format($avgRating ?? 5.0, 1)); ?></span>
                         <span class="text-neutral-400 font-normal">/ 5.0</span>
                     </div>
                     <p class="text-[10px] text-neutral-400">Dipercaya 1.400+ pelanggan Indonesia</p>
@@ -375,7 +394,7 @@
     
     
     
-    <section class="max-w-[1240px] mx-auto px-6 sm:px-8 py-12 border-b border-neutral-100">
+    <section id="usp-section" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-12 border-b border-neutral-100">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             
             <div class="flex items-start gap-3.5 p-5 rounded-2xl bg-neutral-50/70 border border-neutral-200/70 card-hover">
@@ -452,7 +471,7 @@
                 </div>
 
                 <div class="pt-3">
-                    <a href="#product" class="inline-flex items-center gap-2 text-xs font-bold text-neutral-950 underline underline-offset-8 hover:text-neutral-500 transition tracking-wide uppercase">
+                    <a href="<?php echo e(route('refill')); ?>" class="inline-flex items-center gap-2 text-xs font-bold text-neutral-950 underline underline-offset-8 hover:text-neutral-500 transition tracking-wide uppercase">
                         <span>Lihat Semua Koleksi Aroma</span>
                         <span>&rarr;</span>
                     </a>
@@ -481,18 +500,12 @@
     
     
     <section id="product" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 bg-white border-t border-neutral-100">
-        <div class="border-b border-neutral-200/80 pb-5 mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div id="product-intro" class="border-b border-neutral-200/80 pb-5 mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
                 <p class="text-xs tracking-[0.25em] text-neutral-400 font-bold uppercase mb-1.5">CURATED SIGNATURES</p>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-950 tracking-tight">
                     Explore Our Masterpieces
                 </h2>
-                <a href="<?php echo e(route('refill')); ?>">
-                    <h2
-                        class="text-3xl md:text-4xl font-extrabold text-gray-300 hover:text-gray-500 transition cursor-pointer">
-                        Refill
-                    </h2>
-                </a>
             </div>
             <a href="https://wa.me/6287774375755?text=Halo%20Perfu.me,%20saya%20ingin%20melihat%20katalog%20lengkap%20semua%20varian" 
                target="_blank"
@@ -502,129 +515,94 @@
         </div>
 
         <div class="space-y-20 sm:space-y-24">
-            
-            
+
+            <?php $__currentLoopData = $productOri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ori): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
+                $isEven = $loop->even;
+
+                $gender = match($ori->gender){
+                    'Pria' => 'Men',
+                    'Wanita' => 'Women',
+                    'Unisex' => 'Unisex',
+                }
+            ?>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
                 
-                
-                <div class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full" style="min-height: 480px;">
-                    <img src="<?php echo e(asset('storage/image/DSC00057.JPG')); ?>" alt="Dynamyst Extrait de Parfum"
-                        class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-100 group-hover:opacity-0"
-                        style="min-height: 480px;"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Dynamyst'">
-                    <img src="<?php echo e(asset('storage/image/DSC00093.JPG')); ?>" alt="Dynamyst – alternate view"
-                        class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-                        style="min-height: 480px;"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Dynamyst+Alt'">
+                <div class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full min-h-[480px] <?php echo e($isEven ? 'lg:order-2' : 'lg:order-1'); ?>">
+                    <img
+                        src="<?php echo e(asset('storage/' . $ori->image)); ?>"
+                        alt="<?php echo e($ori->name); ?>"
+                        class="absolute inset-0 w-full h-full min-h-[480px] object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0"
+                        onerror="console.error('Image failed:', this.src)"
+                    >
+                    <?php if($ori->image_hover): ?>
+                        <img
+                            src="<?php echo e(asset('storage/' . $ori->image_hover)); ?>"
+                            alt="<?php echo e($ori->name); ?> alternate view"
+                            class="absolute inset-0 w-full h-full min-h-[480px] object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+                            onerror="console.error('Hover image failed:', this.src)"
+                        >
+                    <?php endif; ?>
+
                     <span class="absolute top-4 left-4 bg-neutral-950 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        Best Seller #1
+                        Best Seller #<?php echo e($loop->iteration); ?>
+
                     </span>
-                    
-                    <span class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        Alternate View
-                    </span>
+
+                    <?php if($ori->image_hover): ?>
+                        <span class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Alternate View
+                        </span>
+                    <?php endif; ?>
                 </div>
 
-                
-                <div class="lg:py-4 space-y-6">
+                <div class="lg:py-4 space-y-6 <?php echo e($isEven ? 'lg:order-1' : 'lg:order-2'); ?>">
                     <div class="space-y-2">
-                        <span class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">EXTRAIT DE PARFUM · 50ML</span>
-                        <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight">DYNAMYST</h3>
-                        <p class="text-2xl font-extrabold text-neutral-950">Rp 45.000</p>
+                        <span class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase"><?php echo e($ori->variant); ?> for <?php echo e($gender); ?> · <?php echo e($ori->volume); ?>ml</span>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight"><?php echo e($ori->name); ?></h3>
+                        <p class="text-2xl font-extrabold text-neutral-950">Rp <?php echo e(number_format($ori->price, 0, ',', '.')); ?></p>
                     </div>
 
                     <p class="text-neutral-500 leading-relaxed text-sm">
-                        Aroma megah yang memadukan kesegaran citrus Mediterania dan kehangatan woody notes. Dirancang khusus untuk memberikan kesan wibawa, karisma tinggi, dan aura elegan sepanjang hari.
+                        <?php echo e($ori->description); ?>
+
                     </p>
 
                     <div class="grid grid-cols-3 gap-3 bg-neutral-50 p-4 rounded-xl border border-neutral-200/80">
                         <div>
                             <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">TOP NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Bergamot, Mandarin, Pink Pepper</p>
+                            <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->top_note); ?></p>
                         </div>
                         <div>
                             <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">MIDDLE NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">French Lavender, Cedarwood</p>
+                            <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->middle_note); ?></p>
                         </div>
                         <div>
                             <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">BASE NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Amber, White Musk, Vanilla</p>
+                            <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->base_note); ?></p>
                         </div>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-2.5">
-                        <button @click="addToCart({ name: 'Dynamyst Extrait de Parfum 50ml', price: 'Rp 45.000', image: '<?php echo e(asset('storage/image/DSC00057.JPG')); ?>' }, $event)"
+                        <button @click="addToCart({
+                                name: <?php echo \Illuminate\Support\Js::from($ori->name)->toHtml() ?>,
+                                price: <?php echo \Illuminate\Support\Js::from('Rp '.number_format($ori->price, 0, ',', '.'))->toHtml() ?>,
+                                image: <?php echo \Illuminate\Support\Js::from(asset('storage/'.$ori->image))->toHtml() ?>
+                            }, $event)"
                             class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition text-center cursor-pointer shadow-xs active:scale-[0.98]">
                             + Add to Cart
                         </button>
-                        <button @click="directCheckoutWhatsApp('Dynamyst Extrait de Parfum 50ml', 'Rp 45.000')"
+                        <button @click="directCheckoutWhatsApp(
+                                <?php echo \Illuminate\Support\Js::from($ori->name.' '.$ori->variant.' '.$ori->volume.'ml')->toHtml() ?>,
+                                <?php echo \Illuminate\Support\Js::from('Rp '.number_format($ori->price, 0, ',', '.'))->toHtml() ?>
+                            )"
                             class="flex-1 border border-neutral-300 text-neutral-900 text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-50 transition text-center cursor-pointer active:scale-[0.98]">
                             Checkout via WhatsApp
                         </button>
                     </div>
                 </div>
             </div>
-
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
-
-                
-                <div class="lg:py-4 space-y-6 order-2 lg:order-1">
-                    <div class="space-y-2">
-                        <span class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">EXTRAIT DE PARFUM · 50ML</span>
-                        <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight">VANESSENCE</h3>
-                        <p class="text-2xl font-extrabold text-neutral-950">Rp 45.000</p>
-                    </div>
-
-                    <p class="text-neutral-500 leading-relaxed text-sm">
-                        Karakter wangi yang maskulin dan berani. Menghadirkan kesegaran fruity-citrus di awal yang disusul dengan kesan earthy-woody yang mewah dan tahan lama untuk aktivitas malam.
-                    </p>
-
-                    <div class="grid grid-cols-3 gap-3 bg-neutral-50 p-4 rounded-xl border border-neutral-200/80">
-                        <div>
-                            <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">TOP NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Lemon Zest, Apple, Mint</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">MIDDLE NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Geranium, Ambroxan</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">BASE NOTES</p>
-                            <p class="text-[11px] font-bold text-neutral-900 leading-snug">Oakmoss, Vetiver, Cedar</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-2.5">
-                        <button @click="addToCart({ name: 'Vanessence Extrait de Parfum 50ml', price: 'Rp 45.000', image: '<?php echo e(asset('storage/image/DSC00122.JPG')); ?>' }, $event)"
-                            class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition text-center cursor-pointer shadow-xs active:scale-[0.98]">
-                            + Add to Cart
-                        </button>
-                        <button @click="directCheckoutWhatsApp('Vanessence Extrait de Parfum 50ml', 'Rp 45.000')"
-                            class="flex-1 border border-neutral-300 text-neutral-900 text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-50 transition text-center cursor-pointer active:scale-[0.98]">
-                            Checkout via WhatsApp
-                        </button>
-                    </div>
-                </div>
-
-                
-                <div class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full order-1 lg:order-2" style="min-height: 480px;">
-                    <img src="<?php echo e(asset('storage/image/DSC00122.JPG')); ?>" alt="Vanessence Extrait de Parfum"
-                        class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-100 group-hover:opacity-0"
-                        style="min-height: 480px;"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Vanessence'">
-                    <img src="<?php echo e(asset('storage/image/DSC00164.JPG')); ?>" alt="Vanessence – alternate view"
-                        class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-                        style="min-height: 480px;"
-                        onerror="this.src='https://via.placeholder.com/600x750?text=Vanessence+Alt'">
-                    <span class="absolute top-4 left-4 bg-neutral-950 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        Exclusive Edition
-                    </span>
-                    <span class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        Alternate View
-                    </span>
-                </div>
-            </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
         </div>
     </section>
@@ -641,50 +619,141 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
-                    <div>
-                        <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
-                        <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Wanginya tahan seharian di kantor ber-AC. Tipe wangi yang nggak bikin pusing tapi ninggalin kesan mewah pas salaman sama klien."</p>
-                    </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                        <div class="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-[11px]">RD</div>
-                        <div>
-                            <h4 class="text-xs font-bold text-neutral-900">Reza Darmawan</h4>
-                            <p class="text-[10px] text-neutral-400">Software Engineer · Jakarta</p>
-                        </div>
-                    </div>
-                </div>
+                <?php if(isset($reviews) && $reviews->count() > 0): ?>
+                    <?php $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
+                            <div>
+                                <div class="text-amber-500 mb-3 text-xs tracking-widest">
+                                    <?php echo e(str_repeat('★', min(5, max(1, (int)$review->rating)))); ?><?php echo e(str_repeat('☆', max(0, 5 - (int)$review->rating))); ?>
 
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
-                    <div>
-                        <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
-                        <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Order via WhatsApp gampang banget, tinggal klik langsung ke format pesan otomatis. Pengiriman aman banget pakai bubble wrap tebal."</p>
-                    </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                        <div class="w-9 h-9 rounded-full bg-neutral-800 text-white flex items-center justify-center font-bold text-[11px]">AN</div>
-                        <div>
-                            <h4 class="text-xs font-bold text-neutral-900">Amanda Nadia</h4>
-                            <p class="text-[10px] text-neutral-400">Creative Director · Bandung</p>
-                        </div>
-                    </div>
-                </div>
+                                </div>
+                                <p class="text-xs text-neutral-600 leading-relaxed mb-5">"<?php echo e($review->comment); ?>"</p>
+                            </div>
+                            <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
+                                <?php
+                                    $initial = str($review->user_name)->substr(0, 1)->upper();
+                                ?>
+                                <div class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs flex items-center justify-center bg-black/80">
+                                    <p class="text-white font-medium">
+                                        <?php echo e($initial); ?>
 
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
-                    <div>
-                        <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
-                        <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Kualitas Extrait de Parfum-nya beneran kerasa. Dipakai pagi jam 7, sampai pulang kantor malam masih nempel aromanya di kemeja."</p>
-                    </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                        <div class="w-9 h-9 rounded-full bg-neutral-700 text-white flex items-center justify-center font-bold text-[11px]">KP</div>
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-neutral-900 capitalize"><?php echo e($review->user_name); ?></h4>
+                                    <p class="text-[10px] text-neutral-400"><?php echo e($review->product->name ?? 'Pelanggan Perfu.me'); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php else: ?>
+                    <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                         <div>
-                            <h4 class="text-xs font-bold text-neutral-900">Kevin Pratama</h4>
-                            <p class="text-[10px] text-neutral-400">Entrepreneur · Surabaya</p>
+                            <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
+                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Wanginya tahan seharian di kantor ber-AC. Tipe wangi yang nggak bikin pusing tapi ninggalin kesan mewah pas salaman sama klien."</p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" alt="Reza Darmawan" class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs">
+                            <div>
+                                <h4 class="text-xs font-bold text-neutral-900">Reza Darmawan</h4>
+                                <p class="text-[10px] text-neutral-400">Software Engineer · Jakarta</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
+                        <div>
+                            <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
+                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Order via WhatsApp gampang banget, tinggal klik langsung ke format pesan otomatis. Pengiriman aman banget pakai bubble wrap tebal."</p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80" alt="Amanda Nadia" class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs">
+                            <div>
+                                <h4 class="text-xs font-bold text-neutral-900">Amanda Nadia</h4>
+                                <p class="text-[10px] text-neutral-400">Creative Director · Bandung</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
+                        <div>
+                            <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
+                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Kualitas Extrait de Parfum-nya beneran kerasa. Dipakai pagi jam 7, sampai pulang kantor malam masih nempel aromanya di kemeja."</p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80" alt="Kevin Pratama" class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs">
+                            <div>
+                                <h4 class="text-xs font-bold text-neutral-900">Kevin Pratama</h4>
+                                <p class="text-[10px] text-neutral-400">Entrepreneur · Surabaya</p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>
+
+    
+    <div class="fixed bottom-6 left-6 z-40">
+        <button @click="startTour()" title="Panduan Penggunaan Website"
+            class="bg-white text-neutral-900 border border-neutral-200 p-3.5 rounded-full shadow-xl hover:bg-neutral-50 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                <circle cx="12" cy="12" r="10" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2 1.5-2 3.5" />
+                <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
+            </svg>
+        </button>
+    </div>
+
+    
+    <template x-if="tourOpen">
+        <div class="fixed inset-0 z-[999]">
+            
+            <div class="fixed rounded-2xl pointer-events-none transition-all duration-300 ease-out"
+                 :style="{ top: tourHighlightStyle.top, left: tourHighlightStyle.left, width: tourHighlightStyle.width, height: tourHighlightStyle.height, boxShadow: '0 0 0 9999px rgba(10,10,10,0.65)', border: '2px solid rgba(255,255,255,0.9)' }">
+            </div>
+
+            
+            <div class="fixed z-[1000] bg-white rounded-2xl shadow-2xl border border-neutral-200 p-5 space-y-3.5 transition-all duration-300 ease-out"
+                 :style="{ top: tourPopupStyle.top, left: tourPopupStyle.left, width: tourPopupStyle.width }">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase" x-text="'Panduan ' + (tourStep + 1) + ' / ' + tourSteps.length"></span>
+                    <button @click="closeTour()" class="text-neutral-400 hover:text-neutral-950 transition cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <h3 class="text-sm font-extrabold text-neutral-950" x-text="tourSteps[tourStep]?.title"></h3>
+                <p class="text-xs text-neutral-500 leading-relaxed" x-text="tourSteps[tourStep]?.desc"></p>
+
+                <div class="flex items-center justify-between pt-2 border-t border-neutral-100">
+                    <button @click="closeTour()" class="text-[11px] font-semibold text-neutral-400 hover:text-neutral-700 transition cursor-pointer">
+                        Lewati
+                    </button>
+                    <div class="flex gap-2">
+                        <button x-show="tourStep > 0" @click="prevStep()"
+                            class="text-xs font-semibold px-3.5 py-2 rounded-full border border-neutral-200 hover:bg-neutral-50 transition cursor-pointer">
+                            Kembali
+                        </button>
+                        <button @click="tourStep === tourSteps.length - 1 ? closeTour() : nextStep()"
+                            class="text-xs font-semibold px-4 py-2 rounded-full bg-neutral-950 text-white hover:bg-neutral-800 transition cursor-pointer">
+                            <span x-text="tourStep === tourSteps.length - 1 ? 'Selesai' : 'Lanjut'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                
+                <div class="flex gap-1 pt-1">
+                    <template x-for="(s, i) in tourSteps" :key="i">
+                        <span :class="i === tourStep ? 'bg-neutral-950 w-4' : 'bg-neutral-200 w-1.5'"
+                              class="h-1.5 rounded-full transition-all duration-300"></span>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </template>
 
     
     <div class="fixed bottom-6 right-6 z-40">
@@ -716,6 +785,7 @@
                          x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
                          x-transition:leave="transform transition ease-in-out duration-300"
                          x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+                         id="cart-drawer-panel"
                          class="pointer-events-auto w-screen max-w-md bg-white shadow-2xl flex flex-col">
 
                         <div class="flex items-center justify-between px-6 py-5 border-b border-neutral-100">
@@ -892,7 +962,7 @@
                 </ul>
             </div>
 
-            <div>
+            <div id="footer-newsletter">
                 <p class="text-[10px] tracking-widest text-neutral-300 font-bold uppercase mb-3">NEWSLETTER</p>
                 <p class="text-xs text-neutral-400 mb-3">Dapatkan info rilis aroma baru dan penawaran terbatas langsung ke email Anda.</p>
                 <form action="#" method="POST" class="flex gap-2">
@@ -917,6 +987,187 @@
                 cartOpen: false,
                 items: [],
                 deleteConfirm: { open: false, index: null, name: '' },
+
+                // ===================== ONBOARDING TOUR =====================
+                tourOpen: false,
+                tourStep: 0,
+                tourHighlightStyle: {},
+                tourPopupStyle: {},
+                _reposHandler: null,
+                init() {
+                    // 1) Auto-buka panduan sekali saat pertama kali membuka website
+                    try {
+                        const alreadySeen = localStorage.getItem('perfume_tour_seen');
+                        if (!alreadySeen) {
+                            setTimeout(() => this.startTour(), 900);
+                        }
+                    } catch (e) {
+                        // localStorage tidak tersedia (mis. mode private) — abaikan, panduan tetap bisa dibuka manual
+                    }
+                },
+                tourSteps: [
+                    {
+                        id: 'marquee-bar',
+                        title: 'Info Berjalan',
+                        desc: 'Pita berjalan ini menampilkan daftar brand/varian yang tersedia beserta info promo. Arahkan kursor ke sini untuk menghentikan sementara animasinya.'
+                    },
+                    {
+                        id: 'site-header',
+                        title: 'Navigasi & Keranjang',
+                        desc: 'Menu ini untuk berpindah ke halaman Products, mengecek isi keranjang lewat ikon tas, atau klik "Shop Now" untuk langsung menuju koleksi produk.'
+                    },
+                    {
+                        id: 'scent-switcher',
+                        title: 'Pilih Aroma Signature',
+                        desc: 'Klik salah satu kartu aroma untuk mengganti gambar, harga, dan detail notes (Top / Heart / Base) sesuai varian yang ingin kamu lihat.'
+                    },
+                    {
+                        id: 'hero-cta',
+                        title: 'Tambah ke Keranjang / Order Cepat',
+                        desc: '"Add to Cart" menyimpan aroma yang sedang dipilih ke keranjang. "Order via WhatsApp" langsung membuka chat dengan pesan otomatis khusus untuk aroma ini.'
+                    },
+                    {
+                        id: 'usp-section',
+                        title: 'Keunggulan Produk',
+                        desc: 'Tiga poin ini menjelaskan kualitas formula Extrait, daya tahan wangi, dan jaminan keamanan pengiriman dari Perfu.me.'
+                    },
+                    {
+                        id: 'product-intro',
+                        title: 'Koleksi Lengkap',
+                        desc: 'Scroll di area ini untuk melihat semua varian parfum. Setiap produk punya tombol "+ Add to Cart" dan "Checkout via WhatsApp" masing-masing, lengkap dengan detail notes aromanya.'
+                    },
+                    {
+                        id: 'reviews',
+                        title: 'Ulasan Pelanggan',
+                        desc: 'Baca pengalaman nyata pelanggan lain sebelum memutuskan aroma pilihanmu.'
+                    },
+                    {
+                        id: 'floating-cart-btn',
+                        target: 'cart-drawer-panel',
+                        skipScroll: true,
+                        title: 'Keranjang Belanja',
+                        desc: 'Tombol ini selalu muncul di pojok kanan bawah dari halaman manapun. Klik untuk membuka ringkasan belanja seperti ini, atur jumlah pesanan, lalu checkout langsung via WhatsApp.'
+                    },
+                    {
+                        id: 'footer-newsletter',
+                        title: 'Newsletter & Kontak',
+                        desc: 'Daftarkan email di sini untuk info rilis aroma baru, atau hubungi kami langsung lewat ikon sosial media di footer.'
+                    }
+                ],
+                startTour() {
+                    this.tourOpen = true;
+                    this._reposHandler = this.positionTour.bind(this);
+                    window.addEventListener('resize', this._reposHandler);
+                    window.addEventListener('scroll', this._reposHandler, true);
+                    this.goToStep(0);
+                },
+                closeTour() {
+                    this.tourOpen = false;
+                    this.cartOpen = false;
+                    if (this._reposHandler) {
+                        window.removeEventListener('resize', this._reposHandler);
+                        window.removeEventListener('scroll', this._reposHandler, true);
+                        this._reposHandler = null;
+                    }
+                    try {
+                        localStorage.setItem('perfume_tour_seen', '1');
+                    } catch (e) {
+                        // abaikan jika localStorage tidak tersedia
+                    }
+                },
+                nextStep() {
+                    this.goToStep(this.tourStep + 1);
+                },
+                prevStep() {
+                    this.goToStep(this.tourStep - 1);
+                },
+                goToStep(index) {
+                    if (index < 0 || index >= this.tourSteps.length) {
+                        this.closeTour();
+                        return;
+                    }
+                    this.tourStep = index;
+                    const step = this.tourSteps[index];
+                    // Auto-open the cart drawer when the tour reaches the cart step
+                    this.cartOpen = (step.id === 'floating-cart-btn');
+                    this.$nextTick(() => {
+                        if (!step.skipScroll) {
+                            const scrollId = step.target || step.id;
+                            const el = document.getElementById(scrollId);
+                            if (el) {
+                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                        }
+                        // wait for smooth-scroll / drawer transition to (mostly) finish before measuring position
+                        setTimeout(() => this.positionTour(), step.skipScroll ? 360 : 420);
+                    });
+                },
+                positionTour() {
+                    if (!this.tourOpen) return;
+                    const step = this.tourSteps[this.tourStep];
+                    if (!step) return;
+                    const targetId = step.target || step.id;
+                    const el = document.getElementById(targetId);
+                    if (!el) { this.nextStep(); return; }
+
+                    const raw = el.getBoundingClientRect();
+                    const vw = window.innerWidth;
+                    const vh = window.innerHeight;
+                    const margin = 14;
+                    const isMobile = vw < 768;
+                    const popupW = isMobile ? Math.min(vw - 32, 320) : 300;
+                    const popupHEstimate = 220;
+                    const pad = 8;
+
+                    // Clamp the target's rect to the visible viewport. This guarantees the
+                    // spotlight and popup stay on-screen and sane even when the target
+                    // element is taller/wider than the viewport (e.g. a long product list)
+                    // or currently sits partly off-screen.
+                    const rTop = Math.min(Math.max(raw.top, pad), vh - pad);
+                    const rLeft = Math.min(Math.max(raw.left, pad), vw - pad);
+                    const rBottom = Math.max(Math.min(raw.bottom, vh - pad), rTop + 24);
+                    const rRight = Math.max(Math.min(raw.right, vw - pad), rLeft + 24);
+                    const rWidth = rRight - rLeft;
+                    const rHeight = rBottom - rTop;
+
+                    this.tourHighlightStyle = {
+                        top: (rTop - 6) + 'px',
+                        left: (rLeft - 6) + 'px',
+                        width: (rWidth + 12) + 'px',
+                        height: (rHeight + 12) + 'px',
+                    };
+
+                    let top, left;
+                    if (isMobile) {
+                        const spaceBelow = vh - rBottom;
+                        top = spaceBelow > popupHEstimate
+                            ? rBottom + margin
+                            : Math.max(margin, rTop - margin - popupHEstimate);
+                        left = Math.max(16, Math.min(vw - popupW - 16, rLeft + rWidth / 2 - popupW / 2));
+                    } else {
+                        const spaceRight = vw - rRight;
+                        const spaceLeft = rLeft;
+                        if (spaceRight >= popupW + margin * 2) {
+                            left = rRight + margin;
+                            top = rTop;
+                        } else if (spaceLeft >= popupW + margin * 2) {
+                            left = rLeft - popupW - margin;
+                            top = rTop;
+                        } else {
+                            left = Math.max(16, Math.min(vw - popupW - 16, rLeft));
+                            top = rBottom + margin;
+                        }
+                        top = Math.max(16, Math.min(vh - popupHEstimate, top));
+                    }
+
+                    this.tourPopupStyle = {
+                        top: top + 'px',
+                        left: left + 'px',
+                        width: popupW + 'px',
+                    };
+                },
+                // ===================== END ONBOARDING TOUR =====================
+
                 addToCart(product, event) {
                     this.playFlyingBallAnimation(event);
 
