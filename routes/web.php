@@ -2,11 +2,9 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\RefillController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
