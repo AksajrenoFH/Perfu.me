@@ -40,6 +40,12 @@ class OrderController extends Controller
     {
         Order::create($this->validatedData($request));
 
+        if ($request->has('drawer')) {
+            return response()->view('orders.drawer-success', [
+                'message' => 'Pesanan berhasil ditambahkan.'
+            ]);
+        }
+
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil ditambahkan.');
     }
 
@@ -56,6 +62,12 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $order->update($this->validatedData($request));
+
+        if ($request->has('drawer')) {
+            return response()->view('orders.drawer-success', [
+                'message' => 'Pesanan berhasil diperbarui.'
+            ]);
+        }
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
     }

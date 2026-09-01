@@ -73,8 +73,6 @@
             {{-- Top Brand Logo & Indicator Dots --}}
             <div class="relative z-10 flex justify-between items-center">
                 <a href="/" class="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-white group">
-                    <span
-                        class="w-2.5 h-2.5 rounded-full bg-white inline-block group-hover:scale-125 transition"></span>
                     perfu.me
                 </a>
 
@@ -91,7 +89,7 @@
             <div class="relative z-10 max-w-lg">
                 <div
                     class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] tracking-[0.25em] uppercase text-gray-300 font-semibold mb-6 backdrop-blur-md">
-                    <span>✦</span> Lifestyle & Productivity Division
+                    Lifestyle & Productivity Division
                 </div>
                 <blockquote class="text-3xl font-extrabold leading-snug mb-6 tracking-tight text-gray-100 min-h-[120px]"
                     x-text="quotes[activeSlide]" x-transition:enter="transition ease-out duration-1000"
