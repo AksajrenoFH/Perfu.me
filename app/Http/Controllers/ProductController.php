@@ -43,7 +43,8 @@ class ProductController extends Controller
             'base_note' => 'nullable|string',
             'composition' => 'nullable|string',
             'packaging' => 'nullable|string',
-            'volume' => 'nullable|integer|min:1',
+            'volume' => 'nullable|array',
+            'volume.*' => 'string',
 
             'price' => 'required|numeric|min:0',
             'stock' => 'nullable|integer|min:0',
@@ -103,7 +104,8 @@ class ProductController extends Controller
             'base_note' => 'nullable|string',
             'composition' => 'nullable|string',
             'packaging' => 'nullable|string',
-            'volume' => 'nullable|integer|min:1',
+            'volume' => 'nullable|array',
+            'volume.*' => 'string',
 
             'price' => 'required|numeric|min:0',
             'stock' => 'nullable|integer|min:0',
