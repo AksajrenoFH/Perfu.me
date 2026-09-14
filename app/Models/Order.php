@@ -13,6 +13,7 @@ class Order extends Model
         'items',
         'total_price',
         'status',
+        'stock_deducted',
         'notes',
     ];
 
@@ -21,6 +22,7 @@ class Order extends Model
         return [
             'items' => 'array',
             'total_price' => 'decimal:2',
+            'stock_deducted' => 'boolean',
         ];
     }
 }

@@ -11,4 +11,4 @@
 </script>
 
 </body>
-</html>
+</html><?php /**PATH C:\Users\USER\Perfu.me\resources\views/orders/drawer-success.blade.php ENDPATH**/ ?>
