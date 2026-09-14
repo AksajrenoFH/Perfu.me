@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $item['name'] }} · Perfu.me</title>
+    <title><?php echo e($item['name']); ?> · Perfu.me</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,8 +70,8 @@
 
 <body class="text-neutral-900 antialiased bg-white selection:bg-neutral-900 selection:text-white">
 
-    {{-- Top Announcement Bar --}}
-    @php
+    
+    <?php
         $announcementList = [
             'DYNAMYST (Bold Woody & Fresh)',
             'VANESSENCE (Citrus Warm Earthy)',
@@ -83,32 +83,34 @@
             '100% Extrait de Parfum Murni',
             'Konsultasi Aroma Gratis via WhatsApp',
         ];
-    @endphp
+    ?>
     <div id="marquee-bar"
         class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
         <div class="marquee-track">
             <div class="flex items-center shrink-0">
-                @foreach ($announcementList as $announcementItem)
+                <?php $__currentLoopData = $announcementList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $announcementItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $announcementItem }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($announcementItem); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="flex items-center shrink-0" aria-hidden="true">
-                @foreach ($announcementList as $announcementItem)
+                <?php $__currentLoopData = $announcementList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $announcementItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $announcementItem }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($announcementItem); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
 
-    {{-- Navbar (Mirip Halaman Home) --}}
+    
     <header id="site-header" class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
         <div class="max-w-[1240px] mx-auto flex items-center justify-between px-8 sm:px-10 h-[70px]">
             <div class="flex items-center gap-12">
-                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
                     <span
                         class="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center text-sm font-bold font-serif-luxury tracking-tighter shadow-sm">P.</span>
                     <div class="flex flex-col">
@@ -120,14 +122,14 @@
                 </a>
 
                 <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
-                    <a href="{{ route('home') }}" class="hover:text-black">Home</a>
-                    <a href="{{ route('refill') }}" class="nav-underline text-black font-medium">Products</a>
+                    <a href="<?php echo e(route('home')); ?>" class="hover:text-black">Home</a>
+                    <a href="<?php echo e(route('refill')); ?>" class="nav-underline text-black font-medium">Products</a>
                 </nav>
             </div>
 
             <div class="flex items-center gap-3">
-                {{-- Tombol Navigasi Kembali ke Home --}}
-                <a href="{{ route('home') }}"
+                
+                <a href="<?php echo e(route('home')); ?>"
                     class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-neutral-600 hover:text-neutral-950 border border-neutral-200 hover:border-neutral-900 rounded-full px-3.5 py-2.5 transition">
                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -135,8 +137,8 @@
                     <span>Kembali</span>
                 </a>
 
-                {{-- Tombol Panduan --}}
-                <a href="{{ route('home') }}?tour=1"
+                
+                <a href="<?php echo e(route('home')); ?>?tour=1"
                     class="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-semibold text-neutral-600 hover:text-neutral-950 border border-neutral-200 hover:border-neutral-900 rounded-full px-3.5 py-2.5 transition cursor-pointer">
                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
                         <circle cx="12" cy="12" r="10" />
@@ -147,8 +149,8 @@
                     <span>Panduan</span>
                 </a>
 
-                {{-- Tombol Shop Now / Katalog Produk --}}
-                <a href="{{ route('refill') }}"
+                
+                <a href="<?php echo e(route('refill')); ?>"
                     class="bg-neutral-950 text-white text-[13px] font-semibold rounded-full px-5 py-2.5 hover:bg-neutral-800 transition tracking-wide shadow-sm">
                     Shop Now
                 </a>
@@ -156,61 +158,64 @@
         </div>
     </header>
 
-    {{-- Detail Produk --}}
+    
     <section class="max-w-[1240px] mx-auto px-6 sm:px-10 py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
-        {{-- Foto Produk --}}
+        
         <div class="relative aspect-[3/4] max-w-[480px] mx-auto w-full overflow-hidden rounded-2xl bg-[#f8f8f8] border border-neutral-200 shadow-sm card-hover">
-            @if ($item['is_sold_out'])
+            <?php if($item['is_sold_out']): ?>
                 <span
                     class="absolute top-4 left-4 bg-neutral-800 text-white text-[11px] font-semibold px-3 py-1 rounded-md shadow-sm z-10 tracking-wide uppercase">
                     Sold out
                 </span>
-            @endif
-            <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}"
+            <?php endif; ?>
+            <img src="<?php echo e(asset($item['image'])); ?>" alt="<?php echo e($item['name']); ?>"
                 class="absolute inset-0 w-full h-full object-cover">
         </div>
 
-        {{-- Info Produk --}}
+        
         <div class="flex flex-col justify-center space-y-6">
             <div>
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-[10px] font-bold text-neutral-600 tracking-widest uppercase mb-3">
                     <span>HAUTE PARFUMERIE · EXTRAIT DE PARFUM</span>
                 </div>
                 <h1 class="text-3xl sm:text-4xl font-extrabold leading-tight text-neutral-950 mb-2">
-                    {{ $item['name'] }}
+                    <?php echo e($item['name']); ?>
+
                 </h1>
                 <p class="text-2xl font-extrabold text-neutral-950">
-                    {{ $item['price'] }}
+                    <?php echo e($item['price']); ?>
+
                 </p>
             </div>
 
             <div class="border-t border-b border-neutral-100 py-4">
                 <p class="text-sm text-neutral-600 leading-relaxed">
-                    {{ $item['description'] ?? 'Deskripsi produk belum tersedia.' }}
+                    <?php echo e($item['description'] ?? 'Deskripsi produk belum tersedia.'); ?>
+
                 </p>
             </div>
 
             <div class="flex items-center gap-4 pt-2">
-                @if ($item['is_sold_out'])
+                <?php if($item['is_sold_out']): ?>
                     <span
                         class="inline-block bg-neutral-200 text-neutral-500 text-sm font-semibold rounded-full px-7 py-3.5 cursor-not-allowed">
                         Stok Habis
                     </span>
-                @else
-                    @php
+                <?php else: ?>
+                    <?php
                         $waMessage = 'Halo Perfu.me, saya ingin membeli ' . $item['name'] . ' (' . $item['price'] . '). Apakah masih tersedia?';
                         $waUrl = 'https://wa.me/6281234567890?text=' . rawurlencode($waMessage);
-                    @endphp
-                    <a href="{{ $waUrl }}" target="_blank"
+                    ?>
+                    <a href="<?php echo e($waUrl); ?>" target="_blank"
                         class="inline-flex items-center justify-center gap-2 bg-neutral-950 text-white text-sm font-semibold rounded-full px-7 py-3.5 hover:bg-neutral-800 transition shadow-sm">
                         <span>Beli Sekarang via WhatsApp</span>
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </a>
-                @endif
-                <a href="{{ route('refill') }}"
+                <?php endif; ?>
+                <a href="<?php echo e(route('refill')); ?>"
                     class="inline-flex items-center justify-center border border-neutral-200 text-neutral-700 hover:border-neutral-900 hover:text-neutral-950 text-sm font-semibold rounded-full px-6 py-3.5 transition">
                     Lihat Koleksi Lainnya
                 </a>
@@ -220,4 +225,4 @@
 
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\Faiz\Perfu.me\resources\views\Product_customer\product-detail.blade.php ENDPATH**/ ?>
