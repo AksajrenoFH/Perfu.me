@@ -219,70 +219,72 @@
     </style>
 </head>
 
-<body class="text-neutral-900 antialiased bg-white selection:bg-neutral-900 selection:text-white"
-    x-data="cartSystem()">
+<body class="text-neutral-900 antialiased bg-white selection:bg-neutral-900 selection:text-white" x-data="cartSystem()">
 
-    {{-- ======================================================== --}}
-    {{-- HELPER: format ukuran (volume) parfum --}}
-    {{-- ======================================================== --}}
-    @php
-        $formatVolume = function ($volume) {
-            if (empty($volume) && $volume !== '0') {
-                return '50ml';
-            }
-            if (is_array($volume)) {
-                $volume = implode(',', $volume);
-            }
-            if (!is_string($volume)) {
-                return '50ml';
-            }
-            $parts = collect(explode(',', $volume))->map(fn($v) => trim($v))->filter();
-            return $parts->isEmpty() ? '50ml' : $parts->map(fn($v) => $v . 'ml')->implode(' / ');
-        };
-    @endphp
+    
+    
+    
+    <?php
+$formatVolume = function ($volume) {
+    if (empty($volume) && $volume !== '0') {
+        return '50ml';
+    }
+    if (is_array($volume)) {
+        $volume = implode(',', $volume);
+    }
+    if (!is_string($volume)) {
+        return '50ml';
+    }
+    $parts = collect(explode(',', $volume))
+        ->map(fn($v) => trim($v))
+        ->filter();
+    return $parts->isEmpty() ? '50ml' : $parts->map(fn($v) => $v . 'ml')->implode(' / ');
+};
+    ?>
 
-    {{-- Top Announcement Bar --}}
-    @php
-        $announcementList =
-            isset($brands) && $brands->count() > 0
-                ? $brands->pluck('name')->filter()->values()->toArray()
-                : [
-                    'DYNAMYST (Bold Woody & Fresh)',
-                    'VANESSENCE (Citrus Warm Earthy)',
-                    'Dior Sauvage Extrait',
-                    'Baccarat Rouge 540',
-                    'Aigner Blue Emotion',
-                    'Channel Coco Mademoiselle',
-                    'VS Scandalous',
-                    '100% Extrait de Parfum Murni',
-                    'Konsultasi Aroma Gratis via WhatsApp',
-                ];
-    @endphp
+    
+    <?php
+$announcementList = (isset($brands) && $brands->count() > 0)
+    ? $brands->pluck('name')->filter()->values()->toArray()
+    : [
+        'DYNAMYST (Bold Woody & Fresh)',
+        'VANESSENCE (Citrus Warm Earthy)',
+        'Dior Sauvage Extrait',
+        'Baccarat Rouge 540',
+        'Aigner Blue Emotion',
+        'Channel Coco Mademoiselle',
+        'VS Scandalous',
+        '100% Extrait de Parfum Murni',
+        'Konsultasi Aroma Gratis via WhatsApp',
+    ];
+    ?>
     <div id="marquee-bar"
         class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
         <div class="marquee-track">
             <div class="flex items-center shrink-0">
-                @foreach ($announcementList as $item)
+                <?php $__currentLoopData = $announcementList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="flex items-center shrink-0" aria-hidden="true">
-                @foreach ($announcementList as $item)
+                <?php $__currentLoopData = $announcementList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
 
-    {{-- Navbar --}}
+    
     <header id="site-header" class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
         <div class="max-w-[1240px] mx-auto flex items-center justify-between px-8 sm:px-10 h-[70px]">
             <div class="flex items-center gap-12">
-                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
                     <span
                         class="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center text-sm font-bold font-serif-luxury tracking-tighter shadow-sm">P.</span>
                     <div class="flex flex-col">
@@ -294,8 +296,8 @@
                 </a>
 
                 <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
-                    <a href="{{ route('home') }}" class="nav-underline text-black font-medium">Home</a>
-                    <a href="{{ route('refill') }}" class="hover:text-black">Products</a>
+                    <a href="<?php echo e(route('home')); ?>" class="nav-underline text-black font-medium">Home</a>
+                    <a href="<?php echo e(route('refill')); ?>" class="hover:text-black">Products</a>
                 </nav>
             </div>
 
@@ -313,8 +315,7 @@
 
                 <button @click="startTour()"
                     class="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-semibold text-neutral-600 hover:text-neutral-950 border border-neutral-200 hover:border-neutral-900 rounded-full px-3.5 py-2.5 transition cursor-pointer">
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                        stroke-width="1.75">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
                         <circle cx="12" cy="12" r="10" />
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2 1.5-2 3.5" />
@@ -331,75 +332,74 @@
         </div>
     </header>
 
-    {{-- ================================================================ --}}
-    {{-- HERO SECTION — SPLIT SCREEN WITH FLOATING PRODUCT CARDS --}}
-    {{-- ================================================================ --}}
-    @php
-        $heroScents =
-            isset($heroProducts) && $heroProducts->count() > 0
-                ? $heroProducts
-                    ->values()
-                    ->map(function ($product, $index) use ($formatVolume) {
-                        return [
-                            'id' => $product->id,
-                            'name' => strtoupper($product->name),
-                            'label' => sprintf('%02d', $index + 1),
-                            'subname' =>
-                                ($product->category ?? 'Signature') . ' ' . ($product->variant ?? 'Extrait de Parfum'),
-                            'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
-                            'character' => $product->description
-                                ? \Illuminate\Support\Str::limit($product->description, 60)
-                                : ($product->variant ? $product->variant . ' · ' : '') .
-                                    ($product->gender ?? 'Universal'),
-                            'topNotes' => $product->top_note ?: 'Fresh Notes',
-                            'heartNotes' => $product->middle_note ?: 'Floral Notes',
-                            'baseNotes' => $product->base_note ?: 'Woody Musk',
-                            'volume' => $formatVolume($product->volume ?? '50'),
-                            'tag' => $product->is_best_seller ? 'Best Seller' : 'Featured',
-                            'image' => $product->image
-                                ? asset('storage/' . $product->image)
-                                : asset('storage/image/DSC00057.JPG'),
-                            'alt' => $product->name . ' - Perfu.me Collection',
-                        ];
-                    })
-                    ->toArray()
-                : [
-                    [
-                        'name' => 'DYNAMYST',
-                        'label' => '01',
-                        'subname' => 'Signature Extrait de Parfum',
-                        'price' => 'Rp 45.000',
-                        'character' => 'Bold Woody & Fresh Citrus',
-                        'topNotes' => 'Bergamot, Mandarin',
-                        'heartNotes' => 'French Lavender',
-                        'baseNotes' => 'Amber & White Musk',
-                        'volume' => '30ml / 50ml',
-                        'tag' => 'Best Seller',
-                        'image' => asset('storage/image/DSC00057.JPG'),
-                        'alt' => 'Dynamyst Extrait de Parfum – Signature Collection',
-                    ],
-                    [
-                        'name' => 'VANESSENCE',
-                        'label' => '02',
-                        'subname' => 'Signature Extrait de Parfum',
-                        'price' => 'Rp 45.000',
-                        'character' => 'Citrus Fresh & Warm Earthy',
-                        'topNotes' => 'Lemon Zest, Apple',
-                        'heartNotes' => 'Ambroxan',
-                        'baseNotes' => 'Oakmoss & Cedar',
-                        'volume' => '30ml / 50ml',
-                        'tag' => 'Featured',
-                        'image' => asset('storage/image/DSC00122.JPG'),
-                        'alt' => 'Vanessence Extrait de Parfum – Signature Collection',
-                    ],
+    
+    
+    
+<?php
+    $heroScents = (isset($heroProducts) && $heroProducts->count() > 0)
+        ? $heroProducts
+            ->filter(function ($product) {
+                return strtolower(trim($product->category ?? '')) === 'signature';
+            })
+            ->values()
+            ->map(function ($product, $index) use ($formatVolume) {
+                return [
+                    'name' => strtoupper($product->name),
+                    'label' => sprintf('%02d', $index + 1),
+                    'subname' => ($product->category ?? 'Signature') . ' ' . ($product->variant ?? 'Extrait de Parfum'),
+                    'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
+                    'character' => $product->description
+                        ? \Illuminate\Support\Str::limit($product->description, 60)
+                        : (($product->variant ? $product->variant . ' · ' : '') . ($product->gender ?? 'Universal')),
+                    'topNotes' => $product->top_note ?: 'Fresh Notes',
+                    'heartNotes' => $product->middle_note ?: 'Floral Notes',
+                    'baseNotes' => $product->base_note ?: 'Woody Musk',
+                    'volume' => $formatVolume($product->volume ?? '50'),
+                    'tag' => $product->is_best_seller ? 'Best Seller' : 'Featured',
+                    'image' => $product->image
+                        ? asset('storage/' . $product->image)
+                        : asset('storage/image/DSC00057.JPG'),
+                    'alt' => $product->name . ' - Perfu.me Collection'
                 ];
-    @endphp
+            })
+            ->toArray()
+        : [
+            [
+                'name' => 'DYNAMYST',
+                'label' => '01',
+                'subname' => 'Signature Extrait de Parfum',
+                'price' => 'Rp 45.000',
+                'character' => 'Bold Woody & Fresh Citrus',
+                'topNotes' => 'Bergamot, Mandarin',
+                'heartNotes' => 'French Lavender',
+                'baseNotes' => 'Amber & White Musk',
+                'volume' => '30ml / 50ml',
+                'tag' => 'Best Seller',
+                'image' => asset('storage/image/DSC00057.JPG'),
+                'alt' => 'Dynamyst Extrait de Parfum – Signature Collection'
+            ],
+            [
+                'name' => 'VANESSENCE',
+                'label' => '02',
+                'subname' => 'Signature Extrait de Parfum',
+                'price' => 'Rp 45.000',
+                'character' => 'Citrus Fresh & Warm Earthy',
+                'topNotes' => 'Lemon Zest, Apple',
+                'heartNotes' => 'Ambroxan',
+                'baseNotes' => 'Oakmoss & Cedar',
+                'volume' => '30ml / 50ml',
+                'tag' => 'Featured',
+                'image' => asset('storage/image/DSC00122.JPG'),
+                'alt' => 'Vanessence Extrait de Parfum – Signature Collection'
+            ]
+        ];
+?>
     <section id="hero-section" class="relative overflow-hidden border-b border-neutral-100" style="min-height: 88vh;"
         x-data="{
-            activeScent: 0,
-            scents: @js($heroScents)
-        }">
-        {{-- ── LEFT HALF: Full-bleed Fragrance Image ── --}}
+        activeScent: 0,
+        scents: <?php echo \Illuminate\Support\Js::from($heroScents)->toHtml() ?>
+    }">
+        
         <div class="hidden lg:block absolute inset-y-0 left-0 w-[48%] overflow-hidden">
             <template x-for="(scent, index) in scents" :key="'bg-' + index">
                 <img :src="scent.image" :alt="scent.alt" x-show="activeScent === index"
@@ -423,7 +423,7 @@
             </div>
         </div>
 
-        {{-- ── RIGHT HALF: Editorial Content + Product Switcher ── --}}
+        
         <div
             class="relative z-10 flex flex-col justify-center min-h-screen lg:min-h-0 lg:ml-[48%] px-6 sm:px-10 lg:px-12 py-16 lg:py-20 space-y-8 bg-white">
 
@@ -462,10 +462,9 @@
                 </p>
 
                 <template x-for="(scent, index) in scents" :key="'card-' + index">
-                    <button @click="activeScent = index"
-                        :class="activeScent === index ?
-                            'border-neutral-950 bg-neutral-950 text-white shadow-md' :
-                            'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400'"
+                    <button @click="activeScent = index" :class="activeScent === index
+                            ? 'border-neutral-950 bg-neutral-950 text-white shadow-md'
+                            : 'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400'"
                         class="w-full flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer text-left group">
                         <span
                             :class="activeScent === index ? 'bg-white/15 text-white' : 'bg-neutral-100 text-neutral-500'"
@@ -496,8 +495,7 @@
                     x-transition:enter-end="opacity-100 translate-y-0" class="max-w-lg grid grid-cols-4 gap-2">
                     <div class="bg-neutral-50 border border-neutral-200/80 rounded-xl p-3">
                         <p class="text-[8px] font-bold tracking-widest text-neutral-400 uppercase mb-1">Top</p>
-                        <p class="text-[11px] font-semibold text-neutral-900 leading-snug" x-text="scent.topNotes">
-                        </p>
+                        <p class="text-[11px] font-semibold text-neutral-900 leading-snug" x-text="scent.topNotes"></p>
                     </div>
                     <div class="bg-neutral-50 border border-neutral-200/80 rounded-xl p-3">
                         <p class="text-[8px] font-bold tracking-widest text-neutral-400 uppercase mb-1">Heart</p>
@@ -506,8 +504,7 @@
                     </div>
                     <div class="bg-neutral-50 border border-neutral-200/80 rounded-xl p-3">
                         <p class="text-[8px] font-bold tracking-widest text-neutral-400 uppercase mb-1">Base</p>
-                        <p class="text-[11px] font-semibold text-neutral-900 leading-snug" x-text="scent.baseNotes">
-                        </p>
+                        <p class="text-[11px] font-semibold text-neutral-900 leading-snug" x-text="scent.baseNotes"></p>
                     </div>
                     <div class="bg-neutral-50 border border-neutral-200/80 rounded-xl p-3">
                         <p class="text-[8px] font-bold tracking-widest text-neutral-400 uppercase mb-1">Ukuran</p>
@@ -520,15 +517,10 @@
                 <template x-for="(scent, index) in scents" :key="'cta-' + index">
                     <div x-show="activeScent === index" class="flex flex-col sm:flex-row gap-2.5 w-full">
                         <button
-                            @click="addToCart({
-    product_id: scent.id,
-    name: scent.name + ' Extrait 50ml',
-    price: scent.price,
-    image: scent.image
-}, $event)"
+                            @click="addToCart({ name: scent.name + ' Extrait 50ml', price: scent.price, image: scent.image }, $event)"
                             class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.98]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
@@ -560,8 +552,7 @@
                 <div class="pt-3">
                     <div class="flex items-center gap-1 text-amber-500 text-[11px]">
                         <span>★★★★★</span>
-                        <span
-                            class="font-bold text-neutral-950 ml-0.5">{{ number_format($avgRating ?? 5.0, 1) }}</span>
+                        <span class="font-bold text-neutral-950 ml-0.5"><?php echo e(number_format($avgRating ?? 5.0, 1)); ?></span>
                         <span class="text-neutral-400 font-normal">/ 5.0</span>
                     </div>
                     <p class="text-[10px] text-neutral-400">Dipercaya 1.400+ pelanggan Indonesia</p>
@@ -571,85 +562,76 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- LINEUP INFINITE COVERFLOW CAROUSEL --}}
-    {{-- ======================================================== --}}
-    @php
-        $refillOnly = isset($productRefill) ? $productRefill->values() : collect();
+    
+    
+    
+    <?php
+$refillOnly = isset($productRefill) ? $productRefill->values() : collect();
 
-        $lineupProducts =
-            $refillOnly->count() > 0
-                ? $refillOnly
-                    ->map(function ($product) use ($formatVolume) {
-                        return [
-                            'id' => $product->id,
-                            'name' => $product->name,
-                            'subtitle' => trim(
-                                ($product->variant ?? '') . ' · ' . ($product->gender ?? 'Unisex'),
-                                ' ·',
-                            ),
-                            'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
-                            'volume' => $formatVolume($product->volume ?? '50'),
-                            'image' => $product->image
-                                ? asset('storage/' . $product->image)
-                                : asset('storage/image/DSC00057.JPG'),
-                            'url' => route('refill', ['highlight' => $product->id]),
-                        ];
-                    })
-                    ->values()
-                    ->toArray()
-                : [
-                    [
-                        'id' => null,
-                        'name' => 'Dynamyst Refill',
-                        'subtitle' => 'Roll-on · Unisex',
-                        'price' => 'Rp 25.000',
-                        'volume' => '10ml',
-                        'image' => asset('storage/image/DSC00057.JPG'),
-                        'url' => route('refill'),
-                    ],
-                    [
-                        'id' => null,
-                        'name' => 'Vanessence Refill',
-                        'subtitle' => 'Body Mist · Unisex',
-                        'price' => 'Rp 25.000',
-                        'volume' => '10ml',
-                        'image' => asset('storage/image/DSC00122.JPG'),
-                        'url' => route('refill'),
-                    ],
-                    [
-                        'id' => null,
-                        'name' => 'Selene Refill',
-                        'subtitle' => 'Roll-on · Women',
-                        'price' => 'Rp 22.000',
-                        'volume' => '10ml',
-                        'image' => asset('storage/image/DSC00164.JPG'),
-                        'url' => route('refill'),
-                    ],
-                    [
-                        'id' => null,
-                        'name' => 'Aphrodite Refill',
-                        'subtitle' => 'Body Mist · Women',
-                        'price' => 'Rp 22.000',
-                        'volume' => '10ml',
-                        'image' => asset('storage/image/DSC00057.JPG'),
-                        'url' => route('refill'),
-                    ],
-                    [
-                        'id' => null,
-                        'name' => 'Uranus Refill',
-                        'subtitle' => 'Roll-on · Men',
-                        'price' => 'Rp 25.000',
-                        'volume' => '10ml',
-                        'image' => asset('storage/image/DSC00122.JPG'),
-                        'url' => route('refill'),
-                    ],
-                ];
-    @endphp
+$lineupProducts = $refillOnly->count() > 0
+    ? $refillOnly->map(function ($product) use ($formatVolume) {
+        return [
+            'id' => $product->id,
+            'name' => $product->name,
+            'subtitle' => trim(($product->variant ?? '') . ' · ' . ($product->gender ?? 'Unisex'), ' ·'),
+            'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
+            'volume' => $formatVolume($product->volume ?? '50'),
+            'image' => $product->image ? asset('storage/' . $product->image) : asset('storage/image/DSC00057.JPG'),
+            'url' => route('refill', ['highlight' => $product->id]),
+        ];
+    })->values()->toArray()
+    : [
+        [
+            'id' => null,
+            'name' => 'Dynamyst Refill',
+            'subtitle' => 'Roll-on · Unisex',
+            'price' => 'Rp 25.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00057.JPG'),
+            'url' => route('refill'),
+        ],
+        [
+            'id' => null,
+            'name' => 'Vanessence Refill',
+            'subtitle' => 'Body Mist · Unisex',
+            'price' => 'Rp 25.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00122.JPG'),
+            'url' => route('refill'),
+        ],
+        [
+            'id' => null,
+            'name' => 'Selene Refill',
+            'subtitle' => 'Roll-on · Women',
+            'price' => 'Rp 22.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00164.JPG'),
+            'url' => route('refill'),
+        ],
+        [
+            'id' => null,
+            'name' => 'Aphrodite Refill',
+            'subtitle' => 'Body Mist · Women',
+            'price' => 'Rp 22.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00057.JPG'),
+            'url' => route('refill'),
+        ],
+        [
+            'id' => null,
+            'name' => 'Uranus Refill',
+            'subtitle' => 'Roll-on · Men',
+            'price' => 'Rp 25.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00122.JPG'),
+            'url' => route('refill'),
+        ],
+    ];
+    ?>
 
     <section id="lineup-carousel"
         class="relative bg-neutral-950 text-white py-20 lg:py-24 overflow-hidden border-b border-neutral-900"
-        x-data="productCarousel(@js($lineupProducts))" x-init="init()">
+        x-data="productCarousel(<?php echo \Illuminate\Support\Js::from($lineupProducts)->toHtml() ?>)" x-init="init()">
 
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8 text-center mb-7 lg:mb-10">
             <p class="text-xs tracking-[0.3em] text-neutral-400 font-bold uppercase mb-2">
@@ -660,9 +642,9 @@
             </h2>
         </div>
 
-        <div x-ref="stage" class="lineup-stage" @pointerdown="startDrag($event)"
-            @pointermove.window="onDrag($event)" @pointerup.window="endDrag($event)"
-            @pointercancel.window="endDrag($event)" @dragstart.prevent @contextmenu.prevent>
+        <div x-ref="stage" class="lineup-stage" @pointerdown="startDrag($event)" @pointermove.window="onDrag($event)"
+            @pointerup.window="endDrag($event)" @pointercancel.window="endDrag($event)" @dragstart.prevent
+            @contextmenu.prevent>
             <template x-for="card in displayItems" :key="card.key">
                 <a :href="card.item.url" :style="cardStyle(card.index)"
                     :aria-hidden="Math.abs(card.offset) > visibleSideCount" @pointerdown.stop="startDrag($event)"
@@ -671,7 +653,7 @@
                     <div class="h-[72%] bg-neutral-100 overflow-hidden">
                         <img :src="card.item.image" :alt="card.item.name" draggable="false"
                             class="w-full h-full object-cover select-none pointer-events-none"
-                            onerror="this.onerror=null; this.src='{{ asset('storage/image/DSC00057.JPG') }}';">
+                            onerror="this.onerror=null; this.src='<?php echo e(asset('storage/image/DSC00057.JPG')); ?>';">
                     </div>
 
                     <div class="h-[28%] bg-neutral-950 text-white px-4 py-3 flex flex-col justify-center">
@@ -691,7 +673,7 @@
                 </svg>
             </button>
 
-            <a href="{{ route('refill') }}"
+            <a href="<?php echo e(route('refill')); ?>"
                 class="text-xs font-bold underline underline-offset-8 tracking-wide uppercase hover:text-neutral-300 transition">
                 Discover More
             </a>
@@ -705,9 +687,9 @@
 
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- VALUE PROPOSITIONS / USP BADGES STRIP (SVG ICONS) --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="usp-section" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-12 border-b border-neutral-100">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
@@ -740,8 +722,7 @@
                 </div>
                 <div>
                     <h4 class="text-xs font-bold text-neutral-900">12+ Hours Longevity</h4>
-                    <p class="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">Formulasi aroma yang menempel kuat
-                        di
+                    <p class="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">Formulasi aroma yang menempel kuat di
                         serat pakaian dan kulit seharian penuh.</p>
                 </div>
             </div>
@@ -758,8 +739,7 @@
                 </div>
                 <div>
                     <h4 class="text-xs font-bold text-neutral-900">Garansi Aman Pengiriman</h4>
-                    <p class="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">Pengemasan bubble wrap tebal ekstra
-                        &
+                    <p class="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">Pengemasan bubble wrap tebal ekstra &
                         garansi ganti botol baru gratis jika pecah di jalan.</p>
                 </div>
             </div>
@@ -767,9 +747,9 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- ABOUT US / BRAND PHILOSOPHY --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="story" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 lg:py-24">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
 
@@ -807,7 +787,7 @@
                 </div>
 
                 <div class="pt-3">
-                    <a href="{{ route('refill') }}"
+                    <a href="<?php echo e(route('refill')); ?>"
                         class="inline-flex items-center gap-2 text-xs font-bold text-neutral-950 underline underline-offset-8 hover:text-neutral-500 transition tracking-wide uppercase">
                         <span>Lihat Semua Koleksi Aroma</span>
                         <span>&rarr;</span>
@@ -818,13 +798,13 @@
             <div class="lg:col-span-6 grid grid-cols-2 gap-4 sm:gap-5">
                 <div
                     class="bg-neutral-100 rounded-2xl aspect-[3/4] overflow-hidden shadow-sm border border-neutral-200/80">
-                    <img src="{{ asset('storage/image/DSC00057.JPG') }}" alt="Perfu.me Craftsmanship"
+                    <img src="<?php echo e(asset('storage/image/DSC00057.JPG')); ?>" alt="Perfu.me Craftsmanship"
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                         onerror="this.src='https://via.placeholder.com/400x500?text=Perfu.me+Bottle+1'">
                 </div>
                 <div
                     class="bg-neutral-100 rounded-2xl aspect-[3/4] overflow-hidden shadow-sm border border-neutral-200/80 mt-6">
-                    <img src="{{ asset('storage/image/DSC00068 (1).JPG') }}" alt="Perfu.me Essence"
+                    <img src="<?php echo e(asset('storage/image/DSC00068 (1).JPG')); ?>" alt="Perfu.me Essence"
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                         onerror="this.src='https://via.placeholder.com/400x500?text=Perfu.me+Bottle+2'">
                 </div>
@@ -833,9 +813,9 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- DETAILED PRODUCT SHOWCASE SECTION (ZIG-ZAG) --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="product" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 bg-white border-t border-neutral-100">
         <div id="product-intro"
             class="border-b border-neutral-200/80 pb-5 mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -854,115 +834,112 @@
 
         <div class="space-y-20 sm:space-y-24">
 
-            @foreach ($productOri as $ori)
-                @php
-                    $isEven = $loop->even;
+            <?php $__currentLoopData = $productOri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ori): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
+    $isEven = $loop->even;
 
-                    $gender = match ($ori->gender) {
-                        'Pria' => 'Men',
-                        'Wanita' => 'Women',
-                        'Unisex' => 'Unisex',
-                    };
-                @endphp
+    $gender = match ($ori->gender) {
+        'Pria' => 'Men',
+        'Wanita' => 'Women',
+        'Unisex' => 'Unisex',
+    }
+                ?>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
 
                     <div
-                        class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full min-h-[480px] {{ $isEven ? 'lg:order-2' : 'lg:order-1' }}">
-                        <img src="{{ asset('storage/' . $ori->image) }}" alt="{{ $ori->name }}"
+                        class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full min-h-[480px] <?php echo e($isEven ? 'lg:order-2' : 'lg:order-1'); ?>">
+                        <img src="<?php echo e(asset('storage/' . $ori->image)); ?>" alt="<?php echo e($ori->name); ?>"
                             class="absolute inset-0 w-full h-full min-h-[480px] object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0"
                             onerror="console.error('Image failed:', this.src)">
-                        @if ($ori->image_hover)
-                            <img src="{{ asset('storage/' . $ori->image_hover) }}"
-                                alt="{{ $ori->name }} alternate view"
+                        <?php if($ori->image_hover): ?>
+                            <img src="<?php echo e(asset('storage/' . $ori->image_hover)); ?>" alt="<?php echo e($ori->name); ?> alternate view"
                                 class="absolute inset-0 w-full h-full min-h-[480px] object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                                 onerror="console.error('Hover image failed:', this.src)">
-                        @endif
+                        <?php endif; ?>
 
                         <span
                             class="absolute top-4 left-4 bg-neutral-950 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                            Best Seller #{{ $loop->iteration }}
+                            Best Seller #<?php echo e($loop->iteration); ?>
+
                         </span>
 
-                        @if ($ori->image_hover)
+                        <?php if($ori->image_hover): ?>
                             <span
                                 class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 Alternate View
                             </span>
-                        @endif
+                        <?php endif; ?>
                     </div>
 
-                    <div class="lg:py-4 space-y-6 {{ $isEven ? 'lg:order-1' : 'lg:order-2' }}">
+                    <div class="lg:py-4 space-y-6 <?php echo e($isEven ? 'lg:order-1' : 'lg:order-2'); ?>">
                         <div class="space-y-2">
                             <span
-                                class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">{{ $ori->variant }}
-                                for {{ $gender }} · {{ $formatVolume($ori->volume) }}</span>
-                            <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight">
-                                {{ $ori->name }}
+                                class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase"><?php echo e($ori->variant); ?>
+
+                                for <?php echo e($gender); ?> · <?php echo e($formatVolume($ori->volume)); ?></span>
+                            <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight"><?php echo e($ori->name); ?>
+
                             </h3>
                             <p class="text-2xl font-extrabold text-neutral-950">Rp
-                                {{ number_format($ori->price, 0, ',', '.') }}
+                                <?php echo e(number_format($ori->price, 0, ',', '.')); ?>
+
                             </p>
                         </div>
 
                         <p class="text-neutral-500 leading-relaxed text-sm">
-                            {{ $ori->description }}
+                            <?php echo e($ori->description); ?>
+
                         </p>
 
                         <div class="grid grid-cols-4 gap-3 bg-neutral-50 p-4 rounded-xl border border-neutral-200/80">
                             <div>
                                 <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">TOP NOTES</p>
-                                <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->top_note }}
-                                </p>
+                                <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->top_note); ?></p>
                             </div>
                             <div>
                                 <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">MIDDLE NOTES</p>
-                                <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->middle_note }}
-                                </p>
+                                <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->middle_note); ?></p>
                             </div>
                             <div>
                                 <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">BASE NOTES</p>
-                                <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->base_note }}
-                                </p>
+                                <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->base_note); ?></p>
                             </div>
                             <div>
                                 <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">UKURAN</p>
                                 <p class="text-[11px] font-bold text-neutral-900 leading-snug">
-                                    {{ $formatVolume($ori->volume) }}
+                                    <?php echo e($formatVolume($ori->volume)); ?>
+
                                 </p>
                             </div>
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-2.5">
-                            <button
-                                @click="addToCart({
-        product_id: @js($ori->id),
-        name: @js($ori->name),
-        price: @js('Rp ' . number_format($ori->price, 0, ',', '.')),
-        image: @js(asset('storage/' . $ori->image))
-    }, $event)"
+                            <button @click="addToCart({
+                                            name: <?php echo \Illuminate\Support\Js::from($ori->name)->toHtml() ?>,
+                                            price: <?php echo \Illuminate\Support\Js::from('Rp ' . number_format($ori->price, 0, ',', '.'))->toHtml() ?>,
+                                            image: <?php echo \Illuminate\Support\Js::from(asset('storage/' . $ori->image))->toHtml() ?>
+                                        }, $event)"
                                 class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition text-center cursor-pointer shadow-xs active:scale-[0.98]">
                                 + Add to Cart
                             </button>
-                            <button
-                                @click="directCheckoutWhatsApp(
-        @js($ori->id),
-        @js($ori->name . ' ' . $ori->variant . ' ' . $formatVolume($ori->volume)),
-        @js('Rp ' . number_format($ori->price, 0, ',', '.'))
-    )"
+                            <button @click="directCheckoutWhatsApp(
+                                            <?php echo \Illuminate\Support\Js::from($ori->name . ' ' . $ori->variant . ' ' . $formatVolume($ori->volume))->toHtml() ?>,
+                                            <?php echo \Illuminate\Support\Js::from('Rp ' . number_format($ori->price, 0, ',', '.'))->toHtml() ?>
+                                        )"
                                 class="flex-1 border border-neutral-300 text-neutral-900 text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-50 transition text-center cursor-pointer active:scale-[0.98]">
                                 Checkout via WhatsApp
                             </button>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- TESTIMONIALS / REVIEWS SECTION --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="reviews" class="bg-neutral-50/70 py-16 lg:py-24 border-t border-b border-neutral-200/70">
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8">
             <div class="text-center max-w-lg mx-auto mb-14 space-y-2">
@@ -973,37 +950,38 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @if (isset($reviews) && $reviews->count() > 0)
-                    @foreach ($reviews as $review)
+                <?php if(isset($reviews) && $reviews->count() > 0): ?>
+                    <?php $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div
                             class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                             <div>
                                 <div class="text-amber-500 mb-3 text-xs tracking-widest">
-                                    {{ str_repeat('★', min(5, max(1, (int) $review->rating))) }}{{ str_repeat('☆', max(0, 5 - (int) $review->rating)) }}
+                                    <?php echo e(str_repeat('★', min(5, max(1, (int) $review->rating)))); ?><?php echo e(str_repeat('☆', max(0, 5 - (int) $review->rating))); ?>
+
                                 </div>
-                                <p class="text-xs text-neutral-600 leading-relaxed mb-5">"{{ $review->comment }}"</p>
+                                <p class="text-xs text-neutral-600 leading-relaxed mb-5">"<?php echo e($review->comment); ?>"</p>
                             </div>
                             <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                                @php
-                                    $initial = str($review->user_name)->substr(0, 1)->upper();
-                                @endphp
+                                <?php
+        $initial = str($review->user_name)->substr(0, 1)->upper();
+                                ?>
                                 <div
                                     class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs flex items-center justify-center bg-black/80">
                                     <p class="text-white font-medium">
-                                        {{ $initial }}
+                                        <?php echo e($initial); ?>
+
                                     </p>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-bold text-neutral-900 capitalize">{{ $review->user_name }}
-                                    </h4>
-                                    <p class="text-[10px] text-neutral-400">
-                                        {{ $review->product->name ?? 'Pelanggan Perfu.me' }}
+                                    <h4 class="text-xs font-bold text-neutral-900 capitalize"><?php echo e($review->user_name); ?></h4>
+                                    <p class="text-[10px] text-neutral-400"><?php echo e($review->product->name ?? 'Pelanggan Perfu.me'); ?>
+
                                     </p>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                @else
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php else: ?>
                     <div
                         class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                         <div>
@@ -1027,8 +1005,7 @@
                         class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                         <div>
                             <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
-                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Order via WhatsApp gampang
-                                banget,
+                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Order via WhatsApp gampang banget,
                                 tinggal klik langsung ke format pesan otomatis. Pengiriman aman banget pakai bubble wrap
                                 tebal."</p>
                         </div>
@@ -1047,10 +1024,8 @@
                         class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                         <div>
                             <div class="text-amber-500 mb-3 text-xs tracking-widest">★★★★★</div>
-                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Kualitas Extrait de Parfum-nya
-                                beneran
-                                kerasa. Dipakai pagi jam 7, sampai pulang kantor malam masih nempel aromanya di kemeja."
-                            </p>
+                            <p class="text-xs text-neutral-600 leading-relaxed mb-5">"Kualitas Extrait de Parfum-nya beneran
+                                kerasa. Dipakai pagi jam 7, sampai pulang kantor malam masih nempel aromanya di kemeja."</p>
                         </div>
                         <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
                             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80"
@@ -1062,12 +1037,12 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
     </section>
 
-    {{-- FLOATING GUIDE / TOUR BUTTON --}}
+    
     <div class="fixed bottom-6 left-6 z-40">
         <button @click="startTour()" title="Panduan Penggunaan Website"
             class="bg-white text-neutral-900 border border-neutral-200 p-3.5 rounded-full shadow-xl hover:bg-neutral-50 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer">
@@ -1080,13 +1055,11 @@
         </button>
     </div>
 
-    {{-- ===================== ONBOARDING TOUR OVERLAY ===================== --}}
+    
     <template x-if="tourOpen">
         <div class="fixed inset-0 z-[999]">
             <div class="fixed rounded-2xl pointer-events-none transition-all duration-300 ease-out"
-                :style="{ top: tourHighlightStyle.top, left: tourHighlightStyle.left, width: tourHighlightStyle.width,
-                    height: tourHighlightStyle.height, boxShadow: '0 0 0 9999px rgba(10,10,10,0.65)',
-                    border: '2px solid rgba(255,255,255,0.9)' }">
+                :style="{ top: tourHighlightStyle.top, left: tourHighlightStyle.left, width: tourHighlightStyle.width, height: tourHighlightStyle.height, boxShadow: '0 0 0 9999px rgba(10,10,10,0.65)', border: '2px solid rgba(255,255,255,0.9)' }">
             </div>
 
             <div class="fixed z-[1000] bg-white rounded-2xl shadow-2xl border border-neutral-200 p-5 space-y-3.5 transition-all duration-300 ease-out"
@@ -1096,8 +1069,7 @@
                         x-text="'Panduan ' + (tourStep + 1) + ' / ' + tourSteps.length"></span>
                     <button @click="closeTour()"
                         class="text-neutral-400 hover:text-neutral-950 transition cursor-pointer">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            stroke-width="2">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
@@ -1133,7 +1105,7 @@
         </div>
     </template>
 
-    {{-- FLOATING CART BUTTON --}}
+    
     <div class="fixed bottom-6 right-6 z-40">
         <button id="floating-cart-btn" @click="cartOpen = true"
             class="relative bg-neutral-950 text-white p-3.5 rounded-full shadow-2xl hover:bg-neutral-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer group">
@@ -1146,7 +1118,7 @@
         </button>
     </div>
 
-    {{-- Slide-over Cart Drawer Sidebar --}}
+    
     <div x-cloak x-show="cartOpen" class="relative z-50">
         <div x-show="cartOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
@@ -1198,8 +1170,7 @@
                                     <img :src="item.image"
                                         class="w-14 h-14 object-cover rounded-lg bg-white border border-neutral-200 shrink-0">
                                     <div class="flex-1 min-w-0">
-                                        <h4 class="text-xs font-bold text-neutral-900 truncate" x-text="item.name">
-                                        </h4>
+                                        <h4 class="text-xs font-bold text-neutral-900 truncate" x-text="item.name"></h4>
                                         <p class="text-xs font-extrabold text-neutral-950 mt-0.5" x-text="item.price">
                                         </p>
                                         <div class="flex items-center gap-2 mt-1.5">
@@ -1212,8 +1183,7 @@
                                     </div>
                                     <button @click="confirmDelete(index, item.name)"
                                         class="text-neutral-400 hover:text-red-400 p-1.5 transition-colors cursor-pointer rounded-lg hover:bg-red-50">
-                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
@@ -1235,8 +1205,8 @@
 
                         <div x-show="deleteConfirm.open" x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                            x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                            x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
+                            x-transition:leave-end="opacity-0"
                             class="absolute inset-0 z-20 flex items-end sm:items-center justify-center p-5"
                             style="background: rgba(15,15,15,0.55); backdrop-filter: blur(4px);">
 
@@ -1259,8 +1229,7 @@
                                 <div class="text-center space-y-1.5">
                                     <h3 class="text-sm font-extrabold text-neutral-950">Hapus dari Keranjang?</h3>
                                     <p class="text-[12px] text-neutral-500 leading-relaxed">
-                                        <span class="font-semibold text-neutral-800"
-                                            x-text="deleteConfirm.name"></span>
+                                        <span class="font-semibold text-neutral-800" x-text="deleteConfirm.name"></span>
                                         akan dihapus dari keranjang belanjaan Anda.
                                     </p>
                                 </div>
@@ -1285,7 +1254,7 @@
         </div>
     </div>
 
-    {{-- Footer --}}
+    
     <footer class="bg-neutral-950 text-neutral-400 border-t border-neutral-900 pt-14 pb-8">
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="space-y-3">
@@ -1301,8 +1270,7 @@
                 <div class="flex gap-2 pt-1 text-neutral-400">
                     <span
                         class="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center text-xs hover:text-white transition cursor-pointer">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="2" y1="12" x2="22" y2="12"></line>
                             <path
@@ -1312,8 +1280,7 @@
                     </span>
                     <span
                         class="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center text-xs hover:text-white transition cursor-pointer">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -1365,12 +1332,12 @@
 
         <div
             class="max-w-[1240px] mx-auto px-6 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-2.5 border-t border-neutral-900 mt-10 pt-5 text-[10px] text-neutral-500">
-            <span>&copy; {{ date('Y') }} PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
+            <span>&copy; <?php echo e(date('Y')); ?> PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
             <span>CRAFTED WITH PRECISION · EXTRAIT DE PARFUM</span>
         </div>
     </footer>
 
-    {{-- Alpine.js & Flying Ball Animation Script --}}
+    
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
         /**
@@ -1523,9 +1490,9 @@
                     /*
                      * Semua card tetap solid. Tidak ada opacity hitam.
                      */
-                    const opacity = distance <= this.visibleSideCount ?
-                        1 :
-                        0;
+                    const opacity = distance <= this.visibleSideCount
+                        ? 1
+                        : 0;
 
                     /*
                      * Efek "mengambang" — card tengah sedikit lebih
@@ -1536,9 +1503,9 @@
                      * pernah kepotong oleh overflow:hidden pada stage,
                      * berapa pun tinggi card-nya di tiap breakpoint.
                      */
-                    const floatOffset = distance === 0 ?
-                        -18 :
-                        -18 + Math.min(distance * 6, 30);
+                    const floatOffset = distance === 0
+                        ? -18
+                        : -18 + Math.min(distance * 6, 30);
 
                     const zIndex = 1000 - distance * 10;
 
@@ -1546,17 +1513,17 @@
                     const duration = this.isDown ? 0 : 340;
 
                     const width = window.innerWidth;
-                    const cardWidth = width < 640 ?
-                        200 :
-                        width < 1024 ?
-                        230 :
-                        260;
+                    const cardWidth = width < 640
+                        ? 200
+                        : width < 1024
+                            ? 230
+                            : 260;
 
-                    const cardHeight = width < 640 ?
-                        320 :
-                        width < 1024 ?
-                        365 :
-                        420;
+                    const cardHeight = width < 640
+                        ? 320
+                        : width < 1024
+                            ? 365
+                            : 420;
 
                     return `
                         position:absolute;
@@ -1598,7 +1565,7 @@
 
                     try {
                         stage.setPointerCapture?.(e.pointerId);
-                    } catch (error) {}
+                    } catch (error) { }
 
                     e.preventDefault();
                 },
@@ -1642,7 +1609,7 @@
                         if (e.pointerId !== undefined) {
                             stage?.releasePointerCapture?.(e.pointerId);
                         }
-                    } catch (error) {}
+                    } catch (error) { }
 
                     const threshold = Math.max(45, this.step * 0.22);
 
@@ -1720,17 +1687,12 @@
                 },
             };
         }
-    </script>
-    <script>
+
         function cartSystem() {
             return {
                 cartOpen: false,
                 items: [],
-                deleteConfirm: {
-                    open: false,
-                    index: null,
-                    name: ''
-                },
+                deleteConfirm: { open: false, index: null, name: '' },
 
                 // ===================== ONBOARDING TOUR =====================
                 tourOpen: false,
@@ -1868,25 +1830,76 @@
                     });
                 },
 
-                // ===================== CART =====================
+                positionTour() {
+                    if (!this.tourOpen) return;
+                    const step = this.tourSteps[this.tourStep];
+                    if (!step) return;
+                    const targetId = step.target || step.id;
+                    const el = document.getElementById(targetId);
+                    if (!el) { this.nextStep(); return; }
+
+                    const raw = el.getBoundingClientRect();
+                    const vw = window.innerWidth;
+                    const vh = window.innerHeight;
+                    const margin = 14;
+                    const isMobile = vw < 768;
+                    const popupW = isMobile ? Math.min(vw - 32, 320) : 300;
+                    const popupHEstimate = 220;
+                    const pad = 8;
+
+                    const rTop = Math.min(Math.max(raw.top, pad), vh - pad);
+                    const rLeft = Math.min(Math.max(raw.left, pad), vw - pad);
+                    const rBottom = Math.max(Math.min(raw.bottom, vh - pad), rTop + 24);
+                    const rRight = Math.max(Math.min(raw.right, vw - pad), rLeft + 24);
+                    const rWidth = rRight - rLeft;
+                    const rHeight = rBottom - rTop;
+
+                    this.tourHighlightStyle = {
+                        top: (rTop - 6) + 'px',
+                        left: (rLeft - 6) + 'px',
+                        width: (rWidth + 12) + 'px',
+                        height: (rHeight + 12) + 'px',
+                    };
+
+                    let top, left;
+                    if (isMobile) {
+                        const spaceBelow = vh - rBottom;
+                        top = spaceBelow > popupHEstimate
+                            ? rBottom + margin
+                            : Math.max(margin, rTop - margin - popupHEstimate);
+                        left = Math.max(16, Math.min(vw - popupW - 16, rLeft + rWidth / 2 - popupW / 2));
+                    } else {
+                        const spaceRight = vw - rRight;
+                        const spaceLeft = rLeft;
+                        if (spaceRight >= popupW + margin * 2) {
+                            left = rRight + margin;
+                            top = rTop;
+                        } else if (spaceLeft >= popupW + margin * 2) {
+                            left = rLeft - popupW - margin;
+                            top = rTop;
+                        } else {
+                            left = Math.max(16, Math.min(vw - popupW - 16, rLeft));
+                            top = rBottom + margin;
+                        }
+                        top = Math.max(16, Math.min(vh - popupHEstimate, top));
+                    }
+
+                    this.tourPopupStyle = {
+                        top: top + 'px',
+                        left: left + 'px',
+                        width: popupW + 'px',
+                    };
+                },
+                // ===================== END ONBOARDING TOUR =====================
 
                 addToCart(product, event) {
                     this.playFlyingBallAnimation(event);
 
-                    let existing = this.items.find(
-                        item => item.product_id === product.product_id
-                    );
-
+                    let existing = this.items.find(item => item.name === product.name);
                     if (existing) {
                         existing.qty++;
                     } else {
-                        this.items.push({
-                            product_id: product.product_id,
-                            name: product.name,
-                            price: product.price,
-                            image: product.image,
-                            qty: 1
-                        });
+                        this.items.push({ ...product, qty: 1 });
                     }
                 },
 
@@ -1900,28 +1913,21 @@
                     const cartRect = cartIcon.getBoundingClientRect();
 
                     const ball = document.createElement('div');
-
                     ball.style.position = 'fixed';
-                    ball.style.left =
-                        `${btnRect.left + btnRect.width / 2 - 8}px`;
-                    ball.style.top =
-                        `${btnRect.top + btnRect.height / 2 - 8}px`;
+                    ball.style.left = `${btnRect.left + btnRect.width / 2 - 8}px`;
+                    ball.style.top = `${btnRect.top + btnRect.height / 2 - 8}px`;
                     ball.style.width = '16px';
                     ball.style.height = '16px';
                     ball.style.backgroundColor = '#000000';
                     ball.style.borderRadius = '50%';
                     ball.style.zIndex = '9999';
                     ball.style.pointerEvents = 'none';
-                    ball.style.transition =
-                        'all 0.55s cubic-bezier(0.25, 1, 0.5, 1)';
-
+                    ball.style.transition = 'all 0.55s cubic-bezier(0.25, 1, 0.5, 1)';
                     document.body.appendChild(ball);
 
                     setTimeout(() => {
-                        ball.style.left =
-                            `${cartRect.left + cartRect.width / 2 - 8}px`;
-                        ball.style.top =
-                            `${cartRect.top + cartRect.height / 2 - 8}px`;
+                        ball.style.left = `${cartRect.left + cartRect.width / 2 - 8}px`;
+                        ball.style.top = `${cartRect.top + cartRect.height / 2 - 8}px`;
                         ball.style.transform = 'scale(0.2)';
                         ball.style.opacity = '0.4';
                     }, 20);
@@ -1944,34 +1950,18 @@
                 },
 
                 confirmDelete(index, name) {
-                    this.deleteConfirm = {
-                        open: true,
-                        index,
-                        name
-                    };
+                    this.deleteConfirm = { open: true, index, name };
                 },
 
                 cancelDelete() {
-                    this.deleteConfirm = {
-                        open: false,
-                        index: null,
-                        name: ''
-                    };
+                    this.deleteConfirm = { open: false, index: null, name: '' };
                 },
 
                 confirmRemove() {
                     if (this.deleteConfirm.index !== null) {
-                        this.items.splice(
-                            this.deleteConfirm.index,
-                            1
-                        );
+                        this.items.splice(this.deleteConfirm.index, 1);
                     }
-
-                    this.deleteConfirm = {
-                        open: false,
-                        index: null,
-                        name: ''
-                    };
+                    this.deleteConfirm = { open: false, index: null, name: '' };
                 },
 
                 removeItem(index) {
@@ -1979,204 +1969,70 @@
                 },
 
                 get totalItems() {
-                    return this.items.reduce(
-                        (sum, item) => sum + item.qty,
-                        0
-                    );
+                    return this.items.reduce((sum, item) => sum + item.qty, 0);
                 },
 
                 get totalPrice() {
                     return this.items.reduce((sum, item) => {
-                        let cleanPrice = 0;
-
-                        if (typeof item.price === 'string') {
-                            cleanPrice =
-                                parseInt(
-                                    item.price.replace(/[^0-9]/g, '')
-                                ) || 0;
-                        } else {
-                            cleanPrice =
-                                Number(item.price) || 0;
-                        }
-
+                        let cleanPrice = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
                         return sum + (cleanPrice * item.qty);
                     }, 0);
                 },
 
                 formatRupiah(number) {
-                    return new Intl.NumberFormat(
-                        'id-ID', {
-                            style: 'currency',
-                            currency: 'IDR',
-                            minimumFractionDigits: 0
-                        }
-                    ).format(number);
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
                 },
-
-                // ===================== CHECKOUT CART =====================
 
                 async checkoutWhatsApp() {
                     if (this.items.length === 0) {
-                        alert(
-                            'Keranjang belanjaan Anda masih kosong!'
-                        );
+                        alert('Keranjang belanjaan Anda masih kosong!');
                         return;
                     }
 
-                    const orderId =
-                        await this.saveOrder(this.items);
-
+                    const orderId = await this.saveOrder(this.items);
                     if (!orderId) return;
-
-                    let phone = '6281383415432';
-
-                    let message =
-                        "Halo Kak Admin Perfu.me, saya mau pesan parfum berikut:\n\n";
+                    let phone = '6287774375755';
+                    let message = "Halo Kak Admin Perfu.me, saya mau pesan parfum berikut:\n\n";
 
                     this.items.forEach((item, index) => {
-                        message +=
-                            `${index + 1}. *${item.name}* - ${item.qty} pcs (${item.price})\n`;
+                        message += `${index + 1}. *${item.name}* - ${item.qty} pcs (${item.price})\n`;
                     });
 
-                    message +=
-                        `\n*Nomor Pesanan:* #${orderId}`;
+                    message += `\n*Nomor Pesanan:* #${orderId}`;
+                    message += `\n*Total Belanja:* ${this.formatRupiah(this.totalPrice)}`;
+                    message += `\n\nMohon dicekkan ketersediaan stok & ongkir ke alamat saya ya kak. Terima kasih!`;
 
-                    message +=
-                        `\n*Total Belanja:* ${this.formatRupiah(this.totalPrice)}`;
-
-                    message +=
-                        `\n\nMohon dicekkan ketersediaan stok & ongkir ke alamat saya ya kak. Terima kasih!`;
-
-                    const encodedMessage =
-                        encodeURIComponent(message);
-
-                    window.location.href =
-                        `https://wa.me/${phone}?text=${encodedMessage}`;
+                    let encodedMessage = encodeURIComponent(message);
+                    window.location.href = `https://wa.me/${phone}?text=${encodedMessage}`;
                 },
 
-                // ===================== DIRECT CHECKOUT =====================
-
-                async directCheckoutWhatsApp(
-                    productId,
-                    name,
-                    price
-                ) {
-                    const numericPrice =
-                        typeof price === 'string' ?
-                        (
-                            parseInt(
-                                price.replace(/[^0-9]/g, '')
-                            ) || 0
-                        ) :
-                        Number(price) || 0;
-
-                    const orderId =
-                        await this.saveOrder([{
-                            product_id: productId,
-                            name: name,
-                            price: numericPrice,
-                            qty: 1
-                        }]);
-
+                async directCheckoutWhatsApp(name, price) {
+                    const numericPrice = parseInt(price.replace(/[^0-9]/g, '')) || 0;
+                    const orderId = await this.saveOrder([{ name, price: numericPrice, qty: 1 }]);
                     if (!orderId) return;
-
                     let phone = '6287774375755';
-
-                    let message =
-                        `Halo Kak Admin Perfu.me, saya mau order 1 pcs *${name}* (${price}).\n` +
-                        `*Nomor Pesanan:* #${orderId}\n\n` +
-                        `Mohon info ketersediaan stok dan ongkir ke alamat saya ya kak. Terima kasih!`;
-
-                    const encodedMessage =
-                        encodeURIComponent(message);
-
-                    window.location.href =
-                        `https://wa.me/${phone}?text=${encodedMessage}`;
+                    let message = `Halo Kak Admin Perfu.me, saya mau order 1 pcs *${name}* (${price}).\n*Nomor Pesanan:* #${orderId}\n\nMohon info ketersediaan stok dan ongkir ke alamat saya ya kak. Terima kasih!`;
+                    let encodedMessage = encodeURIComponent(message);
+                    window.location.href = `https://wa.me/${phone}?text=${encodedMessage}`;
                 },
-
-                // ===================== SAVE ORDER =====================
 
                 async saveOrder(items) {
                     try {
-                        const response = await fetch(
-                            '{{ route('orders.checkout') }}', {
-                                method: 'POST',
-
-                                headers: {
-                                    'Content-Type': 'application/json',
-
-                                    'Accept': 'application/json',
-
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-
-                                body: JSON.stringify({
-                                    items: items.map(item => ({
-                                        product_id: Number(
-                                            item.product_id
-                                        ),
-
-                                        name: item.name,
-
-                                        price: typeof item.price === 'string' ?
-                                            (
-                                                parseInt(
-                                                    item.price.replace(
-                                                        /[^0-9]/g,
-                                                        ''
-                                                    )
-                                                ) || 0
-                                            ) :
-                                            Number(
-                                                item.price
-                                            ),
-
-                                        qty: Number(
-                                            item.qty
-                                        ),
-
-                                        image: item.image || null
-                                    }))
-                                })
-                            }
-                        );
-
-                        if (!response.ok) {
-                            const errorData =
-                                await response.json()
-                                .catch(() => null);
-
-                            console.error(
-                                'Checkout error:',
-                                errorData
-                            );
-
-                            throw new Error(
-                                'Checkout gagal'
-                            );
-                        }
-
-                        const result =
-                            await response.json();
-
-                        return result.id;
-
+                        const response = await fetch('<?php echo e(route('orders.checkout')); ?>', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>' },
+                            body: JSON.stringify({ items: items.map(item => ({ ...item, price: typeof item.price === 'string' ? (parseInt(item.price.replace(/[^0-9]/g, '')) || 0) : item.price })) })
+                        });
+                        if (!response.ok) throw new Error();
+                        return (await response.json()).id;
                     } catch (error) {
-                        console.error(
-                            'Save order error:',
-                            error
-                        );
-
-                        alert(
-                            'Pesanan belum bisa disimpan. Silakan coba lagi.'
-                        );
-
+                        alert('Pesanan belum bisa disimpan. Silakan coba lagi.');
                         return null;
                     }
                 }
-            };
+            }
         }
     </script>
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\Faiz\Perfu.me\resources\views\customer\home.blade.php ENDPATH**/ ?>

@@ -106,8 +106,8 @@
 <body class="text-neutral-900 antialiased bg-white selection:bg-neutral-900 selection:text-white"
     x-data="productPage()">
 
-    {{-- Scrolling Announcement Bar --}}
-    @php
+    
+    <?php
         $announcements = (isset($brands) && $brands->count() > 0)
             ? $brands->pluck('name')->filter()->values()->toArray()
             : [
@@ -121,32 +121,34 @@
                 '100% Extrait de Parfum Murni',
                 'Konsultasi Aroma Gratis via WhatsApp',
             ];
-    @endphp
+    ?>
     <div id="marquee-bar"
         class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
         <div class="marquee-track">
             <div class="flex items-center shrink-0">
-                @foreach ($announcements as $item)
+                <?php $__currentLoopData = $announcements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="flex items-center shrink-0" aria-hidden="true">
-                @foreach ($announcements as $item)
+                <?php $__currentLoopData = $announcements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
 
-    {{-- Navbar (Identical to Home) --}}
+    
     <header id="site-header" class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
         <div class="max-w-[1240px] mx-auto flex items-center justify-between px-8 sm:px-10 h-[70px]">
             <div class="flex items-center gap-12">
-                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
                     <span
                         class="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center text-sm font-bold font-serif-luxury tracking-tighter shadow-sm">P.</span>
                     <div class="flex flex-col">
@@ -158,13 +160,13 @@
                 </a>
 
                 <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
-                    <a href="{{ route('home') }}" class="hover:text-black">Home</a>
-                    <a href="{{ route('refill') }}" class="nav-underline text-black font-medium">Products</a>
+                    <a href="<?php echo e(route('home')); ?>" class="hover:text-black">Home</a>
+                    <a href="<?php echo e(route('refill')); ?>" class="nav-underline text-black font-medium">Products</a>
                 </nav>
             </div>
 
             <div class="flex items-center gap-3.5">
-                {{-- Cart Trigger in Header --}}
+                
                 <button @click="cartOpen = true"
                     class="relative p-2.5 rounded-full border border-neutral-200 hover:border-neutral-900 text-neutral-800 hover:text-neutral-950 transition-colors flex items-center justify-center cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
@@ -176,8 +178,8 @@
                         class="absolute -top-1 -right-1 bg-neutral-950 text-white text-[9px] font-bold w-5 h-5 rounded-full flex items-center justify-center"></span>
                 </button>
 
-                {{-- Tombol Panduan --}}
-                <a href="{{ route('home') }}?tour=1"
+                
+                <a href="<?php echo e(route('home')); ?>?tour=1"
                     class="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-semibold text-neutral-600 hover:text-neutral-950 border border-neutral-200 hover:border-neutral-900 rounded-full px-3.5 py-2.5 transition cursor-pointer">
                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
                         <circle cx="12" cy="12" r="10" />
@@ -196,7 +198,7 @@
         </div>
     </header>
 
-    {{-- Hero / Page Header --}}
+    
     <section class="bg-neutral-50/70 border-b border-neutral-200/70 py-16 reveal-element">
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8">
             <p class="text-xs tracking-[0.25em] text-neutral-400 font-bold uppercase mb-2">PRODUCT CATALOG & REFILL</p>
@@ -225,14 +227,14 @@
         </div>
     </section>
 
-    {{-- Products Grid Section with Filter Tabs & Search Bar --}}
+    
     <section id="products-grid" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 bg-white reveal-element">
 
-        {{-- Toolbar: Filter Category Tabs & Search Bar --}}
+        
         <div
             class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-100 pb-8 mb-10">
 
-            {{-- Filter Category Buttons --}}
+            
             <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
                 <button type="button" @click="activeTab = 'all'"
                     :class="activeTab === 'all' ? 'bg-neutral-950 text-white font-bold shadow-md' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 font-medium'"
@@ -260,7 +262,7 @@
                 </button>
             </div>
 
-            {{-- Search Bar Input --}}
+            
             <div class="relative w-full md:w-80">
                 <input type="text" x-model="search" placeholder="Cari parfum, aroma, varian..."
                     class="w-full pl-10 pr-4 py-2.5 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-medium text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition">
@@ -275,7 +277,7 @@
 
         </div>
 
-        {{-- Section Subheader --}}
+        
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-2xl font-extrabold text-neutral-950 tracking-tight" x-text="activeTabTitle"></h2>
             <p class="text-xs text-neutral-500">
@@ -284,19 +286,19 @@
             </p>
         </div>
 
-        {{-- Products Grid --}}
+        
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <template x-for="(product, index) in filteredProducts" :key="product.id || index">
                 <div @click="selectedProduct = product"
                     class="card-hover bg-white border border-neutral-200/80 rounded-3xl p-5 flex flex-col shadow-xs relative cursor-pointer">
 
-                    {{-- Best Seller ribbon --}}
+                    
                     <span x-show="product.is_best_seller"
                         class="absolute top-3 left-3 z-10 bg-[#D4AF37] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
                         ★ Best Seller
                     </span>
 
-                    {{-- Image Container (Uses Column Image) --}}
+                    
                     <div
                         class="aspect-square rounded-2xl bg-neutral-50 border border-neutral-100 mb-4 flex items-center justify-center overflow-hidden relative group">
                         <img :src="product.image"
@@ -308,7 +310,7 @@
                             :alt="product.name + ' alternate'">
                     </div>
 
-                    {{-- Attribute Chips --}}
+                    
                     <div class="flex items-center gap-1.5 flex-wrap mb-2">
                         <span
                             class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600 uppercase"
@@ -324,14 +326,14 @@
                             x-text="product.category"></span>
                     </div>
 
-                    {{-- Name --}}
+                    
                     <h3 class="text-sm font-bold text-neutral-950 mb-1 leading-snug" x-text="product.name"></h3>
 
-                    {{-- Description Snippet --}}
+                    
                     <p class="text-[11px] text-neutral-500 line-clamp-2 mb-3 leading-relaxed"
                         x-text="product.description || 'Aroma parfum eksklusif berkonsentrasi Extrait murni.'"></p>
 
-                    {{-- Aroma Notes breakdown --}}
+                    
                     <template x-if="product.top_note || product.middle_note || product.base_note">
                         <div
                             class="bg-neutral-50 p-2.5 rounded-xl border border-neutral-100 mb-3 space-y-1 text-[10px]">
@@ -345,7 +347,7 @@
                         </div>
                     </template>
 
-                    {{-- Composition & Packaging --}}
+                    
                     <template x-if="product.composition || product.packaging">
                         <div class="space-y-1 mb-3 text-[10px]">
                             <p class="text-neutral-500 truncate" x-show="product.packaging"><strong
@@ -358,7 +360,7 @@
                         </div>
                     </template>
 
-                    {{-- Price & Stock --}}
+                    
                     <div class="mt-auto pt-2 border-t border-neutral-100 mb-2 flex items-center justify-between">
                         <div>
                             <span class="text-[10px] text-neutral-400 font-bold block uppercase">HARGA JUAL</span>
@@ -373,7 +375,7 @@
                             x-text="product.stock > 0 ? 'Stok: ' + product.stock + ' pcs' : 'Stok Habis'"></span>
                     </div>
 
-                    {{-- Action Buttons --}}
+                    
                     <div class="flex flex-col gap-2">
                         <button @click.stop="addToCart(product, $event)" :disabled="product.stock <= 0"
                             :class="product.stock <= 0 ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed' : 'bg-neutral-950 text-white hover:bg-neutral-800 cursor-pointer'"
@@ -390,7 +392,7 @@
             </template>
         </div>
 
-        {{-- Empty State --}}
+        
         <div x-show="filteredProducts.length === 0" x-cloak class="text-center py-24 text-neutral-400 space-y-2">
             <p class="text-sm font-bold text-neutral-700">Produk tidak ditemukan.</p>
             <p class="text-xs text-neutral-400">Tidak ada produk yang cocok dengan pencarian Anda.</p>
@@ -401,14 +403,14 @@
         </div>
     </section>
 
-    {{-- Product Detail Modal --}}
+    
     <div x-show="selectedProduct" x-cloak class="fixed inset-0 z-[999] flex items-center justify-center p-4"
         style="display: none;">
-        {{-- Backdrop --}}
+        
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="selectedProduct = null"
             x-show="selectedProduct" x-transition.opacity></div>
 
-        {{-- Modal Card --}}
+        
         <div x-show="selectedProduct" x-transition @click.outside="selectedProduct = null"
             class="relative bg-white rounded-3xl w-full max-w-3xl max-h-[88vh] overflow-y-auto shadow-2xl">
 
@@ -419,7 +421,7 @@
 
             <template x-if="selectedProduct">
                 <div class="grid grid-cols-1 md:grid-cols-2">
-                    {{-- Image --}}
+                    
                     <div class="aspect-square md:aspect-auto bg-neutral-50 relative">
                         <span x-show="selectedProduct.is_best_seller"
                             class="absolute top-4 left-4 z-10 bg-[#D4AF37] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
@@ -429,7 +431,7 @@
                             onerror="this.src='https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&q=80'">
                     </div>
 
-                    {{-- Details --}}
+                    
                     <div class="p-6 sm:p-8 flex flex-col">
                         <div class="flex items-center gap-1.5 flex-wrap mb-3">
                             <span
@@ -505,7 +507,7 @@
         </div>
     </div>
 
-    {{-- FLOATING CART BUTTON --}}
+    
     <div class="fixed bottom-6 right-6 z-40">
         <button id="floating-cart-btn" @click="cartOpen = true"
             class="relative bg-neutral-950 text-white p-3.5 rounded-full shadow-2xl hover:bg-neutral-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer group">
@@ -518,7 +520,7 @@
         </button>
     </div>
 
-    {{-- Slide-over Cart Drawer Sidebar --}}
+    
     <div x-cloak x-show="cartOpen" class="relative z-50">
         <div x-show="cartOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
@@ -654,7 +656,7 @@
         </div>
     </div>
 
-    {{-- Footer (Identical Dark Theme to Home) --}}
+    
     <footer class="bg-neutral-950 text-neutral-400 border-t border-neutral-900 pt-14 pb-8">
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="space-y-3">
@@ -699,9 +701,9 @@
             <div>
                 <p class="text-[10px] tracking-widest text-neutral-300 font-bold uppercase mb-3">FRAGRANCE SERIES</p>
                 <ul class="space-y-1.5 text-xs text-neutral-400">
-                    <li><a href="{{ route('home') }}#product" class="hover:text-white transition">Dynamyst Extrait</a>
+                    <li><a href="<?php echo e(route('home')); ?>#product" class="hover:text-white transition">Dynamyst Extrait</a>
                     </li>
-                    <li><a href="{{ route('home') }}#product" class="hover:text-white transition">Vanessence Extrait</a>
+                    <li><a href="<?php echo e(route('home')); ?>#product" class="hover:text-white transition">Vanessence Extrait</a>
                     </li>
                     <li><a href="#products-grid" class="hover:text-white transition">Discovery Refills</a></li>
                     <li><a href="#products-grid" class="hover:text-white transition">Signature Bundles</a></li>
@@ -734,12 +736,12 @@
 
         <div
             class="max-w-[1240px] mx-auto px-6 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-2.5 border-t border-neutral-900 mt-10 pt-5 text-[10px] text-neutral-500">
-            <span>&copy; {{ date('Y') }} PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
+            <span>&copy; <?php echo e(date('Y')); ?> PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
             <span>CRAFTED WITH PRECISION · EXTRAIT DE PARFUM</span>
         </div>
     </footer>
 
-    {{-- Alpine.js & Product Page Logic --}}
+    
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
         function productPage() {
@@ -766,7 +768,7 @@
                     });
                 },
 
-                allProducts: @js(isset($allProducts) ? $allProducts->map(function ($p) {
+                allProducts: <?php echo \Illuminate\Support\Js::from(isset($allProducts) ? $allProducts->map(function ($p) {
                     return [
                         'id' => $p->id,
                         'name' => $p->name,
@@ -786,7 +788,7 @@
                         'image_hover' => $p->image_hover ? asset('storage/' . $p->image_hover) : null,
                         'is_best_seller' => (bool) $p->is_best_seller,
                     ];
-                })->values()->toArray() : []),
+                })->values()->toArray() : [])->toHtml() ?>,
 
                 get refillCount() {
                     return this.allProducts.filter(p => p.category === 'Refill').length;
@@ -964,9 +966,9 @@
 
                 async saveOrder(items) {
                     try {
-                        const response = await fetch('{{ route('orders.checkout') }}', {
+                        const response = await fetch('<?php echo e(route('orders.checkout')); ?>', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}' },
+                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '<?php echo e(csrf_token()); ?>' },
                             body: JSON.stringify({ items: items.map(item => ({ ...item, price: typeof item.price === 'string' ? (parseInt(item.price.replace(/[^0-9]/g, '')) || 0) : item.price })) })
                         });
                         if (!response.ok) throw new Error();
@@ -982,4 +984,4 @@
 
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\Faiz\Perfu.me\resources\views\customer\refillpage.blade.php ENDPATH**/ ?>
