@@ -225,38 +225,38 @@
     
     
     <?php
-        $formatVolume = function ($volume) {
-            if (empty($volume) && $volume !== '0') {
-                return '50ml';
-            }
-            if (is_array($volume)) {
-                $volume = implode(',', $volume);
-            }
-            if (!is_string($volume)) {
-                return '50ml';
-            }
-            $parts = collect(explode(',', $volume))
-                ->map(fn($v) => trim($v))
-                ->filter();
-            return $parts->isEmpty() ? '50ml' : $parts->map(fn($v) => $v . 'ml')->implode(' / ');
-        };
+$formatVolume = function ($volume) {
+    if (empty($volume) && $volume !== '0') {
+        return '50ml';
+    }
+    if (is_array($volume)) {
+        $volume = implode(',', $volume);
+    }
+    if (!is_string($volume)) {
+        return '50ml';
+    }
+    $parts = collect(explode(',', $volume))
+        ->map(fn($v) => trim($v))
+        ->filter();
+    return $parts->isEmpty() ? '50ml' : $parts->map(fn($v) => $v . 'ml')->implode(' / ');
+};
     ?>
 
     
     <?php
-        $announcementList = (isset($brands) && $brands->count() > 0)
-            ? $brands->pluck('name')->filter()->values()->toArray()
-            : [
-                'DYNAMYST (Bold Woody & Fresh)',
-                'VANESSENCE (Citrus Warm Earthy)',
-                'Dior Sauvage Extrait',
-                'Baccarat Rouge 540',
-                'Aigner Blue Emotion',
-                'Channel Coco Mademoiselle',
-                'VS Scandalous',
-                '100% Extrait de Parfum Murni',
-                'Konsultasi Aroma Gratis via WhatsApp',
-            ];
+$announcementList = (isset($brands) && $brands->count() > 0)
+    ? $brands->pluck('name')->filter()->values()->toArray()
+    : [
+        'DYNAMYST (Bold Woody & Fresh)',
+        'VANESSENCE (Citrus Warm Earthy)',
+        'Dior Sauvage Extrait',
+        'Baccarat Rouge 540',
+        'Aigner Blue Emotion',
+        'Channel Coco Mademoiselle',
+        'VS Scandalous',
+        '100% Extrait de Parfum Murni',
+        'Konsultasi Aroma Gratis via WhatsApp',
+    ];
     ?>
     <div id="marquee-bar"
         class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
@@ -335,55 +335,65 @@
     
     
     
-    <?php
-        $heroScents = (isset($heroProducts) && $heroProducts->count() > 0)
-            ? $heroProducts->map(function ($product, $index) use ($formatVolume) {
+<?php
+    $heroScents = (isset($heroProducts) && $heroProducts->count() > 0)
+        ? $heroProducts
+            ->filter(function ($product) {
+                return strtolower(trim($product->category ?? '')) === 'signature';
+            })
+            ->values()
+            ->map(function ($product, $index) use ($formatVolume) {
                 return [
                     'name' => strtoupper($product->name),
                     'label' => sprintf('%02d', $index + 1),
                     'subname' => ($product->category ?? 'Signature') . ' ' . ($product->variant ?? 'Extrait de Parfum'),
                     'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
-                    'character' => $product->description ? \Illuminate\Support\Str::limit($product->description, 60) : (($product->variant ? $product->variant . ' · ' : '') . ($product->gender ?? 'Universal')),
+                    'character' => $product->description
+                        ? \Illuminate\Support\Str::limit($product->description, 60)
+                        : (($product->variant ? $product->variant . ' · ' : '') . ($product->gender ?? 'Universal')),
                     'topNotes' => $product->top_note ?: 'Fresh Notes',
                     'heartNotes' => $product->middle_note ?: 'Floral Notes',
                     'baseNotes' => $product->base_note ?: 'Woody Musk',
                     'volume' => $formatVolume($product->volume ?? '50'),
                     'tag' => $product->is_best_seller ? 'Best Seller' : 'Featured',
-                    'image' => $product->image ? asset('storage/' . $product->image) : asset('storage/image/DSC00057.JPG'),
+                    'image' => $product->image
+                        ? asset('storage/' . $product->image)
+                        : asset('storage/image/DSC00057.JPG'),
                     'alt' => $product->name . ' - Perfu.me Collection'
                 ];
-            })->values()->toArray()
-            : [
-                [
-                    'name' => 'DYNAMYST',
-                    'label' => '01',
-                    'subname' => 'Signature Extrait de Parfum',
-                    'price' => 'Rp 45.000',
-                    'character' => 'Bold Woody & Fresh Citrus',
-                    'topNotes' => 'Bergamot, Mandarin',
-                    'heartNotes' => 'French Lavender',
-                    'baseNotes' => 'Amber & White Musk',
-                    'volume' => '30ml / 50ml',
-                    'tag' => 'Best Seller',
-                    'image' => asset('storage/image/DSC00057.JPG'),
-                    'alt' => 'Dynamyst Extrait de Parfum – Signature Collection'
-                ],
-                [
-                    'name' => 'VANESSENCE',
-                    'label' => '02',
-                    'subname' => 'Exclusive Extrait de Parfum',
-                    'price' => 'Rp 45.000',
-                    'character' => 'Citrus Fresh & Warm Earthy',
-                    'topNotes' => 'Lemon Zest, Apple',
-                    'heartNotes' => 'Ambroxan',
-                    'baseNotes' => 'Oakmoss & Cedar',
-                    'volume' => '30ml / 50ml',
-                    'tag' => 'Exclusive Series',
-                    'image' => asset('storage/image/DSC00122.JPG'),
-                    'alt' => 'Vanessence Extrait de Parfum – Exclusive Series'
-                ]
-            ];
-    ?>
+            })
+            ->toArray()
+        : [
+            [
+                'name' => 'DYNAMYST',
+                'label' => '01',
+                'subname' => 'Signature Extrait de Parfum',
+                'price' => 'Rp 45.000',
+                'character' => 'Bold Woody & Fresh Citrus',
+                'topNotes' => 'Bergamot, Mandarin',
+                'heartNotes' => 'French Lavender',
+                'baseNotes' => 'Amber & White Musk',
+                'volume' => '30ml / 50ml',
+                'tag' => 'Best Seller',
+                'image' => asset('storage/image/DSC00057.JPG'),
+                'alt' => 'Dynamyst Extrait de Parfum – Signature Collection'
+            ],
+            [
+                'name' => 'VANESSENCE',
+                'label' => '02',
+                'subname' => 'Signature Extrait de Parfum',
+                'price' => 'Rp 45.000',
+                'character' => 'Citrus Fresh & Warm Earthy',
+                'topNotes' => 'Lemon Zest, Apple',
+                'heartNotes' => 'Ambroxan',
+                'baseNotes' => 'Oakmoss & Cedar',
+                'volume' => '30ml / 50ml',
+                'tag' => 'Featured',
+                'image' => asset('storage/image/DSC00122.JPG'),
+                'alt' => 'Vanessence Extrait de Parfum – Signature Collection'
+            ]
+        ];
+?>
     <section id="hero-section" class="relative overflow-hidden border-b border-neutral-100" style="min-height: 88vh;"
         x-data="{
         activeScent: 0,
@@ -556,67 +566,67 @@
     
     
     <?php
-        $refillOnly = isset($productRefill) ? $productRefill->values() : collect();
+$refillOnly = isset($productRefill) ? $productRefill->values() : collect();
 
-        $lineupProducts = $refillOnly->count() > 0
-            ? $refillOnly->map(function ($product) use ($formatVolume) {
-                return [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'subtitle' => trim(($product->variant ?? '') . ' · ' . ($product->gender ?? 'Unisex'), ' ·'),
-                    'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
-                    'volume' => $formatVolume($product->volume ?? '50'),
-                    'image' => $product->image ? asset('storage/' . $product->image) : asset('storage/image/DSC00057.JPG'),
-                    'url' => route('refill', ['highlight' => $product->id]),
-                ];
-            })->values()->toArray()
-            : [
-                [
-                    'id' => null,
-                    'name' => 'Dynamyst Refill',
-                    'subtitle' => 'Roll-on · Unisex',
-                    'price' => 'Rp 25.000',
-                    'volume' => '10ml',
-                    'image' => asset('storage/image/DSC00057.JPG'),
-                    'url' => route('refill'),
-                ],
-                [
-                    'id' => null,
-                    'name' => 'Vanessence Refill',
-                    'subtitle' => 'Body Mist · Unisex',
-                    'price' => 'Rp 25.000',
-                    'volume' => '10ml',
-                    'image' => asset('storage/image/DSC00122.JPG'),
-                    'url' => route('refill'),
-                ],
-                [
-                    'id' => null,
-                    'name' => 'Selene Refill',
-                    'subtitle' => 'Roll-on · Women',
-                    'price' => 'Rp 22.000',
-                    'volume' => '10ml',
-                    'image' => asset('storage/image/DSC00164.JPG'),
-                    'url' => route('refill'),
-                ],
-                [
-                    'id' => null,
-                    'name' => 'Aphrodite Refill',
-                    'subtitle' => 'Body Mist · Women',
-                    'price' => 'Rp 22.000',
-                    'volume' => '10ml',
-                    'image' => asset('storage/image/DSC00057.JPG'),
-                    'url' => route('refill'),
-                ],
-                [
-                    'id' => null,
-                    'name' => 'Uranus Refill',
-                    'subtitle' => 'Roll-on · Men',
-                    'price' => 'Rp 25.000',
-                    'volume' => '10ml',
-                    'image' => asset('storage/image/DSC00122.JPG'),
-                    'url' => route('refill'),
-                ],
-            ];
+$lineupProducts = $refillOnly->count() > 0
+    ? $refillOnly->map(function ($product) use ($formatVolume) {
+        return [
+            'id' => $product->id,
+            'name' => $product->name,
+            'subtitle' => trim(($product->variant ?? '') . ' · ' . ($product->gender ?? 'Unisex'), ' ·'),
+            'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
+            'volume' => $formatVolume($product->volume ?? '50'),
+            'image' => $product->image ? asset('storage/' . $product->image) : asset('storage/image/DSC00057.JPG'),
+            'url' => route('refill', ['highlight' => $product->id]),
+        ];
+    })->values()->toArray()
+    : [
+        [
+            'id' => null,
+            'name' => 'Dynamyst Refill',
+            'subtitle' => 'Roll-on · Unisex',
+            'price' => 'Rp 25.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00057.JPG'),
+            'url' => route('refill'),
+        ],
+        [
+            'id' => null,
+            'name' => 'Vanessence Refill',
+            'subtitle' => 'Body Mist · Unisex',
+            'price' => 'Rp 25.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00122.JPG'),
+            'url' => route('refill'),
+        ],
+        [
+            'id' => null,
+            'name' => 'Selene Refill',
+            'subtitle' => 'Roll-on · Women',
+            'price' => 'Rp 22.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00164.JPG'),
+            'url' => route('refill'),
+        ],
+        [
+            'id' => null,
+            'name' => 'Aphrodite Refill',
+            'subtitle' => 'Body Mist · Women',
+            'price' => 'Rp 22.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00057.JPG'),
+            'url' => route('refill'),
+        ],
+        [
+            'id' => null,
+            'name' => 'Uranus Refill',
+            'subtitle' => 'Roll-on · Men',
+            'price' => 'Rp 25.000',
+            'volume' => '10ml',
+            'image' => asset('storage/image/DSC00122.JPG'),
+            'url' => route('refill'),
+        ],
+    ];
     ?>
 
     <section id="lineup-carousel"
@@ -826,13 +836,13 @@
 
             <?php $__currentLoopData = $productOri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ori): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
-                    $isEven = $loop->even;
+    $isEven = $loop->even;
 
-                    $gender = match ($ori->gender) {
-                        'Pria' => 'Men',
-                        'Wanita' => 'Women',
-                        'Unisex' => 'Unisex',
-                    }
+    $gender = match ($ori->gender) {
+        'Pria' => 'Men',
+        'Wanita' => 'Women',
+        'Unisex' => 'Unisex',
+    }
                 ?>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
 
@@ -953,7 +963,7 @@
                             </div>
                             <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
                                 <?php
-                                    $initial = str($review->user_name)->substr(0, 1)->upper();
+        $initial = str($review->user_name)->substr(0, 1)->upper();
                                 ?>
                                 <div
                                     class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs flex items-center justify-center bg-black/80">
