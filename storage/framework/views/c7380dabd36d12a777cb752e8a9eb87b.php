@@ -222,10 +222,10 @@
 <body class="text-neutral-900 antialiased bg-white selection:bg-neutral-900 selection:text-white"
     x-data="cartSystem()">
 
-    {{-- ======================================================== --}}
-    {{-- HELPER: format ukuran (volume) parfum --}}
-    {{-- ======================================================== --}}
-    @php
+    
+    
+    
+    <?php
         $formatVolume = function ($volume) {
             if (empty($volume) && $volume !== '0') {
                 return '50ml';
@@ -239,10 +239,10 @@
             $parts = collect(explode(',', $volume))->map(fn($v) => trim($v))->filter();
             return $parts->isEmpty() ? '50ml' : $parts->map(fn($v) => $v . 'ml')->implode(' / ');
         };
-    @endphp
+    ?>
 
-    {{-- Top Announcement Bar --}}
-    @php
+    
+    <?php
         $announcementList =
             isset($brands) && $brands->count() > 0
                 ? $brands->pluck('name')->filter()->values()->toArray()
@@ -257,32 +257,34 @@
                     '100% Extrait de Parfum Murni',
                     'Konsultasi Aroma Gratis via WhatsApp',
                 ];
-    @endphp
+    ?>
     <div id="marquee-bar"
         class="bg-neutral-950 text-neutral-300 text-[11px] font-medium tracking-wider uppercase border-b border-neutral-800 overflow-hidden py-2">
         <div class="marquee-track">
             <div class="flex items-center shrink-0">
-                @foreach ($announcementList as $item)
+                <?php $__currentLoopData = $announcementList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="flex items-center shrink-0" aria-hidden="true">
-                @foreach ($announcementList as $item)
+                <?php $__currentLoopData = $announcementList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="px-6 flex items-center gap-2">
-                        <span class="text-neutral-500 text-[10px]">✦</span> {{ $item }}
+                        <span class="text-neutral-500 text-[10px]">✦</span> <?php echo e($item); ?>
+
                     </span>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
 
-    {{-- Navbar --}}
+    
     <header id="site-header" class="bg-white/95 backdrop-blur-md border-b border-neutral-100 sticky top-0 z-50">
         <div class="max-w-[1240px] mx-auto flex items-center justify-between px-8 sm:px-10 h-[70px]">
             <div class="flex items-center gap-12">
-                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
                     <span
                         class="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center text-sm font-bold font-serif-luxury tracking-tighter shadow-sm">P.</span>
                     <div class="flex flex-col">
@@ -294,8 +296,8 @@
                 </a>
 
                 <nav class="hidden md:flex items-center gap-8 text-sm text-black/60">
-                    <a href="{{ route('home') }}" class="nav-underline text-black font-medium">Home</a>
-                    <a href="{{ route('refill') }}" class="hover:text-black">Products</a>
+                    <a href="<?php echo e(route('home')); ?>" class="nav-underline text-black font-medium">Home</a>
+                    <a href="<?php echo e(route('refill')); ?>" class="hover:text-black">Products</a>
                 </nav>
             </div>
 
@@ -331,10 +333,10 @@
         </div>
     </header>
 
-    {{-- ================================================================ --}}
-    {{-- HERO SECTION — SPLIT SCREEN WITH FLOATING PRODUCT CARDS --}}
-    {{-- ================================================================ --}}
-    @php
+    
+    
+    
+    <?php
         $heroScents =
             isset($heroProducts) && $heroProducts->count() > 0
                 ? $heroProducts
@@ -393,13 +395,13 @@
                         'alt' => 'Vanessence Extrait de Parfum – Signature Collection',
                     ],
                 ];
-    @endphp
+    ?>
     <section id="hero-section" class="relative overflow-hidden border-b border-neutral-100" style="min-height: 88vh;"
         x-data="{
             activeScent: 0,
-            scents: @js($heroScents)
+            scents: <?php echo \Illuminate\Support\Js::from($heroScents)->toHtml() ?>
         }">
-        {{-- ── LEFT HALF: Full-bleed Fragrance Image ── --}}
+        
         <div class="hidden lg:block absolute inset-y-0 left-0 w-[48%] overflow-hidden">
             <template x-for="(scent, index) in scents" :key="'bg-' + index">
                 <img :src="scent.image" :alt="scent.alt" x-show="activeScent === index"
@@ -423,7 +425,7 @@
             </div>
         </div>
 
-        {{-- ── RIGHT HALF: Editorial Content + Product Switcher ── --}}
+        
         <div
             class="relative z-10 flex flex-col justify-center min-h-screen lg:min-h-0 lg:ml-[48%] px-6 sm:px-10 lg:px-12 py-16 lg:py-20 space-y-8 bg-white">
 
@@ -561,7 +563,7 @@
                     <div class="flex items-center gap-1 text-amber-500 text-[11px]">
                         <span>★★★★★</span>
                         <span
-                            class="font-bold text-neutral-950 ml-0.5">{{ number_format($avgRating ?? 5.0, 1) }}</span>
+                            class="font-bold text-neutral-950 ml-0.5"><?php echo e(number_format($avgRating ?? 5.0, 1)); ?></span>
                         <span class="text-neutral-400 font-normal">/ 5.0</span>
                     </div>
                     <p class="text-[10px] text-neutral-400">Dipercaya 1.400+ pelanggan Indonesia</p>
@@ -571,10 +573,10 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- LINEUP INFINITE COVERFLOW CAROUSEL --}}
-    {{-- ======================================================== --}}
-    @php
+    
+    
+    
+    <?php
         $refillOnly = isset($productRefill) ? $productRefill->values() : collect();
 
         $lineupProducts =
@@ -645,11 +647,11 @@
                         'url' => route('refill'),
                     ],
                 ];
-    @endphp
+    ?>
 
     <section id="lineup-carousel"
         class="relative bg-neutral-950 text-white py-20 lg:py-24 overflow-hidden border-b border-neutral-900"
-        x-data="productCarousel(@js($lineupProducts))" x-init="init()">
+        x-data="productCarousel(<?php echo \Illuminate\Support\Js::from($lineupProducts)->toHtml() ?>)" x-init="init()">
 
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8 text-center mb-7 lg:mb-10">
             <p class="text-xs tracking-[0.3em] text-neutral-400 font-bold uppercase mb-2">
@@ -671,7 +673,7 @@
                     <div class="h-[72%] bg-neutral-100 overflow-hidden">
                         <img :src="card.item.image" :alt="card.item.name" draggable="false"
                             class="w-full h-full object-cover select-none pointer-events-none"
-                            onerror="this.onerror=null; this.src='{{ asset('storage/image/DSC00057.JPG') }}';">
+                            onerror="this.onerror=null; this.src='<?php echo e(asset('storage/image/DSC00057.JPG')); ?>';">
                     </div>
 
                     <div class="h-[28%] bg-neutral-950 text-white px-4 py-3 flex flex-col justify-center">
@@ -691,7 +693,7 @@
                 </svg>
             </button>
 
-            <a href="{{ route('refill') }}"
+            <a href="<?php echo e(route('refill')); ?>"
                 class="text-xs font-bold underline underline-offset-8 tracking-wide uppercase hover:text-neutral-300 transition">
                 Discover More
             </a>
@@ -705,9 +707,9 @@
 
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- VALUE PROPOSITIONS / USP BADGES STRIP (SVG ICONS) --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="usp-section" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-12 border-b border-neutral-100">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
@@ -767,9 +769,9 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- ABOUT US / BRAND PHILOSOPHY --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="story" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 lg:py-24">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
 
@@ -807,7 +809,7 @@
                 </div>
 
                 <div class="pt-3">
-                    <a href="{{ route('refill') }}"
+                    <a href="<?php echo e(route('refill')); ?>"
                         class="inline-flex items-center gap-2 text-xs font-bold text-neutral-950 underline underline-offset-8 hover:text-neutral-500 transition tracking-wide uppercase">
                         <span>Lihat Semua Koleksi Aroma</span>
                         <span>&rarr;</span>
@@ -818,13 +820,13 @@
             <div class="lg:col-span-6 grid grid-cols-2 gap-4 sm:gap-5">
                 <div
                     class="bg-neutral-100 rounded-2xl aspect-[3/4] overflow-hidden shadow-sm border border-neutral-200/80">
-                    <img src="{{ asset('storage/image/DSC00057.JPG') }}" alt="Perfu.me Craftsmanship"
+                    <img src="<?php echo e(asset('storage/image/DSC00057.JPG')); ?>" alt="Perfu.me Craftsmanship"
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                         onerror="this.src='https://via.placeholder.com/400x500?text=Perfu.me+Bottle+1'">
                 </div>
                 <div
                     class="bg-neutral-100 rounded-2xl aspect-[3/4] overflow-hidden shadow-sm border border-neutral-200/80 mt-6">
-                    <img src="{{ asset('storage/image/DSC00068 (1).JPG') }}" alt="Perfu.me Essence"
+                    <img src="<?php echo e(asset('storage/image/DSC00068 (1).JPG')); ?>" alt="Perfu.me Essence"
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                         onerror="this.src='https://via.placeholder.com/400x500?text=Perfu.me+Bottle+2'">
                 </div>
@@ -833,9 +835,9 @@
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- DETAILED PRODUCT SHOWCASE SECTION (ZIG-ZAG) --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="product" class="max-w-[1240px] mx-auto px-6 sm:px-8 py-16 bg-white border-t border-neutral-100">
         <div id="product-intro"
             class="border-b border-neutral-200/80 pb-5 mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -854,8 +856,8 @@
 
         <div class="space-y-20 sm:space-y-24">
 
-            @foreach ($productOri as $ori)
-                @php
+            <?php $__currentLoopData = $productOri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ori): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
                     $isEven = $loop->even;
 
                     $gender = match ($ori->gender) {
@@ -863,71 +865,80 @@
                         'Wanita' => 'Women',
                         'Unisex' => 'Unisex',
                     };
-                @endphp
+                ?>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
 
                     <div
-                        class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full min-h-[480px] {{ $isEven ? 'lg:order-2' : 'lg:order-1' }}">
-                        <img src="{{ asset('storage/' . $ori->image) }}" alt="{{ $ori->name }}"
+                        class="relative group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-sm w-full min-h-[480px] <?php echo e($isEven ? 'lg:order-2' : 'lg:order-1'); ?>">
+                        <img src="<?php echo e(asset('storage/' . $ori->image)); ?>" alt="<?php echo e($ori->name); ?>"
                             class="absolute inset-0 w-full h-full min-h-[480px] object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0"
                             onerror="console.error('Image failed:', this.src)">
-                        @if ($ori->image_hover)
-                            <img src="{{ asset('storage/' . $ori->image_hover) }}"
-                                alt="{{ $ori->name }} alternate view"
+                        <?php if($ori->image_hover): ?>
+                            <img src="<?php echo e(asset('storage/' . $ori->image_hover)); ?>"
+                                alt="<?php echo e($ori->name); ?> alternate view"
                                 class="absolute inset-0 w-full h-full min-h-[480px] object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                                 onerror="console.error('Hover image failed:', this.src)">
-                        @endif
+                        <?php endif; ?>
 
                         <span
                             class="absolute top-4 left-4 bg-neutral-950 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                            Best Seller #{{ $loop->iteration }}
+                            Best Seller #<?php echo e($loop->iteration); ?>
+
                         </span>
 
-                        @if ($ori->image_hover)
+                        <?php if($ori->image_hover): ?>
                             <span
                                 class="absolute bottom-4 right-4 glass-panel border border-white/50 text-[10px] font-semibold text-neutral-700 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 Alternate View
                             </span>
-                        @endif
+                        <?php endif; ?>
                     </div>
 
-                    <div class="lg:py-4 space-y-6 {{ $isEven ? 'lg:order-1' : 'lg:order-2' }}">
+                    <div class="lg:py-4 space-y-6 <?php echo e($isEven ? 'lg:order-1' : 'lg:order-2'); ?>">
                         <div class="space-y-2">
                             <span
-                                class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase">{{ $ori->variant }}
-                                for {{ $gender }} · {{ $formatVolume($ori->volume) }}</span>
+                                class="inline-block text-[10px] font-bold tracking-widest text-neutral-400 uppercase"><?php echo e($ori->variant); ?>
+
+                                for <?php echo e($gender); ?> · <?php echo e($formatVolume($ori->volume)); ?></span>
                             <h3 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight">
-                                {{ $ori->name }}
+                                <?php echo e($ori->name); ?>
+
                             </h3>
                             <p class="text-2xl font-extrabold text-neutral-950">Rp
-                                {{ number_format($ori->price, 0, ',', '.') }}
+                                <?php echo e(number_format($ori->price, 0, ',', '.')); ?>
+
                             </p>
                         </div>
 
                         <p class="text-neutral-500 leading-relaxed text-sm">
-                            {{ $ori->description }}
+                            <?php echo e($ori->description); ?>
+
                         </p>
 
                         <div class="grid grid-cols-4 gap-3 bg-neutral-50 p-4 rounded-xl border border-neutral-200/80">
                             <div>
                                 <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">TOP NOTES</p>
-                                <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->top_note }}
+                                <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->top_note); ?>
+
                                 </p>
                             </div>
                             <div>
                                 <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">MIDDLE NOTES</p>
-                                <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->middle_note }}
+                                <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->middle_note); ?>
+
                                 </p>
                             </div>
                             <div>
                                 <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">BASE NOTES</p>
-                                <p class="text-[11px] font-bold text-neutral-900 leading-snug">{{ $ori->base_note }}
+                                <p class="text-[11px] font-bold text-neutral-900 leading-snug"><?php echo e($ori->base_note); ?>
+
                                 </p>
                             </div>
                             <div>
                                 <p class="text-[9px] tracking-widest text-neutral-400 font-bold mb-1">UKURAN</p>
                                 <p class="text-[11px] font-bold text-neutral-900 leading-snug">
-                                    {{ $formatVolume($ori->volume) }}
+                                    <?php echo e($formatVolume($ori->volume)); ?>
+
                                 </p>
                             </div>
                         </div>
@@ -935,19 +946,19 @@
                         <div class="flex flex-col sm:flex-row gap-2.5">
                             <button
                                 @click="addToCart({
-        product_id: @js($ori->id),
-        name: @js($ori->name),
-        price: @js('Rp ' . number_format($ori->price, 0, ',', '.')),
-        image: @js(asset('storage/' . $ori->image))
+        product_id: <?php echo \Illuminate\Support\Js::from($ori->id)->toHtml() ?>,
+        name: <?php echo \Illuminate\Support\Js::from($ori->name)->toHtml() ?>,
+        price: <?php echo \Illuminate\Support\Js::from('Rp ' . number_format($ori->price, 0, ',', '.'))->toHtml() ?>,
+        image: <?php echo \Illuminate\Support\Js::from(asset('storage/' . $ori->image))->toHtml() ?>
     }, $event)"
                                 class="flex-1 bg-neutral-950 text-white text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-800 transition text-center cursor-pointer shadow-xs active:scale-[0.98]">
                                 + Add to Cart
                             </button>
                             <button
                                 @click="directCheckoutWhatsApp(
-        @js($ori->id),
-        @js($ori->name . ' ' . $ori->variant . ' ' . $formatVolume($ori->volume)),
-        @js('Rp ' . number_format($ori->price, 0, ',', '.'))
+        <?php echo \Illuminate\Support\Js::from($ori->id)->toHtml() ?>,
+        <?php echo \Illuminate\Support\Js::from($ori->name . ' ' . $ori->variant . ' ' . $formatVolume($ori->volume))->toHtml() ?>,
+        <?php echo \Illuminate\Support\Js::from('Rp ' . number_format($ori->price, 0, ',', '.'))->toHtml() ?>
     )"
                                 class="flex-1 border border-neutral-300 text-neutral-900 text-xs font-semibold py-3.5 px-5 rounded-full hover:bg-neutral-50 transition text-center cursor-pointer active:scale-[0.98]">
                                 Checkout via WhatsApp
@@ -955,14 +966,14 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
         </div>
     </section>
 
-    {{-- ======================================================== --}}
-    {{-- TESTIMONIALS / REVIEWS SECTION --}}
-    {{-- ======================================================== --}}
+    
+    
+    
     <section id="reviews" class="bg-neutral-50/70 py-16 lg:py-24 border-t border-b border-neutral-200/70">
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8">
             <div class="text-center max-w-lg mx-auto mb-14 space-y-2">
@@ -973,37 +984,41 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @if (isset($reviews) && $reviews->count() > 0)
-                    @foreach ($reviews as $review)
+                <?php if(isset($reviews) && $reviews->count() > 0): ?>
+                    <?php $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div
                             class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                             <div>
                                 <div class="text-amber-500 mb-3 text-xs tracking-widest">
-                                    {{ str_repeat('★', min(5, max(1, (int) $review->rating))) }}{{ str_repeat('☆', max(0, 5 - (int) $review->rating)) }}
+                                    <?php echo e(str_repeat('★', min(5, max(1, (int) $review->rating)))); ?><?php echo e(str_repeat('☆', max(0, 5 - (int) $review->rating))); ?>
+
                                 </div>
-                                <p class="text-xs text-neutral-600 leading-relaxed mb-5">"{{ $review->comment }}"</p>
+                                <p class="text-xs text-neutral-600 leading-relaxed mb-5">"<?php echo e($review->comment); ?>"</p>
                             </div>
                             <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                                @php
+                                <?php
                                     $initial = str($review->user_name)->substr(0, 1)->upper();
-                                @endphp
+                                ?>
                                 <div
                                     class="w-9 h-9 rounded-full object-cover border border-neutral-200 shadow-xs flex items-center justify-center bg-black/80">
                                     <p class="text-white font-medium">
-                                        {{ $initial }}
+                                        <?php echo e($initial); ?>
+
                                     </p>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-bold text-neutral-900 capitalize">{{ $review->user_name }}
+                                    <h4 class="text-xs font-bold text-neutral-900 capitalize"><?php echo e($review->user_name); ?>
+
                                     </h4>
                                     <p class="text-[10px] text-neutral-400">
-                                        {{ $review->product->name ?? 'Pelanggan Perfu.me' }}
+                                        <?php echo e($review->product->name ?? 'Pelanggan Perfu.me'); ?>
+
                                     </p>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                @else
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php else: ?>
                     <div
                         class="bg-white p-6 sm:p-7 rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col justify-between card-hover">
                         <div>
@@ -1062,12 +1077,12 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
     </section>
 
-    {{-- FLOATING GUIDE / TOUR BUTTON --}}
+    
     <div class="fixed bottom-6 left-6 z-40">
         <button @click="startTour()" title="Panduan Penggunaan Website"
             class="bg-white text-neutral-900 border border-neutral-200 p-3.5 rounded-full shadow-xl hover:bg-neutral-50 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer">
@@ -1080,7 +1095,7 @@
         </button>
     </div>
 
-    {{-- ===================== ONBOARDING TOUR OVERLAY ===================== --}}
+    
     <template x-if="tourOpen">
         <div class="fixed inset-0 z-[999]">
             <div class="fixed rounded-2xl pointer-events-none transition-all duration-300 ease-out"
@@ -1133,7 +1148,7 @@
         </div>
     </template>
 
-    {{-- FLOATING CART BUTTON --}}
+    
     <div class="fixed bottom-6 right-6 z-40">
         <button id="floating-cart-btn" @click="cartOpen = true"
             class="relative bg-neutral-950 text-white p-3.5 rounded-full shadow-2xl hover:bg-neutral-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center cursor-pointer group">
@@ -1146,7 +1161,7 @@
         </button>
     </div>
 
-    {{-- Slide-over Cart Drawer Sidebar --}}
+    
     <div x-cloak x-show="cartOpen" class="relative z-50">
         <div x-show="cartOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
@@ -1285,7 +1300,7 @@
         </div>
     </div>
 
-    {{-- Footer --}}
+    
     <footer class="bg-neutral-950 text-neutral-400 border-t border-neutral-900 pt-14 pb-8">
         <div class="max-w-[1240px] mx-auto px-6 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="space-y-3">
@@ -1365,12 +1380,12 @@
 
         <div
             class="max-w-[1240px] mx-auto px-6 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-2.5 border-t border-neutral-900 mt-10 pt-5 text-[10px] text-neutral-500">
-            <span>&copy; {{ date('Y') }} PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
+            <span>&copy; <?php echo e(date('Y')); ?> PERFU.ME INDONESIA. ALL RIGHTS RESERVED.</span>
             <span>CRAFTED WITH PRECISION · EXTRAIT DE PARFUM</span>
         </div>
     </footer>
 
-    {{-- Alpine.js & Flying Ball Animation Script --}}
+    
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
         /**
@@ -1741,131 +1756,12 @@
 
                 init() {
                     try {
-                        const urlParams = new URLSearchParams(window.location.search);
-                        if (urlParams.get('tour') === '1') {
-                            setTimeout(() => this.startTour(), 400);
-                        } else {
-                            const alreadySeen = localStorage.getItem('perfume_tour_seen');
-                            if (!alreadySeen) {
-                                setTimeout(() => this.startTour(), 900);
-                            }
+                        const alreadySeen = localStorage.getItem('perfume_tour_seen');
+
+                        if (!alreadySeen) {
+                            setTimeout(() => this.startTour(), 900);
                         }
-
-                        const savedCart = localStorage.getItem('perfume_cart_items');
-                        if (savedCart) {
-                            this.items = JSON.parse(savedCart);
-                        }
-                    } catch (e) { }
-
-                    this.$watch('items', (val) => {
-                        try {
-                            localStorage.setItem('perfume_cart_items', JSON.stringify(val));
-                        } catch (e) { }
-                    });
-                },
-
-                tourSteps: [
-                    {
-                        id: 'marquee-bar',
-                        title: 'Info Berjalan',
-                        desc: 'Pita berjalan ini menampilkan daftar brand/varian yang tersedia beserta info promo. Arahkan kursor ke sini untuk menghentikan sementara animasinya.'
-                    },
-                    {
-                        id: 'site-header',
-                        title: 'Navigasi & Keranjang',
-                        desc: 'Menu ini untuk berpindah ke halaman Products, mengecek isi keranjang lewat ikon tas, atau klik "Shop Now" untuk langsung menuju koleksi produk.'
-                    },
-                    {
-                        id: 'scent-switcher',
-                        title: 'Pilih Aroma Signature',
-                        desc: 'Klik salah satu kartu aroma untuk mengganti gambar, harga, dan detail notes (Top / Heart / Base) sesuai varian yang ingin kamu lihat.'
-                    },
-                    {
-                        id: 'hero-cta',
-                        title: 'Tambah ke Keranjang / Order Cepat',
-                        desc: '"Add to Cart" menyimpan aroma yang sedang dipilih ke keranjang. "Order via WhatsApp" langsung membuka chat dengan pesan otomatis khusus untuk aroma ini.'
-                    },
-                    {
-                        id: 'lineup-carousel',
-                        title: 'Koleksi Lineup',
-                        desc: 'Geser (drag) atau arahkan kursor ke kartu untuk melihat koleksi. Klik kartu mana pun untuk membuka halaman produk lengkap.'
-                    },
-                    {
-                        id: 'usp-section',
-                        title: 'Keunggulan Produk',
-                        desc: 'Tiga poin ini menjelaskan kualitas formula Extrait, daya tahan wangi, dan jaminan keamanan pengiriman dari Perfu.me.'
-                    },
-                    {
-                        id: 'product-intro',
-                        title: 'Koleksi Lengkap',
-                        desc: 'Scroll di area ini untuk melihat semua varian parfum. Setiap produk punya tombol "+ Add to Cart" dan "Checkout via WhatsApp" masing-masing, lengkap dengan detail notes aromanya.'
-                    },
-                    {
-                        id: 'reviews',
-                        title: 'Ulasan Pelanggan',
-                        desc: 'Baca pengalaman nyata pelanggan lain sebelum memutuskan aroma pilihanmu.'
-                    },
-                    {
-                        id: 'floating-cart-btn',
-                        target: 'cart-drawer-panel',
-                        skipScroll: true,
-                        title: 'Keranjang Belanja',
-                        desc: 'Tombol ini selalu muncul di pojok kanan bawah dari halaman manapun. Klik untuk membuka ringkasan belanja seperti ini, atur jumlah pesanan, lalu checkout langsung via WhatsApp.'
-                    },
-                    {
-                        id: 'footer-newsletter',
-                        title: 'Newsletter & Kontak',
-                        desc: 'Daftarkan email di sini untuk info rilis aroma baru, atau hubungi kami langsung lewat ikon sosial media di footer.'
-                    }
-                ],
-
-                startTour() {
-                    this.tourOpen = true;
-                    this._reposHandler = this.positionTour.bind(this);
-                    window.addEventListener('resize', this._reposHandler);
-                    window.addEventListener('scroll', this._reposHandler, true);
-                    this.goToStep(0);
-                },
-
-                closeTour() {
-                    this.tourOpen = false;
-                    this.cartOpen = false;
-                    if (this._reposHandler) {
-                        window.removeEventListener('resize', this._reposHandler);
-                        window.removeEventListener('scroll', this._reposHandler, true);
-                        this._reposHandler = null;
-                    }
-                    try {
-                        localStorage.setItem('perfume_tour_seen', '1');
-                    } catch (e) { }
-                },
-
-                nextStep() {
-                    this.goToStep(this.tourStep + 1);
-                },
-
-                prevStep() {
-                    this.goToStep(this.tourStep - 1);
-                },
-
-                goToStep(index) {
-                    if (index < 0 || index >= this.tourSteps.length) {
-                        this.closeTour();
-                        return;
-                    }
-                    this.tourStep = index;
-                    const step = this.tourSteps[index];
-                    this.cartOpen = (step.id === 'floating-cart-btn');
-                    this.$nextTick(() => {
-                        if (!step.skipScroll) {
-                            const scrollId = step.target || step.id;
-                            const el = document.getElementById(scrollId);
-                            if (el) {
-                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }
-                        }
-                        setTimeout(() => this.positionTour(), step.skipScroll ? 360 : 420);
-                    });
+                    } catch (e) {}
                 },
 
                 // ===================== CART =====================
@@ -2099,7 +1995,7 @@
                 async saveOrder(items) {
                     try {
                         const response = await fetch(
-                            '{{ route('orders.checkout') }}', {
+                            '<?php echo e(route('orders.checkout')); ?>', {
                                 method: 'POST',
 
                                 headers: {
@@ -2107,7 +2003,7 @@
 
                                     'Accept': 'application/json',
 
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                                 },
 
                                 body: JSON.stringify({
@@ -2179,4 +2075,4 @@
     </script>
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\USER\Perfu.me\resources\views/customer/home.blade.php ENDPATH**/ ?>

@@ -37,18 +37,17 @@ class ProductController extends Controller
             'category' => 'nullable|string',
             'variant' => 'nullable|in:EDP,EDT,Roll-on,Body Mist',
             'gender' => 'nullable|string',
-
             'top_note' => 'nullable|string',
             'middle_note' => 'nullable|string',
             'base_note' => 'nullable|string',
             'composition' => 'nullable|string',
             'packaging' => 'nullable|string',
+
             'volume' => 'nullable|array',
             'volume.*' => 'string',
 
             'price' => 'required|numeric|min:0',
             'stock' => 'nullable|integer|min:0',
-
             'description' => 'nullable|string',
 
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
@@ -104,17 +103,38 @@ class ProductController extends Controller
             'base_note' => 'nullable|string',
             'composition' => 'nullable|string',
             'packaging' => 'nullable|string',
-            'volume' => 'nullable|array',
-            'volume.*' => 'string',
+
+            // Form edit mengirim volume sebagai string: "30,50"
+            'volume' => 'nullable|string',
 
             'price' => 'required|numeric|min:0',
             'stock' => 'nullable|integer|min:0',
-
             'description' => 'nullable|string',
 
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'image_hover' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ubah volume dari string menjadi array
+        |--------------------------------------------------------------------------
+        | "30,50" -> ["30", "50"]
+        | "50"    -> ["50"]
+        |--------------------------------------------------------------------------
+        */
+        if (!empty($validatedData['volume'])) {
+            $validatedData['volume'] = array_values(
+                array_filter(
+                    array_map(
+                        'trim',
+                        explode(',', $validatedData['volume'])
+                    )
+                )
+            );
+        } else {
+            $validatedData['volume'] = null;
+        }
 
         if ($request->hasFile('image')) {
             if ($product->image) {

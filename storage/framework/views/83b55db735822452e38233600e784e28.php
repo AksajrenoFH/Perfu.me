@@ -1,4 +1,4 @@
-@php
+<?php
     /*
     |--------------------------------------------------------------------------
     | Normalisasi Volume
@@ -16,7 +16,7 @@
     }
 
     $volumeValue = (string) $volumeValue;
-@endphp
+?>
 
 <div class="py-12 bg-gray-50 min-h-screen">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,7 +31,8 @@
                 <p class="text-sm text-gray-500 mt-1">
                     Perbarui informasi untuk produk
                     <span class="font-bold text-gray-800">
-                        {{ $product->name }}
+                        <?php echo e($product->name); ?>
+
                     </span>.
                 </p>
             </div>
@@ -39,18 +40,18 @@
 
         <!-- FORM -->
         <form
-            action="{{ route('products.update', $product->id) }}"
+            action="<?php echo e(route('products.update', $product->id)); ?>"
             method="POST"
             enctype="multipart/form-data"
             class="space-y-6"
         >
-            @csrf
-            @method('PUT')
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
 
-            {{-- Kalau form dibuka melalui drawer, kirim flag drawer --}}
-            @if(request('drawer'))
+            
+            <?php if(request('drawer')): ?>
                 <input type="hidden" name="drawer" value="1">
-            @endif
+            <?php endif; ?>
 
 
             <!-- ===================================================== -->
@@ -77,16 +78,24 @@
                         <input
                             type="text"
                             name="name"
-                            value="{{ old('name', $product->name) }}"
+                            value="<?php echo e(old('name', $product->name)); ?>"
                             required
                             class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 px-4 shadow-sm"
                         >
 
-                        @error('name')
+                        <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -107,24 +116,34 @@
 
                             <option
                                 value="Original"
-                                {{ old('category', $product->category) == 'Original' ? 'selected' : '' }}
+                                <?php echo e(old('category', $product->category) == 'Original' ? 'selected' : ''); ?>
+
                             >
                                 Produk Original (Signature)
                             </option>
 
                             <option
                                 value="Refill"
-                                {{ old('category', $product->category) == 'Refill' ? 'selected' : '' }}
+                                <?php echo e(old('category', $product->category) == 'Refill' ? 'selected' : ''); ?>
+
                             >
                                 Parfum Refill
                             </option>
                         </select>
 
-                        @error('category')
+                        <?php $__errorArgs = ['category'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -144,38 +163,50 @@
 
                             <option
                                 value="EDP"
-                                {{ old('variant', $product->variant) == 'EDP' ? 'selected' : '' }}
+                                <?php echo e(old('variant', $product->variant) == 'EDP' ? 'selected' : ''); ?>
+
                             >
                                 EDP (Eau de Parfum)
                             </option>
 
                             <option
                                 value="EDT"
-                                {{ old('variant', $product->variant) == 'EDT' ? 'selected' : '' }}
+                                <?php echo e(old('variant', $product->variant) == 'EDT' ? 'selected' : ''); ?>
+
                             >
                                 EDT (Eau de Toilette)
                             </option>
 
                             <option
                                 value="Roll-on"
-                                {{ old('variant', $product->variant) == 'Roll-on' ? 'selected' : '' }}
+                                <?php echo e(old('variant', $product->variant) == 'Roll-on' ? 'selected' : ''); ?>
+
                             >
                                 Roll-on
                             </option>
 
                             <option
                                 value="Body Mist"
-                                {{ old('variant', $product->variant) == 'Body Mist' ? 'selected' : '' }}
+                                <?php echo e(old('variant', $product->variant) == 'Body Mist' ? 'selected' : ''); ?>
+
                             >
                                 Body Mist
                             </option>
                         </select>
 
-                        @error('variant')
+                        <?php $__errorArgs = ['variant'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -195,31 +226,42 @@
 
                             <option
                                 value="Pria"
-                                {{ old('gender', $product->gender) == 'Pria' ? 'selected' : '' }}
+                                <?php echo e(old('gender', $product->gender) == 'Pria' ? 'selected' : ''); ?>
+
                             >
                                 Pria (Masculine)
                             </option>
 
                             <option
                                 value="Wanita"
-                                {{ old('gender', $product->gender) == 'Wanita' ? 'selected' : '' }}
+                                <?php echo e(old('gender', $product->gender) == 'Wanita' ? 'selected' : ''); ?>
+
                             >
                                 Wanita (Feminine)
                             </option>
 
                             <option
                                 value="Unisex"
-                                {{ old('gender', $product->gender) == 'Unisex' ? 'selected' : '' }}
+                                <?php echo e(old('gender', $product->gender) == 'Unisex' ? 'selected' : ''); ?>
+
                             >
                                 Unisex (Keduanya)
                             </option>
                         </select>
 
-                        @error('gender')
+                        <?php $__errorArgs = ['gender'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                 </div>
@@ -250,16 +292,24 @@
                         <input
                             type="text"
                             name="top_note"
-                            value="{{ old('top_note', $product->top_note) }}"
+                            value="<?php echo e(old('top_note', $product->top_note)); ?>"
                             placeholder="Contoh: Bergamot, Lemon, Lavender"
                             class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 px-4 shadow-sm"
                         >
 
-                        @error('top_note')
+                        <?php $__errorArgs = ['top_note'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -272,16 +322,24 @@
                         <input
                             type="text"
                             name="middle_note"
-                            value="{{ old('middle_note', $product->middle_note) }}"
+                            value="<?php echo e(old('middle_note', $product->middle_note)); ?>"
                             placeholder="Contoh: Rose, Jasmine, Cinnamon"
                             class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 px-4 shadow-sm"
                         >
 
-                        @error('middle_note')
+                        <?php $__errorArgs = ['middle_note'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -294,16 +352,24 @@
                         <input
                             type="text"
                             name="base_note"
-                            value="{{ old('base_note', $product->base_note) }}"
+                            value="<?php echo e(old('base_note', $product->base_note)); ?>"
                             placeholder="Contoh: Vanilla, Musk, Sandalwood"
                             class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 px-4 shadow-sm"
                         >
 
-                        @error('base_note')
+                        <?php $__errorArgs = ['base_note'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -318,13 +384,21 @@
                             rows="3"
                             placeholder="Contoh: Alcohol, fragrance, aqua..."
                             class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm p-4 shadow-sm"
-                        >{{ old('composition', $product->composition) }}</textarea>
+                        ><?php echo e(old('composition', $product->composition)); ?></textarea>
 
-                        @error('composition')
+                        <?php $__errorArgs = ['composition'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                 </div>
@@ -355,16 +429,24 @@
                         <input
                             type="text"
                             name="packaging"
-                            value="{{ old('packaging', $product->packaging) }}"
+                            value="<?php echo e(old('packaging', $product->packaging)); ?>"
                             placeholder="Contoh: Botol kaca, Box premium"
                             class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 px-4 shadow-sm"
                         >
 
-                        @error('packaging')
+                        <?php $__errorArgs = ['packaging'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -378,7 +460,7 @@
                             <input
                                 type="text"
                                 name="volume"
-                                value="{{ $volumeValue }}"
+                                value="<?php echo e($volumeValue); ?>"
                                 placeholder="Contoh: 50 atau 30,50"
                                 autocomplete="off"
                                 class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 pl-4 pr-14 shadow-sm"
@@ -395,11 +477,19 @@
                             Untuk lebih dari satu ukuran, gunakan koma. Contoh: 30,50
                         </p>
 
-                        @error('volume')
+                        <?php $__errorArgs = ['volume'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                 </div>
@@ -437,18 +527,26 @@
                             <input
                                 type="number"
                                 name="price"
-                                value="{{ old('price', $product->price) }}"
+                                value="<?php echo e(old('price', $product->price)); ?>"
                                 min="0"
                                 required
                                 class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 pl-12 pr-4 shadow-sm"
                             >
                         </div>
 
-                        @error('price')
+                        <?php $__errorArgs = ['price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -461,16 +559,24 @@
                         <input
                             type="number"
                             name="stock"
-                            value="{{ old('stock', $product->stock) }}"
+                            value="<?php echo e(old('stock', $product->stock)); ?>"
                             min="0"
                             class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 px-4 shadow-sm"
                         >
 
-                        @error('stock')
+                        <?php $__errorArgs = ['stock'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                 </div>
@@ -502,13 +608,21 @@
                             name="description"
                             rows="5"
                             class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm p-4 shadow-sm"
-                        >{{ old('description', $product->description) }}</textarea>
+                        ><?php echo e(old('description', $product->description)); ?></textarea>
 
-                        @error('description')
+                        <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -527,11 +641,11 @@
                                 class="w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-[#D4AF37] file:transition cursor-pointer border border-gray-200 rounded-xl p-2 bg-gray-50/50"
                             >
 
-                            @if ($product->image)
+                            <?php if($product->image): ?>
                                 <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-2xl border border-gray-200">
 
                                     <img
-                                        src="{{ asset('storage/' . $product->image) }}"
+                                        src="<?php echo e(asset('storage/' . $product->image)); ?>"
                                         class="w-16 h-16 object-cover rounded-xl shadow-sm"
                                         alt="Foto Produk"
                                     >
@@ -547,15 +661,23 @@
                                     </div>
 
                                 </div>
-                            @endif
+                            <?php endif; ?>
 
                         </div>
 
-                        @error('image')
+                        <?php $__errorArgs = ['image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -574,11 +696,11 @@
                                 class="w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-[#D4AF37] file:transition cursor-pointer border border-gray-200 rounded-xl p-2 bg-gray-50/50"
                             >
 
-                            @if ($product->image_hover)
+                            <?php if($product->image_hover): ?>
                                 <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-2xl border border-gray-200">
 
                                     <img
-                                        src="{{ asset('storage/' . $product->image_hover) }}"
+                                        src="<?php echo e(asset('storage/' . $product->image_hover)); ?>"
                                         class="w-16 h-16 object-cover rounded-xl shadow-sm"
                                         alt="Foto Hover Produk"
                                     >
@@ -594,15 +716,23 @@
                                     </div>
 
                                 </div>
-                            @endif
+                            <?php endif; ?>
 
                         </div>
 
-                        @error('image_hover')
+                        <?php $__errorArgs = ['image_hover'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <small class="text-red-500 text-xs mt-1 block">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </small>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -614,7 +744,8 @@
                             id="is_best_seller"
                             name="is_best_seller"
                             value="1"
-                            {{ old('is_best_seller', $product->is_best_seller) ? 'checked' : '' }}
+                            <?php echo e(old('is_best_seller', $product->is_best_seller) ? 'checked' : ''); ?>
+
                             class="w-4 h-4 text-black border-gray-300 rounded focus:ring-[#D4AF37]"
                         >
 
@@ -649,4 +780,4 @@
 
         </form>
     </div>
-</div>
+</div><?php /**PATH C:\Users\USER\Perfu.me\resources\views/products/form-edit.blade.php ENDPATH**/ ?>
