@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->string('base_note')->nullable();
             $table->text('composition')->nullable();
             $table->string('packaging')->nullable();
-            $table->integer('volume')->nullable();
+            $table->json('volume')->nullable(); // Diubah: bisa nyimpen banyak pilihan volume, contoh ["30","60"]
             $table->decimal('price', 10, 2);
             $table->integer('stock')->default(0);
             $table->date('launch_date')->nullable();

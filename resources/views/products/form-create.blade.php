@@ -18,7 +18,6 @@
             enctype="multipart/form-data" class="space-y-6">
             @csrf
 
-            <!-- SECTION 1 -->
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.02)] border border-gray-100">
                 <div class="border-b border-gray-100 pb-4 mb-6">
                     <h3 class="text-lg font-bold text-black flex items-center gap-2">
@@ -109,7 +108,6 @@
                 </div>
             </div>
 
-            <!-- SECTION 2 -->
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.02)] border border-gray-100">
                 <div class="border-b border-gray-100 pb-4 mb-6">
                     <h3 class="text-lg font-bold text-black flex items-center gap-2">
@@ -173,7 +171,6 @@
                 </div>
             </div>
 
-            <!-- SECTION 3 -->
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.02)] border border-gray-100">
                 <div class="border-b border-gray-100 pb-4 mb-6">
                     <h3 class="text-lg font-bold text-black flex items-center gap-2">
@@ -198,18 +195,23 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Volume (ml)
+                            Pilihan Volume (ml) <span class="text-red-500">*</span>
                         </label>
-                        <div class="relative">
-                            <input type="number" name="volume" value="{{ old('volume') }}" min="1"
-                                placeholder="50"
-                                class="w-full rounded-xl border-gray-300 focus:border-[#D4AF37] focus:ring focus:ring-[#D4AF37]/20 transition text-sm py-3 pl-4 pr-14 shadow-sm">
-                            <span
-                                class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 text-sm font-medium">
-                                ml
-                            </span>
+                        <div class="flex flex-wrap gap-3">
+                            @foreach (['5', '15', '30', '50', '60', '100', '120'] as $vol)
+                                @php $checked = collect(old('volume', []))->contains($vol); @endphp
+                                <label class="flex items-center gap-2 border border-gray-300 rounded-xl px-4 py-2.5 text-sm cursor-pointer has-[:checked]:border-[#D4AF37] has-[:checked]:bg-[#D4AF37]/10 transition">
+                                    <input type="checkbox" name="volume[]" value="{{ $vol }}"
+                                        {{ $checked ? 'checked' : '' }}
+                                        class="w-4 h-4 text-black border-gray-300 rounded focus:ring-[#D4AF37]">
+                                    {{ $vol }} ml
+                                </label>
+                            @endforeach
                         </div>
                         @error('volume')
+                            <small class="text-red-500 text-xs mt-1 block">{{ $message }}</small>
+                        @enderror
+                        @error('volume.*')
                             <small class="text-red-500 text-xs mt-1 block">{{ $message }}</small>
                         @enderror
                     </div>
@@ -217,7 +219,6 @@
                 </div>
             </div>
 
-            <!-- SECTION 4 -->
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.02)] border border-gray-100">
                 <div class="border-b border-gray-100 pb-4 mb-6">
                     <h3 class="text-lg font-bold text-black flex items-center gap-2">
@@ -233,8 +234,7 @@
                             Harga Jual (Rp) <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <span
-                                class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 text-sm font-medium">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 text-sm font-medium">
                                 Rp
                             </span>
                             <input type="number" name="price" value="{{ old('price') }}" placeholder="45000"
@@ -261,7 +261,6 @@
                 </div>
             </div>
 
-            <!-- SECTION 5 -->
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.02)] border border-gray-100">
                 <div class="border-b border-gray-100 pb-4 mb-6">
                     <h3 class="text-lg font-bold text-black flex items-center gap-2">

@@ -19,9 +19,18 @@ class Product extends Model
         'volume',
         'price',
         'stock',
+        'launch_date',
         'description',
         'image',
         'image_hover',
         'is_best_seller',
+    ];
+
+    protected $casts = [
+        'volume' => 'array',
+        'price' => 'decimal:2',
+        'stock' => 'integer',
+        'launch_date' => 'date',
+        'is_best_seller' => 'boolean',
     ];
 }
